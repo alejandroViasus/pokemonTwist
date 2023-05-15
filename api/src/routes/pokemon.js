@@ -1,77 +1,86 @@
 const express = require("express");
-const pokemonSchema = require("../models/Pokemons/pokemon");
+const pokemonSchema = require("../models/Pokemon/pokemon");
 
 const router = express.Router();
 
 //status
-const STATUS_USER_ERROR = 201;
+const STATUS_OK = 200;
+const STATUS_ERROR = 500;
+const STATUS_NOT_FOUND = 404;
 
 
 router.route("/pokemon")
-    //!new Pokemon
+//!new Pokemon
   .post(async (req, res) => {
     try {
       const pokemon = new pokemonSchema(req.body);
       console.log("New Pokemon!", pokemon.name, pokemon.scale);
       const data = await pokemon.save();
-      res.json(data);
+      res.status(STATUS_OK).json(data);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: error.message });
+      res.status(STATUS_ERROR).json({ message: error.message });
     }
   })
-  //! get All Pokemons
+//! get All Pokemons
   .get(async (req, res) => {
     try {
         const { email } = req.query;
-      const data = await pokemonSchema.find({ trainer: email });
-      console.log("userData_:", data);
-      res.status(200).json(data);
+        const data = await pokemonSchema.find({ trainer: email });
+        console.log("userData_:", data);
+        res.status(STATUS_OK).json(data);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(STATUS_ERROR).json({ message: error.message });
     }
   });
 
 
 router.route("/pokemons/:id")
+//! get one Pokemon
     .get(async (req,res)=>{
         try{
             const { id } = req.params;
             const data = await pokemonSchema.find({ _id: id });
+            if (!data) {
+                return res.status(STATUS_NOT_FOUND).json({ message: "Pokemon not found" });
+            }
             console.log("getPokemon:", data.name);
-            res.status(200).json(data);
+            res.status(STATUS_OK).json(data);
         }catch(error){
             console.error(error);
-            res.status(500).json({ message: error.message });
+            res.status(STATUS_NOT_FOUND).json({ message: error.message });
         }
     })
-    //!upDate pokemon
+//!upDate pokemon
   .put(async (req, res) => {
     try {
       const { id } = req.params;
       const pokemon = req.body;
-      console.log("upDatePokemon", req.body, pokemon);
+      console.log("upDatePokemon :_",pokemon);
       const data = await pokemonSchema.updateOne({ _id: id }, { $set: pokemon });
-      res.json(data);
+      if (!data) {
+        return res.status(STATUS_NOT_FOUND).json({ message: "Pokemon not found" });
+    }
+      res.status(STATUS_OK).json(data);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: error.message });
+      res.status(STATUS_ERROR).json({ message: error.message });
     }
   })
   .delete(async (req, res) => {
-    //!delete Pokemon
+//!delete Pokemon
     try {
       const { id } = req.params;
       const data = await pokemonSchema.deleteOne({ _id: id });
       if (data.deletedCount === 0) {
-        res.status(404).json({ message: "Pokemon not found" });
+        res.status(STATUS_NOT_FOUND).json({ message: "Pokemon not found" });
       } else {
         res.json({ message: "Pokemon deleted successfully" });
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: error.message });
+      res.status(STATUS_ERROR).json({ message: error.message });
     }
   });
 
