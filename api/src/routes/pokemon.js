@@ -6,7 +6,7 @@ const router = express.Router();
 //status
 const STATUS_USER_ERROR = 201;
 
-//! CRUD operations for pokemon
+
 router.route("/pokemon")
     //!new Pokemon
   .post(async (req, res) => {
@@ -20,10 +20,10 @@ router.route("/pokemon")
       res.status(500).json({ message: error.message });
     }
   })
-  //! getPokemon
+  //! get All Pokemons
   .get(async (req, res) => {
     try {
-      const { email } = req.params;
+        const { email } = req.query;
       const data = await pokemonSchema.find({ trainer: email });
       console.log("userData_:", data);
       res.status(200).json(data);
@@ -33,7 +33,19 @@ router.route("/pokemon")
     }
   });
 
+
 router.route("/pokemons/:id")
+    .get(async (req,res)=>{
+        try{
+            const { id } = req.params;
+            const data = await pokemonSchema.find({ _id: id });
+            console.log("getPokemon:", data.name);
+            res.status(200).json(data);
+        }catch(error){
+            console.error(error);
+            res.status(500).json({ message: error.message });
+        }
+    })
     //!upDate pokemon
   .put(async (req, res) => {
     try {
