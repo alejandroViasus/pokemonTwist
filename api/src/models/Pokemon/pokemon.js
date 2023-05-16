@@ -16,7 +16,11 @@ const pokemonSchema = mongoose.Schema(
             type:String,
             required:true
         },
-        pictureSM:{
+        pictureSpriteFrontDefault:{
+            type:String,
+            required:true
+        },
+        pictureImgModel3D:{
             type:String,
             required:true
         },

@@ -1,33 +1,31 @@
-const express= require ("express");
-const mongoose=require("mongoose")
-const app= express();
-const userRoutes= require("./routes/user");
-const pokemonRoutes= require("./routes/pokemon");
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-require("dotenv").config();
-const uri= process.env.MONGODB_URI;
-const port = process.env.PORT || 9000;
-console.log(port , process.env.MONGODB_URI)
+const userRoutes = require('./routes/user');
+const pokemonRoutes = require('./routes/pokemon');
 
-//*middleWare
+const app = express();
+const port = process.env.PORT || 9000;
+const uri = process.env.MONGODB_URI;
+//const uri = 'mongodb+srv://VivaVG:4Minapotodoe@pokemon.wypjxc7.mongodb.net/test';
+
+
+//*middleware
 app.use(cors());
 app.use(express.json());
-app.use('/api',userRoutes);
-app.use('/api',pokemonRoutes);
+app.use('/api', userRoutes);
+app.use('/api', pokemonRoutes);
 
+//*routes
+app.get('/', (req, res) => {
+  res.send('Welcome to my API');
+});
 
-//console.log(uri)
-//* routes 
+//*mongoose db connection
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((error) => console.log(error));
 
-
-
-app.get("/",(req,res)=>{
-    res.send("Welcome to my api")
-})
-
-//* mongoose db conection 
-
-mongoose.connect(uri).then(()=>console.log("Conected to MongoDB Atlas"))
-.catch((error)=>console.log(error))
-
-app.listen(port,()=> console.log(`server listening in port : ${port}`))
+app.listen(port, () => console.log(`Server listening on port: ${port}`));

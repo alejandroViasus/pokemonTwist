@@ -82,5 +82,24 @@ router.route("/users")
         }
     })
 
+    router.route("/users/email/:email")
+    //! get One User for email
+    .get(async (req, res) => {
+        try {
+            const { email } = req.params;
+            const data = await userSchema.findOne({ email });
+            if (!data) {
+              return res
+                .status(STATUS_NOT_FOUND)
+                .json({ message: `User (${email}) not found` });
+            }
+            console.log("getUser:", data.gametag);
+            res.status(STATUS_OK).json(data);
+        } catch (error) {
+            console.log(error);
+            res.status(STATUS_NOT_FOUND).json({ message: error.message })
+        }
+    })
+
 
 module.exports = router;
