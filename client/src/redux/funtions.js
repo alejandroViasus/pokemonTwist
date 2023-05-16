@@ -2,6 +2,8 @@ const functionUser=(state, action)=>{
     const user = {
                 ...state,
                 user:{
+                    version:action.payload.version,
+                    ban:action.payload.ban,
                     email:action.payload.email,
                     gametag: action.payload.nickname,
                     pictureTrainer: action.payload.pictureTrainer,
@@ -14,6 +16,16 @@ const functionUser=(state, action)=>{
                     league: action.payload.league,
                 }
                 
+            } 
+            return user        
+}
+
+const functionRegister=(state, action)=>{
+    const user = {
+                ...state,
+                app:{
+                    register:!state.app.register
+                }
             } 
             return user        
 }

@@ -101,5 +101,21 @@ router.route("/users")
         }
     })
 
+    router.route("/users/gametag/:gametag")
+    //! get One User
+    .get(async (req, res) => {
+        try {
+            const { gametag } = req.params;
+            const data = await userSchema.findOne({gametag});
+            if (!data) {
+                return res.status(STATUS_NOT_FOUND).json({ message: "User not found" });
+            }
+            console.log("getUser:", data.gametag);
+            res.status(STATUS_OK).json(data);
+        } catch (error) {
+            console.log(error);
+            res.status(STATUS_NOT_FOUND).json({ message: error.message })
+        }
+    })
 
 module.exports = router;

@@ -3,6 +3,14 @@ const mongoose=require("mongoose");
 const userSchema = mongoose.Schema(
     {
         //!principalInfo
+        version:{
+            type:String,
+            required:true
+        },
+        ban:{
+            type:Boolean,
+            required:true
+        },
         email:{
             type:String,
             required:true
@@ -44,7 +52,15 @@ const userSchema = mongoose.Schema(
         league:{
             type:Number,
             required:true
-        }
+        },
+        level:{
+            type:Number,
+            required:true
+        },
+        phone:{
+            type:Number,
+            required:true
+        },
     },{
         timestamps:true,
         versionKey:false
