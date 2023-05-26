@@ -30,7 +30,7 @@ function Card({ infoPokemon, changeUpdate }) {
 
     let team = infoPokemon.team
 
-    const updatePokemon = { ...infoPokemon, team: !infoPokemon.team, favorite:!infoPokemon.team};
+    const updatePokemon = { ...infoPokemon, team: !infoPokemon.team, favorite: !infoPokemon.team, new: false };
 
     try {
       const response = await fetch(`http://localhost:9000/api/pokemons/${infoPokemon._id}`, {
@@ -55,7 +55,7 @@ function Card({ infoPokemon, changeUpdate }) {
   };
 
   const onClickFavorite = async () => {
-    const updatePokemon = { ...infoPokemon, favorite: !infoPokemon.favorite};
+    const updatePokemon = { ...infoPokemon, favorite: !infoPokemon.favorite, new: false };
 
     try {
       const response = await fetch(`http://localhost:9000/api/pokemons/${infoPokemon._id}`, {
@@ -193,7 +193,7 @@ function Card({ infoPokemon, changeUpdate }) {
               shiny={(infoPokemon.shiny) ? 1 : 0}
               onClick={onClickRelease}
             > Release</div>
-       
+
           </div>
         </div>
       </div>
