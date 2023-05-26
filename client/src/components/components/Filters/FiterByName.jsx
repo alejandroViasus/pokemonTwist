@@ -9,7 +9,7 @@ function FiterByName() {
 
   const onChange=(e)=>{
     const value=e.target.value;
-    console.log("inputName", isNaN(value));
+    //console.log("inputName", isNaN(value));
     if(isNaN(value)){
       const newfilterList={...datafilterList,name:value,noPokedex:""}
       //console.log(newfilterList)

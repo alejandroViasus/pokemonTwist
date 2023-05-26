@@ -101,7 +101,7 @@ router.route("/pokemons/:id")
   });
 
   router.route("/pokemons/:email/team")
-  //! get All Pokemons
+  //! get All Pokemons tean
     .get(async (req, res) => {
       try {
           const { email } = req.params;

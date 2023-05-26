@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { release, update } from '../../../redux/actions';
 
+
 //!components
 
 import ReleasePokemon from '../ReleasePokemon/ReleasePokemon';
@@ -16,7 +17,7 @@ function Card({ infoPokemon, changeUpdate }) {
   let imagePokemon = dataBaseImages.sprites.front_default(infoPokemon?.noPokedex)
   const iconImage = "";
   const onClick = (e) => { }
-  console.log(infoPokemon);
+  //console.log(infoPokemon);
 
   if (infoPokemon.shiny) {
     imagePokemon = dataBaseImages.sprites.front_shiny(infoPokemon.noPokedex);
@@ -28,10 +29,28 @@ function Card({ infoPokemon, changeUpdate }) {
 
   const onClickTeam = async () => {
 
-    let team = infoPokemon.team
 
+    try {
+      fetch(`http://localhost:9000/api/pokemons/${user.email}/team`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.length)
+          if(data.length<variables.sizeTeam||infoPokemon.team){
+            addTeam();
+          }else{
+            alert(`superaste el maximo de integrantes en tu equipo (${variables.sizeTeam})`)
+          }
+          
+        })
+        
+        
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+    const  addTeam=async ()=>{
     const updatePokemon = { ...infoPokemon, team: !infoPokemon.team, favorite: !infoPokemon.team, new: false };
-
     try {
       const response = await fetch(`http://localhost:9000/api/pokemons/${infoPokemon._id}`, {
         method: 'PUT',
@@ -43,6 +62,7 @@ function Card({ infoPokemon, changeUpdate }) {
       if (response.ok) {
         if (!infoPokemon.team) {
           console.log(`new Team ${infoPokemon.name}`);
+
         } else {
           console.log(`out Team ${infoPokemon.name}`);
         }
@@ -52,7 +72,7 @@ function Card({ infoPokemon, changeUpdate }) {
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   const onClickFavorite = async () => {
     const updatePokemon = { ...infoPokemon, favorite: !infoPokemon.favorite, new: false };

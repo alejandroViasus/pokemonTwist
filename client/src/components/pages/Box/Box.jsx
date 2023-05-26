@@ -79,7 +79,7 @@ function Box() {
 
     useEffect(() => {
         //este UseEffect lo uso para que se renderice nuevamente cuando cargue el estado del usuario
-        console.log("state Actual : ", state)
+        //console.log("state Actual : ", state)
     }, [userState, posiblesPokemons, initialState])
 
     const openPack = () => {

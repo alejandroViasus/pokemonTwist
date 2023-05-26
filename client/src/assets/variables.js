@@ -98,7 +98,7 @@ export const functions = {
             }
         })
         const level = Math.ceil(1 + (Math.random() * rarity[returnRarity][1]) + 1);
-        console.log("level: ", level);
+        //console.log("level: ", level);
         return level;
     },
 
@@ -288,7 +288,7 @@ export const functions = {
                 switch (key) {
                     case 'name': {
                         filterCards = filterCards.filter((card) => card.name.includes(filters[key]))
-                        console.log("filterName", filterCards);
+                        //console.log("filterName", filterCards);
                         break;
                     };
                     case `type1`: {
@@ -476,6 +476,7 @@ export const variables = {
     },
     percentageShiny: 0.99,
     sizePokedex: [1, 1010],
+    sizeTeam:5,
     cautionPokemons: [
         144, // Articuno
         145, // Zapdos
@@ -547,6 +548,7 @@ export const variables = {
         888,
         889,
         890,
+        902,
         993,
         1007,
         1008
