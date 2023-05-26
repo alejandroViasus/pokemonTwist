@@ -1,7 +1,10 @@
 import {
     // LOGIN,
     // REGISTER
-    INITIAL_USER
+    INITIAL_USER, 
+    UPDATE,
+    FILTER_LIST,
+    RELEASE,
 } from "./actions";
 
 import { variables } from "../assets/variables";
@@ -12,7 +15,7 @@ const { functions } = require("./funtions")
 const initialState = variables.initialState;
 
 const rootReducer = (state = initialState, action) => {
-    console.log(action.type)
+    //console.log(action.type)
     switch (action.type) {
         default: return state;
         case INITIAL_USER:{
@@ -22,6 +25,30 @@ const rootReducer = (state = initialState, action) => {
                 user:action.payload
             }
             return newState
+        }
+        case UPDATE:{
+            const newState={
+                ...state,
+                user:action.payload
+            }
+            return newState
+
+        }
+
+        case FILTER_LIST:{
+            const newState={
+                ...state,
+                filtersList:action.payload
+            }
+            return newState
+        }
+        
+        case RELEASE:{
+            const newState={
+                ...state,
+                app:{...state.app,release:action.payload}
+            }
+            return newState;
         }
         // case LOGIN: {
         //     const user = functions.user(state, action)

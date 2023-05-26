@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import { login } from "../../../redux/actions";
+
 import { Outlet, useNavigate } from 'react-router-dom';
 import LogOutButton from '../ButtonsLogin/LogOutButton';
 import LoginButton from '../ButtonsLogin/LogInbutton';
@@ -15,7 +15,7 @@ function Navbar() {
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated && !userState.app.loging) {
-        console.log("userAutenticated", user);
+        //console.log("userAutenticated", user);
         try {
           const response = await fetch(`http://localhost:9000/api/users/email/${user.email}`);
           const data = await response.json();
@@ -23,7 +23,7 @@ function Navbar() {
             console.log("userEmail", data.email);
             navigate("/register/trainer", { replace: true });
           } else {
-            console.log("dataDB",data)
+            //console.log("dataDB",data)
             navigate(`/${data.gametag}/home`, { replace: true });
           }
         } catch (error) {
@@ -50,7 +50,7 @@ function Navbar() {
           <img className='picture' src={userState.pictureTrainer} alt="" />
         </div>
       </div>
-      <Outlet /> {/* Renderizará el contenido de la ruta anidada */}
+      <Outlet /> 
     </div>
   );
 }

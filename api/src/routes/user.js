@@ -60,7 +60,7 @@ router.route("/users")
                 return res.status(STATUS_NOT_FOUND).json({ message: "User not found" });
             }
             await userSchema.updateOne({ _id: id }, { $set: user });
-            res.status(STATUS_OK).json({ message: "User updated successfully" });
+            res.status(STATUS_OK).json({ message: "User updated successfully" ,response:user});
         } catch (error){
             console.log(error);
             res.status(STATUS_NOT_FOUND).json({ message: error.message })

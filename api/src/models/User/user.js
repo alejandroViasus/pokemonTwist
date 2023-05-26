@@ -28,11 +28,20 @@ const userSchema = mongoose.Schema(
             required:true
         },
         //!economy
+
+        coins:{
+            type:Number,
+            required:true
+        },
         tickets:{
             type:Number,
             required:true
         },
         pokeballs:{
+            type:Number,
+            required:true
+        },
+        bagPokemons:{
             type:Number,
             required:true
         },
@@ -57,8 +66,16 @@ const userSchema = mongoose.Schema(
             type:Number,
             required:true
         },
+        fractionLevel:{
+            type:Number,
+            required:true
+        },
         phone:{
             type:Number,
+            required:true
+        },
+        addmin:{
+            type:Boolean,
             required:true
         },
     },{

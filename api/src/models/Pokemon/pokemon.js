@@ -1,55 +1,85 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
 
 const pokemonSchema = mongoose.Schema(
     {
         //!principalInfo
-        noPokedex:{
-            type:Number,
-            required:true
+
+        genre: {
+            type: Number,  // example  1 => female 0=>male
+            required: true
         },
-        name:{
-            type:String,
-            required:true
+        shiny: {
+            type: Boolean, // example false 
+            required: true
         },
-        pictureHD:{
-            type:String,
-            required:true
+        noPokedex: {
+            type: Number, // example 1
+            required: true
         },
-        pictureSpriteFrontDefault:{
-            type:String,
-            required:true
+        name: {
+            type: String, // example "bulbasaur"
+            required: true
         },
-        pictureImgModel3D:{
-            type:String,
-            required:true
+        trainer: {
+            type: String, // example "example.com"
+            required: true
         },
-        trainer:{
-            type:String,
-            required:true
+        team: {
+            type: Boolean, // example true
+            required: true
         },
-        team:{
-            type:Boolean,
-            required:true
+        favorite: {
+            type: Boolean, // example true
+            required: true
         },
-        favorite:{
-            type:Boolean,
-            required:true
+        new: {
+            type: Boolean, // example true
+            required: true
+        },
+        auction: {
+            type: Boolean,// example true
+            required: true
         },
         //!stadistics
-        scale:{
-            type:String,
-            required:true
+        scale: {
+            type: String, // example 5,8,1,4,8,9
+            required: true // first (scale) second (stats) thirth(Effort)
         },
-        heald:{
-            type:Boolean,
-            required:true
+        stats: {
+            type: String, // example 5,8,1,4,8,9
+            required: true // first (scale) second (stats) thirth(Effort)
+        },
+        effort: {
+            type: String, // example 5,8,1,4,8,9
+            required: true // first (scale) second (stats) thirth(Effort)
+        },
+        heald: {
+            type: Number,// example 100
+            required: true
+        },
+        
+        maxStack4level: {
+            type: Number, // example (10+(ModelPokemon.level*2))
+            required: true
+        },
+        actualStack: { 
+            type: Number, // example 3
+            required: true
+        },
+        level: {
+            type: Number,// example 16
+            required: true
+        },
+        types:{
+            type: String, // example "02,03"
+            required: true
         },
     },
-    // {
-    //     timestamps:true,
-    //     versionKey:false
-    // }
+    {
+        timestamps: true,
+        versionKey: false
+    }
 );
 
 module.exports = mongoose.model("Pokemon", pokemonSchema);

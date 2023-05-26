@@ -28,13 +28,29 @@ router.route("/pokemon")
         const { email } = req.query;
         const data = await pokemonSchema.find({ trainer: email });
         console.log("userData_:", data);
-        res.status(STATUS_OK).json(data);
+        res.status(STATUS_OK).json(data.reverse());
     } catch (error) {
         console.error(error);
         res.status(STATUS_ERROR).json({ message: error.message });
     }
   });
 
+
+  router.route("/pokemon/allnew")
+  //! get All Pokemons
+    .get(async (req, res) => {
+      try {
+          const { email } = req.query;
+          //console.log(req.query,".........");
+          //console.log("email_get_all",email)
+          const data = await pokemonSchema.find({ trainer: email ,new:true});
+          console.log("userData_:", data);
+          res.status(STATUS_OK).json(data);
+      } catch (error) {
+          console.error(error);
+          res.status(STATUS_ERROR).json({ message: error.message });
+      }
+    });
 
 router.route("/pokemons/:id")
 //! get one Pokemon
@@ -57,7 +73,7 @@ router.route("/pokemons/:id")
     try {
       const { id } = req.params;
       const pokemon = req.body;
-      console.log("upDatePokemon :_",pokemon);
+      console.log("upDatePokemon :_AA__",pokemon);
       const data = await pokemonSchema.updateOne({ _id: id }, { $set: pokemon });
       if (!data) {
         return res.status(STATUS_NOT_FOUND).json({ message: "Pokemon not found" });
@@ -83,6 +99,9 @@ router.route("/pokemons/:id")
       res.status(STATUS_ERROR).json({ message: error.message });
     }
   });
+
+  
+
 
 module.exports = router;
 

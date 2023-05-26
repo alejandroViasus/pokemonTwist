@@ -40,3 +40,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+.enveloped-selected {
+  border: solid 2px #1e1e1e;
+}
+.container-enveloped {
+  background-color: aquamarine;
+}

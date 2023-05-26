@@ -2,6 +2,10 @@
 
 export const LOGIN = "LOGIN";
 export const INITIAL_USER = "INITIAL_USER";
+export const UPDATE = "UPDATE";
+export const FILTER_LIST = "FILTER_LIST";
+export const RELEASE = "RELEASE";
+
 
 export const initialUser=(user)=>{
     return (dispatch)=>{
@@ -12,6 +16,31 @@ export const initialUser=(user)=>{
     }
     
 }
+ export const update=(user)=>{
+    return (dispatch)=>{
+        dispatch({
+            type:UPDATE,
+            payload:user
+        })
+    }
+ }
+ export const filterList=(filters)=>{
+    return (dispatch)=>{
+        dispatch({
+            type:FILTER_LIST,
+            payload:filters
+        })
+    }
+ }
+ export const release=(id)=>{
+    return (dispatch)=>{
+        dispatch({
+            type:RELEASE,
+            payload:id
+        })
+    }
+ }
+
  export const login = (email, nickname, picture) => {
     
 //     return async (dispatch) => {

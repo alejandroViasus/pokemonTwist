@@ -120,7 +120,7 @@ function Register() {
                     <label htmlFor="trainerImage">Trainer Image</label>
                     <div className="images-trainer">
                         {images.map((image, index) => (
-                            <div className="image-trainer" key={`image-${index}`} onClick={onClick} data-value={image} data-name="pictureTrainer">
+                            <div className="image-trainer" key={`image-${index}`} onClick={onClick} data-value={index.toString()} data-name="pictureTrainer">
                                 <img src={image} alt={`Trainer Image ${index}`} style={{ height: "25px", width: "25px" }} />
                             </div>
                         ))}
@@ -132,7 +132,7 @@ function Register() {
             <div className="cardUser">
                 <div>{state.gametag}</div>
                 <div className="image-user">
-                    <img src={state.pictureTrainer} alt={`set Trainer Image `} style={{ height: "50px", width: "50px" }} />
+                    <img src={variables.imagesTrainers[state.pictureTrainer]} alt={`set Trainer Image `} style={{ height: "50px", width: "50px" }} />
                 </div>
 
             </div>
