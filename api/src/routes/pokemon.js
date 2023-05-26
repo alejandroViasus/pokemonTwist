@@ -100,6 +100,22 @@ router.route("/pokemons/:id")
     }
   });
 
+  router.route("/pokemons/:email/team")
+  //! get All Pokemons
+    .get(async (req, res) => {
+      try {
+          const { email } = req.params;
+          //console.log(req.query,".........");
+          //console.log("email_get_all",email)
+          const data = await pokemonSchema.find({ trainer: email ,team:true});
+          console.log("userData_:", data);
+          res.status(STATUS_OK).json(data);
+      } catch (error) {
+          console.error(error);
+          res.status(STATUS_ERROR).json({ message: error.message });
+      }
+    });
+
   
 
 
