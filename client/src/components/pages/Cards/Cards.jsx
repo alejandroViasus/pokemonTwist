@@ -103,7 +103,7 @@ function Cards() {
                             (infoCard) => {
                                 //console.log(infoCard)
                                 return <div className="statement-card" key={infoCard._id}>
-                                    <Card infoPokemon={infoCard} changeUpdate={changeUpdate} />
+                                    <Card infoPokemon={infoCard} changeUpdate={changeUpdate}/>
                                 </div>
                             }
                         )

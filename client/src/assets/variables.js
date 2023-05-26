@@ -244,7 +244,7 @@ export const functions = {
                 let totalStat = 0;
                 scaleStats.map((scale) => {
                     if (scale >= 1) {
-                        totalStat++;
+                        totalStat=totalStat+parseInt(scale);
                     }
                 })
                 //console.log(totalStat,Pokemon.name)

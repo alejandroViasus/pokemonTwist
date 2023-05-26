@@ -44,7 +44,7 @@ function MiniTeamBox({changeUpdate,stateUpdate}) {
         <div>
             <div className="s">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</div>
             {state.team.map((infoCard) => {
-                return <Card key={`team${infoCard._id}`} infoPokemon={infoCard} changeUpdate={changeUpdate} />
+                return <Card key={`team${infoCard._id}`} infoPokemon={infoCard} changeUpdate={changeUpdate}  structure='miniCard'/>
             })}
         </div>
     );

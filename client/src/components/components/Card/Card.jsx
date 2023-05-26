@@ -11,7 +11,7 @@ import { release, update } from '../../../redux/actions';
 import ReleasePokemon from '../ReleasePokemon/ReleasePokemon';
 
 
-function Card({ infoPokemon, changeUpdate }) {
+function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch();
   let imagePokemon = dataBaseImages.sprites.front_default(infoPokemon?.noPokedex)
@@ -35,21 +35,21 @@ function Card({ infoPokemon, changeUpdate }) {
         .then(response => response.json())
         .then(data => {
           console.log(data.length)
-          if(data.length<variables.sizeTeam||infoPokemon.team){
+          if (data.length < variables.sizeTeam || infoPokemon.team) {
             addTeam();
-          }else{
+          } else {
             alert(`superaste el maximo de integrantes en tu equipo (${variables.sizeTeam})`)
           }
-          
+
         })
-        
-        
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
-    const  addTeam=async ()=>{
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addTeam = async () => {
     const updatePokemon = { ...infoPokemon, team: !infoPokemon.team, favorite: !infoPokemon.team, new: false };
     try {
       const response = await fetch(`http://localhost:9000/api/pokemons/${infoPokemon._id}`, {
@@ -164,59 +164,71 @@ function Card({ infoPokemon, changeUpdate }) {
   return (
     <div>
 
-      <div className="s">------------------------------------------</div>
-      {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
 
-      <div className="icons">
-        <button onClick={onClickTeam}>TEAM</button>
-        <button onClick={onClickFavorite}>FAVORITE</button>
-        {(infoPokemon.team) && (<div>in Team</div>)}
-        {(infoPokemon.favorite) && (<div>in Favorite</div>)}
-      </div>
-      {/* <div className="default">
-      {infoPokemon.name} default:
-      <img src={`${dataBaseImages.model3D.default(infoPokemon.name)}`} style={{ height: "70px" }} alt="" />
-      <img src={`${dataBaseImages.model3D.shiny(infoPokemon.name)}`} style={{ height: "70px" }} alt="" />
-      
-      {infoPokemon.name} default:
-    
-      </div> 
-   
+{(structure === "card") && (
+        <div className="structure-card">
+          <div className="s">------------------------------------------</div>
+          {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
 
-      <div className="svg">
-        <img src={`${dataBaseImages.dreamWorld.default(infoPokemon.noPokedex)}`} style={{ height: "270px" }} alt="" />
-      </div>
-      <img src={`${dataBaseImages.icon.default(infoPokemon.noPokedex)}`} style={{ height: "70px" }} alt="" />
-      <img src={`${dataBaseImages.official.default(infoPokemon.noPokedex)}`} style={{ height: "70px" }} alt="" /> */}
-
-      <div className="sprites">
-        {infoPokemon.name}
-        <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
-        {/* <img src={`${dataBaseImages.sprites.back_default(infoPokemon.noPokedex)}`} style={{ height: "70px" }} alt="" /> */}
-        {/* <img src={`${dataBaseImages.sprites.back_shiny(infoPokemon.noPokedex)}`} style={{ height: "70px" }} alt="" /> */}
-        {/* <img src={`${dataBaseImages.sprites.front_shiny(infoPokemon.noPokedex)}`} style={{ height: "70px" }} alt="" /> */}
-        <div className="stadistics">
-
-          {`HP:${functions.showStat(infoPokemon, variables.stadistic[1][0])}  ||`}
-          {`ATT:${functions.showStat(infoPokemon, variables.stadistic[3][0])}  ||`}
-          {`DFS:${functions.showStat(infoPokemon, variables.stadistic[5][0])}  ||`}
-          {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
-
-          {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
-
-          <div className="buttons">
-            <div className="button-card"
-              id={infoPokemon._id}
-              scale={infoPokemon.scale}
-              level={infoPokemon.level}
-              nopokedex={infoPokemon.noPokedex}
-              shiny={(infoPokemon.shiny) ? 1 : 0}
-              onClick={onClickRelease}
-            > Release</div>
-
+          <div className="icons">
+            <button onClick={onClickTeam}>TEAM</button>
+            <button onClick={onClickFavorite}>FAVORITE</button>
+            {(infoPokemon.team) && (<div>in Team</div>)}
+            {(infoPokemon.favorite) && (<div>in Favorite</div>)}
           </div>
+
+
+          <div className="sprites">
+            {infoPokemon.name}
+            <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
+            <div className="stadistics">
+              {`HP:${functions.showStat(infoPokemon, variables.stadistic[1][0])}  ||`}
+              {`ATT:${functions.showStat(infoPokemon, variables.stadistic[3][0])}  ||`}
+              {`DFS:${functions.showStat(infoPokemon, variables.stadistic[5][0])}  ||`}
+              {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
+
+              {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
+
+              <div className="buttons">
+                <div className="button-card"
+                  id={infoPokemon._id}
+                  scale={infoPokemon.scale}
+                  level={infoPokemon.level}
+                  nopokedex={infoPokemon.noPokedex}
+                  shiny={(infoPokemon.shiny) ? 1 : 0}
+                  onClick={onClickRelease}
+                > Release</div>
+
+              </div>
+            </div>
+            
+          </div>
+          
         </div>
-      </div>
+      )}
+
+{(structure === "miniCard") && (
+        <div className="structure-card">
+          <div className="s">------------------------------------------</div>
+
+          <div className="icons">
+            <button onClick={onClickTeam}>TEAM</button>
+           
+          </div>
+
+
+          <div className="sprites">
+            {infoPokemon.name}
+            <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
+            <div className="stadistics">
+              {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
+            </div>
+            
+          </div>
+          
+        </div>
+      )}
+
 
     </div>
   )
