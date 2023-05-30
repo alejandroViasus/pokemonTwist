@@ -13,7 +13,7 @@ export const dataBaseImages = {
             return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${namePokemon}.png`;
         },
         shiny: (namePokemon) => {
-            return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${namePokemon}.png`;
+            return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${namePokemon}.png` || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${namePokemon}.png`;
         },
     },
 
@@ -53,7 +53,7 @@ export const functions = {
         return fetch(`https://pokeapi.co/api/v2/pokemon/${noPokedex}`)
             .then(response => response.json())
             .then(data => {
-                console.log(`POKEMON SELECT ${data.name}`, data);
+                //console.log(`POKEMON SELECT ${data.name}`, data);
                 return data;
             })
     },
@@ -104,7 +104,7 @@ export const functions = {
 
     getNoPokedex: () => {
         let number = Math.floor((Math.random() * variables.sizePokedex[1]) + variables.sizePokedex[0]);
-
+        console.log("number", number)
         if (variables.cautionPokemons.includes(number)) {
             console.log(`cautionPokemon!!! ---------- o.O , ${number}`);
             return functions.getNoPokedex();
@@ -114,7 +114,7 @@ export const functions = {
 
     },
 
-    getStats: (database) => {
+    getStats: async (database) => {
         const hp = database.stats[0].base_stat.toString();
         const attack = database.stats[1].base_stat.toString();
         const defense = database.stats[2].base_stat.toString();
@@ -124,7 +124,7 @@ export const functions = {
 
         return `${hp},${attack},${defense},${specialAttack},${specialDefense},${speed}`;
     },
-    getEffort: (database) => {
+    getEffort: async (database) => {
         const hp = database.stats[0].effort.toString();
         const attack = database.stats[1].effort.toString();
         const defense = database.stats[2].effort.toString();
@@ -134,12 +134,12 @@ export const functions = {
 
         return `${hp},${attack},${defense},${specialAttack},${specialDefense},${speed}`;
     },
-    getTypes: (database) => {
+    getTypes: async (database) => {
         let types = "";
         database.types.map((modelType) => {
             let type = modelType.type.name
             variables.types.map((principalType, index) => {
-               // console.log("typess..........", type, principalType)
+                // console.log("typess..........", type, principalType)
                 if (type === principalType) {
                     if (types === "") {
                         types = types + index.toString();
@@ -153,7 +153,7 @@ export const functions = {
         return types;
 
     },
-    getScale: (rarity) => {
+    getScale: async (rarity) => {
         let scale = "";
 
         for (let i = 0; i < 6; i++) {
@@ -166,30 +166,35 @@ export const functions = {
         return scale;
     },
 
-    getPokemon: (trainer, database, levelPokemon, rarity, shiny, genre) => {
-        const basePokemon = variables.initialState.pokemon;
-        basePokemon.genre = genre;
-        basePokemon.shiny = shiny;
-        basePokemon.noPokedex = database.id;
-        basePokemon.name = database.name;
-        basePokemon.trainer = trainer.email;
-        basePokemon.stats = functions.getStats(database);
-        basePokemon.scale = functions.getScale(rarity);
-        basePokemon.effort = functions.getEffort(database);
-        basePokemon.types = functions.getTypes(database);
-        basePokemon.level = levelPokemon;
-        // console.log("GET POKEMON", "pokemon :", basePokemon);
-        return basePokemon;
+    getPokemon: async (trainer, database, levelPokemon, rarity, shiny, genre) => {
+        return {
+            genre: await genre,
+            shiny: await shiny,
+            noPokedex: database.id,
+            name: await database.name,
+            trainer: await trainer.email,
+            stats: await functions.getStats(database),
+            scale: await functions.getScale(rarity),
+            effort: await functions.getEffort(database),
+            types: await functions.getTypes(database),
+            level: await levelPokemon,
+        }
     },
 
     createPokemon: async () => {
         try {
             const noPokedex = functions.getNoPokedex();
             let databasePokemon = {};
+            console.log("noPokedex", noPokedex)
 
             const data = await functions.getPokemon(noPokedex);
-            databasePokemon = data;
-            //console.log(".....................", databasePokemon);
+            if (data) {
+                databasePokemon = data;
+            } else {
+                console.log("Error: No se pudo obtener el Pokémon.");
+            }
+
+            console.log("data", data);
             return databasePokemon;
         } catch (error) {
             console.log(error);
@@ -211,10 +216,10 @@ export const functions = {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log('Response:', data);
+                //console.log('Response:', data);
             })
             .catch((error) => {
-                console.error('Error:', error);
+                //console.error('Error:', error);
             });
     },
     getEvolution: async (noPokedex) => {
@@ -244,7 +249,7 @@ export const functions = {
                 let totalStat = 0;
                 scaleStats.map((scale) => {
                     if (scale >= 1) {
-                        totalStat=totalStat+parseInt(scale);
+                        totalStat = totalStat + parseInt(scale);
                     }
                 })
                 //console.log(totalStat,Pokemon.name)
@@ -253,7 +258,7 @@ export const functions = {
                 let totalStat = Pokemon.level;
                 return totalStat
             } else if (indexStat == 0) {
-                let totalStat = 5 * (parseInt(baseStats[indexStat] * 1.3) + parseInt(scaleStats[indexStat] * 3) + parseInt(effortStats[indexStat] * 2) + parseInt((level + 1) * 1.3));
+                let totalStat = 8 * (parseInt(baseStats[indexStat] * 1.3) + parseInt(scaleStats[indexStat] * 3) + parseInt(effortStats[indexStat] * 2) + parseInt((level + 1) * 1.3));
                 //console.log( Pokemon.name, totalStat);
                 return totalStat;
             } else if (indexStat == 5) {
@@ -264,7 +269,7 @@ export const functions = {
 
             } else {
 
-                let totalStat = (parseInt(baseStats[indexStat] * 1) + parseInt(scaleStats[indexStat] * 2) + parseInt(effortStats[indexStat] * 1.5) + parseInt((level + 1) * 1));
+                let totalStat = (parseInt(baseStats[indexStat] * 0.4) + parseInt(scaleStats[indexStat] * 2) + parseInt(effortStats[indexStat] * 1) + parseInt((level + 1) * 0.6));
                 //console.log( Pokemon.name, totalStat);
                 return totalStat;
 
@@ -274,6 +279,92 @@ export const functions = {
         // })
 
     },
+    //!comporbar 
+    getPokepomWhitSpecificType: () => {
+        function getPokemonByType(pokemonType) {
+            const apiUrl = `https://pokeapi.co/api/v2/type/${pokemonType.toLowerCase()}`;
+
+            return fetch(apiUrl)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error(`Error al obtener los Pokémon de tipo ${pokemonType}`);
+                    }
+                })
+                .then(data => {
+                    const pokemonSpecies = data.pokemon;
+                    const randomPokemon = pokemonSpecies[Math.floor(Math.random() * pokemonSpecies.length)].pokemon.name;
+                    return randomPokemon;
+                });
+        }
+
+        // Ejemplo de uso
+        const pokemonType = 'fire';  // Reemplaza 'fire' por el tipo de Pokémon que desees
+        getPokemonByType(pokemonType)
+            .then(randomPokemon => {
+                console.log(`Un Pokémon de tipo ${pokemonType}: ${randomPokemon}`);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    },
+
+    getRivalPokemon: (rival, noPokedex = 1, Database) => {
+        const levelPokemon = functions.getLevelPokemon(rival);
+        const rarity = functions.getRarity(rival);
+        const shiny = functions.getShiny();
+        const genre = functions.getGenre();
+
+        //console.log("pokemonRival___ppp", rival, Database, levelPokemon, rarity, shiny, genre)
+        const pokemon = functions.getPokemon(rival, Database, levelPokemon, rarity, shiny, genre);
+        //console.log("PokemonRival: ", pokemon)
+        return pokemon;
+    },
+
+    getRival: async (user) => {
+        //console.log("user 4 rival", user);
+        let gametag = Math.round((Math.random() * variables.trainersRivals.length) - 1);
+        if (gametag <= 0) {
+            gametag = 0;
+        }
+
+        const rival = {
+            ...user,
+            pictureTrainer: gametag,
+            level: Math.round(Math.random() * (user.level + (user.league * 3) + 5) + user.level),
+            gametag: gametag,
+            email: "rival." + user.email
+        };
+        // const dataTeam = [
+        //     await functions.fetchPokemon(functions.getNoPokedex()),
+        //     await functions.fetchPokemon(functions.getNoPokedex()),
+        //     await functions.fetchPokemon(functions.getNoPokedex()),
+        //     await functions.fetchPokemon(functions.getNoPokedex()),
+        //     await functions.fetchPokemon(functions.getNoPokedex()),
+        // ];
+
+        //console.log(dataTeam)
+
+
+        //const finalTeamRival=functions.makeTeam(rival,dataTeam);
+
+
+        return rival;
+    },
+
+    makeTeam: async (user, team) => {
+        const finalTeam = [];
+        for (let i = 0; i < team.length; i++) {
+            console.log("makeTeam", functions.getRivalPokemon(user, 1, team[i]))
+            finalTeam.push((function (j) {
+                return functions.getRivalPokemon(user, 1, team[j]);
+            })(i));
+        }
+        console.log(finalTeam)
+
+    },
+
 
     filtersCards: (cards, filters) => {
         //console.log("MASTER FILTER" , filters)
@@ -370,7 +461,7 @@ export const functions = {
             score = score * 2.5
         }
         //console.log(score);
-        return [Math.round(score/7), Math.round(score / 10),Math.round(score*1.25)];
+        return [Math.round(score / 7), Math.round(score / 10), Math.round(score * 1.25)];
 
     }
 
@@ -456,6 +547,70 @@ export const variables = {
         "https://assets.pokemon.com/assets/cms2/img/pokedex/full/037.png",
         "https://assets.pokemon.com/assets/cms2/img/pokedex/full/038.png",
     ],
+
+
+    trainersRivals: [
+        {
+            version: "0.1",
+            ban: false,
+            email: "ejemplo@correo.com",
+            gametag: "",
+            pictureTrainer: "0",
+            league: 1,
+            level: 1,
+            fractionLevel: 5,
+            phone: 0,
+            addmin: false,
+        },
+        {
+            version: "0.1",
+            ban: false,
+            email: "ejemplo@correo.com",
+            gametag: "",
+            pictureTrainer: "0",
+            league: 1,
+            level: 1,
+            fractionLevel: 5,
+            phone: 0,
+            addmin: false,
+        },
+        {
+            version: "0.1",
+            ban: false,
+            email: "ejemplo@correo.com",
+            gametag: "",
+            pictureTrainer: "0",
+            league: 1,
+            level: 1,
+            fractionLevel: 5,
+            phone: 0,
+            addmin: false,
+        },
+        {
+            version: "0.1",
+            ban: false,
+            email: "ejemplo@correo.com",
+            gametag: "",
+            pictureTrainer: "0",
+            league: 1,
+            level: 1,
+            fractionLevel: 5,
+            phone: 0,
+            addmin: false,
+        },
+        {
+            version: "0.1",
+            ban: false,
+            email: "ejemplo@correo.com",
+            gametag: "",
+            pictureTrainer: "0",
+            league: 1,
+            level: 1,
+            fractionLevel: 5,
+            phone: 0,
+            addmin: false,
+        },
+    ],
     navMenuOptions: [
         ["Home", "home"],
         ["Box", "box"],
@@ -476,7 +631,7 @@ export const variables = {
     },
     percentageShiny: 0.99,
     sizePokedex: [1, 1010],
-    sizeTeam:5,
+    sizeTeam: 5,
     cautionPokemons: [
         144, // Articuno
         145, // Zapdos
@@ -530,6 +685,8 @@ export const variables = {
         719, // Diancie
         720, // Hoopa
         721, // Volcanion
+        772,
+        773,
         785, // Tapu Koko
         786, // Tapu Lele
         787, // Tapu Bulu
@@ -548,10 +705,26 @@ export const variables = {
         888,
         889,
         890,
+        891,
+        892,
+        894,
+        895,
+        896,
+        897,
+        898,
+
         902,
+        903,
+        904,
+        905,
         993,
+        1001,
+        1002,
+        1003,
+        1004,
         1007,
-        1008
+        1008,
+
     ],
     types: [
         "all",

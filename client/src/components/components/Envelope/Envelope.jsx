@@ -1,24 +1,36 @@
 import React from 'react'
 import { dataBaseImages } from '../../../assets/variables';
+import { useEffect } from 'react';
 
-function Envelope({card,user,select}) {
+function Envelope({ card, user, select, stateSelect }) {
 
-    let containerClass = 'container-enveloped';
-    if (card.show === 'open') {
-      containerClass += ' enveloped-selected';
-    }
-    //const image=dataBaseImages.dreamWorld.default||dataBaseImages.official.default
-    let image=dataBaseImages.official.default
-    if(card.shiny){
-        image=dataBaseImages.official.shiny;
-    }
-    
+  //console.log("card:", card)
+
+  let containerClass = 'container-enveloped';
+  if (card.show === 'open') {
+    containerClass += ' enveloped-selected';
+  }
+  //const image=dataBaseImages.dreamWorld.default||dataBaseImages.official.default
+  let image = dataBaseImages.official.default
+  if (card.shiny) {
+    image = dataBaseImages.official.shiny;
+  }
+
 
   return (
-    <div  className={`container-enveloped ${card.show === "open" ? "enveloped-selected" : ""}`} onClick={() => select(card.key)}>
+    <div className={`container-enveloped ${card.show === "open" ? "enveloped-selected" : ""}`} onClick={() => select(card.key)}>
 
-        {`${card.key}: ${card.show} ${card.noPokedex} ${card.levelPokemon}`}
-        <img src={image(card.noPokedex)} alt="" />
+      {(!stateSelect) && (
+        <div className="close-cards">
+          Box
+        </div>
+      )}
+      {(stateSelect) && (
+        <div className="open-cards">
+          {`${card.key}: ${card.show} ${card.noPokedex} ${card.levelPokemon}`}
+          <img src={image(card.noPokedex)} alt="" />
+        </div>
+      )}
     </div>
   )
 }

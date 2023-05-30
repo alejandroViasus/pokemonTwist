@@ -25,7 +25,7 @@ function Cards() {
     const initialState = useSelector(state => state.cards);
     const filters = useSelector(state => state.filtersList)
     const release = useSelector(state => state.app.release);
-    console.log(release,"RElease")
+    //console.log(release,"RElease")
 
     const [state, setState] = useState({
         cards: initialState,

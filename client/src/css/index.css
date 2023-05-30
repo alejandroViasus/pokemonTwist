@@ -46,3 +46,17 @@ code {
 .container-enveloped {
   background-color: aquamarine;
 }
+.pokemon {
+  border: solid 2px rgba(22, 22, 22, 0);
+}
+.selected {
+  border: solid 2px #161616;
+}
+.selections-team {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  bottom: 5px;
+  right: 5px;
+  background-color: #161616;
+}

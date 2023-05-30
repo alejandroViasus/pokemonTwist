@@ -272,6 +272,7 @@ function Box() {
                                 card={state.selectCard[card]}
                                 user={userState}
                                 select={select}
+                                stateSelect={state.select}
                             />
                         </div>
                     })}

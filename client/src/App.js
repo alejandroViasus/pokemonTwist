@@ -7,6 +7,7 @@ import Register from './components/pages/Register/Register';
 import HomeLoging from './components/pages/HomeLoging/HomeLoging';
 import Box from './components/pages/Box/Box';
 import Cards from './components/pages/Cards/Cards';
+import Trainer from './components/pages/Trainer/Trainer';
 
 //!components
 
@@ -23,6 +24,7 @@ function App() {
         <Route exact path="/register/trainer" element={<Register/>} />
         <Route exact path="/:gametag/box" element={<Box/>} />
         <Route exact path="/:gametag/cards" element={<Cards/>} />
+        <Route exact path="/:gametag/trainer" element={<Trainer/>} />
       </Routes>
 
 

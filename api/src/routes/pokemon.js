@@ -37,7 +37,7 @@ router.route("/pokemon")
 
 
   router.route("/pokemon/allnew")
-  //! get All Pokemons
+  //! get All new Pokemons
     .get(async (req, res) => {
       try {
           const { email } = req.query;
@@ -101,7 +101,7 @@ router.route("/pokemons/:id")
   });
 
   router.route("/pokemons/:email/team")
-  //! get All Pokemons tean
+  //! get All Pokemons team
     .get(async (req, res) => {
       try {
           const { email } = req.params;

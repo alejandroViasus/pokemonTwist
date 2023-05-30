@@ -9,7 +9,7 @@ function MiniTeamBox({changeUpdate,stateUpdate}) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const release = useSelector(state => state.app.release);
-    console.log("MINI-------TEAM",release)
+    //console.log("MINI-------TEAM",release)
     
 
     const [state, setState] = useState({
@@ -26,7 +26,7 @@ function MiniTeamBox({changeUpdate,stateUpdate}) {
                 .then(response => response.json())
                 .then(data => {
                     setState({ ...state, team: data,update:Math.random()*Math.random() })
-                    console.log(data.length)
+                    //console.log(data.length)
                 })
                 
                 
@@ -35,7 +35,7 @@ function MiniTeamBox({changeUpdate,stateUpdate}) {
             }
         };
         
-        console.log("email team", user.email)
+        //console.log("email team", user.email)
         fetchData();
     }, [release,stateUpdate]);
 
