@@ -34,6 +34,7 @@ function BattleField({ lstate, ready }) {
         types: functions.showTypes(lstate.rival.team.selected.types),
         positionX: 0,
         positionY: 0,
+        rotarion:0,
         initialPosition:true,
         direction:functionsBattle.getStartDiretion( functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0])),
       },
@@ -59,43 +60,69 @@ function BattleField({ lstate, ready }) {
     }
   }, [counter]);
 
+  // useEffect(() => {
+  //   console.log("%%", state.battle.startBattle)
+  //   if (state.battle.startBattle === true) {
+  //     const intervalCounter = setTimeout(() => {
+       
+  //       const uPokemonInBattle=state.battle.uPokemon;
+  //       const rivalPokemonInBattle=state.battle.rivalPokemon;
+
+        
+        
+  //       const moveUPokemon=functionsBattle.movePokemon(uPokemonInBattle,"uPokemon");
+  //       const moveRivalPokemon=functionsBattle.movePokemon(rivalPokemonInBattle,"RivalPokemon");
+
+
+
+
+  //       setState({
+  //         ...state,
+  //         battle:{
+  //           ...state.battle,
+  //           rivalPokemon:{
+  //             ...state.battle.rivalPokemon,
+  //             positionX:moveRivalPokemon[0],
+  //             positionY:moveRivalPokemon[1]
+  //           },
+  //           uPokemon:{
+  //             ...state.battle.uPokemon,
+  //             positionX:moveUPokemon[0],
+  //             positionY:moveUPokemon[1]
+  //           }
+  //         }
+  //       })
+  //       const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
+  //       const $uPokemon=document.getElementById("pokemon-user-inbattle");
+  //       if($rivalPokemon!==undefined&&$rivalPokemon!==null||$uPokemon!==undefined&&$uPokemon!==null){
+  //         $rivalPokemon.style.transform=`translate(${moveRivalPokemon[0]}px,${moveRivalPokemon[1]}px)`;
+
+  //         $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
+  //       }
+          
+  //     },5000)
+
+
+  //   }
+  // }, [state.battle])
+
+
   useEffect(() => {
     console.log("%%", state.battle.startBattle)
     if (state.battle.startBattle === true) {
       const intervalCounter = setTimeout(() => {
        
-        const uPokemonInBattle=state.battle.uPokemon;
-        const rivalPokemonInBattle=state.battle.rivalPokemon;
-
-        
-        
-        const moveUPokemon=functionsBattle.movePokemon(uPokemonInBattle,"uPokemon");
-        const moveRivalPokemon=functionsBattle.movePokemon(rivalPokemonInBattle,"RivalPokemon");
-
-
         setState({
           ...state,
-          battle:{
-            ...state.battle,
-            rivalPokemon:{
-              ...state.battle.rivalPokemon,
-              positionX:moveRivalPokemon[0],
-              positionY:moveRivalPokemon[1]
-            },
-            uPokemon:{
-              ...state.battle.uPokemon,
-              positionX:moveUPokemon[0],
-              positionY:moveUPokemon[1]
-            }
-          }
+          battle:functionsBattle.battlePokemon(state.battle)
         })
-        const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
-        const $uPokemon=document.getElementById("pokemon-user-inbattle");
-        if($rivalPokemon!==undefined&&$rivalPokemon!==null||$uPokemon!==undefined&&$uPokemon!==null){
-          $rivalPokemon.style.transform=`translate(${moveRivalPokemon[0]}px,${moveRivalPokemon[1]}px)`;
+        // const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
+        // const $uPokemon=document.getElementById("pokemon-user-inbattle");
+        // if($rivalPokemon!==undefined&&$rivalPokemon!==null||$uPokemon!==undefined&&$uPokemon!==null){
+        //   $rivalPokemon.style.transform=`translate(${moveRivalPokemon[0]}px,${moveRivalPokemon[1]}px)`;
 
-          $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
-        }
+        //   $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
+        // }
           
       },5000)
 
@@ -106,7 +133,7 @@ function BattleField({ lstate, ready }) {
   return (
     <div className="content-battleField">
       <div className="stadium">
-        <div className="battleField" id="stadium">
+        <div className="battleField" id="battleField-stadium">
           <div className="place-pokemon-inBattle" id="pokemon-user-inbattle">
             <PokemonInBattle role="user" pokemon={state.you.team.selected} />
           </div>
