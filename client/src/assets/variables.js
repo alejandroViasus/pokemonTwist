@@ -63,9 +63,10 @@ export const functions = {
         const addedUserCount = user.level / 400
         let returnRarity = Object.keys(rarity)[0];
         Object.keys(rarity).map((rare) => {
-            //console.log(rarity[rare], rare)
+            // console.log(rarity[rare], rare)
+            //console.log(rare)
             if ((value + addedUserCount) > rarity[rare][0]) {
-                returnRarity = rare
+                return rare
             }
         })
 
@@ -104,7 +105,7 @@ export const functions = {
 
     getNoPokedex: () => {
         let number = Math.floor((Math.random() * variables.sizePokedex[1]) + variables.sizePokedex[0]);
-        console.log("number", number)
+        //console.log("number", number)
         if (variables.cautionPokemons.includes(number)) {
             console.log(`cautionPokemon!!! ---------- o.O , ${number}`);
             return functions.getNoPokedex();
@@ -154,16 +155,19 @@ export const functions = {
 
     },
     getScale: async (rarity) => {
-        let scale = "";
+        if (rarity !== undefined) {
+            let scale = "";
+            for (let i = 0; i < 6; i++) {
+                //console.log (i,rarity)
+                if (i === 0) {
+                    scale = scale + Math.round(Math.random() * variables.percentageRarity[rarity][2]);
+                } else {
 
-        for (let i = 0; i < 6; i++) {
-            if (i === 0) {
-                scale = scale + Math.round(Math.random() * variables.percentageRarity[rarity][2]);
-            } else {
-                scale = scale + "," + Math.round(Math.random() * variables.percentageRarity[rarity][2]);
+                    scale = scale + "," + Math.round(Math.random() * variables.percentageRarity[rarity][2]);
+                }
             }
+            return scale;
         }
-        return scale;
     },
 
     getPokemon: async (trainer, database, levelPokemon, rarity, shiny, genre) => {
@@ -173,11 +177,18 @@ export const functions = {
             noPokedex: database.id,
             name: await database.name,
             trainer: await trainer.email,
+            team: false,
+            favorite: false,
+            new: true,
+            auction: false,
+            scale: await functions.getScale(rarity) || "1,1,1,1,1,1,1",
             stats: await functions.getStats(database),
-            scale: await functions.getScale(rarity),
             effort: await functions.getEffort(database),
-            types: await functions.getTypes(database),
+            maxStack4level: 10 * (levelPokemon * 2) || 0,
+            actualStack: 0,
+            heald: 100,
             level: await levelPokemon,
+            types: await functions.getTypes(database),
         }
     },
 
@@ -201,8 +212,8 @@ export const functions = {
         }
     },
 
-    generatePokemon: (trainer, database, levelPokemon, rarity, shiny, genre) => {
-        const newPokemon = functions.getPokemon(trainer, database, levelPokemon, rarity, shiny, genre);
+    generatePokemon: async (trainer, database, levelPokemon, rarity, shiny, genre) => {
+        const newPokemon = await functions.getPokemon(trainer, database, levelPokemon, rarity, shiny, genre);
 
         console.log(`0....0`, newPokemon);
 
@@ -226,6 +237,14 @@ export const functions = {
         fetch(`https://pokeapi.co/api/v2/evolution-chain/${noPokedex}`)
             .then(response => response.json())
             .then(data => console.log("...................DATA...........................", data.chain.evolves_to))
+    },
+
+    showTypes: (types) => {
+        const arrayTypes = [];
+        types.split(",").map((type) => {
+            arrayTypes.push(variables.types[type])
+        })
+        return (arrayTypes)
     },
 
     showStat: (Pokemon, stat) => {
@@ -622,12 +641,12 @@ export const variables = {
     ],
 
     percentageRarity: {
-        basic: [0.6, 8, 3, [5, 1]],//structure [%,maxlevel,maxScalePokemon , valueReleased => [pokeballs , expeditions]]
-        comun: [0.8, 16, 5, [10, 2]],
-        rare: [0.95, 32, 7, [15, 3]],
-        epic: [0.98, 40, 9, [20, 10]],
-        legendary: [1.2, 70, 11, [25, 15]],
-        god: [2, 100, 20, [50, 10]],
+        basic: [0.6, 8, 3, [5, 1], "basic"],//structure [%,maxlevel,maxScalePokemon , valueReleased => [pokeballs , expeditions]]
+        comun: [0.8, 16, 5, [10, 2], "comun"],
+        rare: [0.95, 32, 7, [15, 3], "rare"],
+        epic: [0.98, 40, 9, [20, 10], "epic"],
+        legendary: [1.2, 70, 11, [25, 15], "legendary"],
+        god: [2, 100, 20, [50, 10], "god"],
     },
     percentageShiny: 0.99,
     sizePokedex: [1, 1010],
@@ -695,6 +714,7 @@ export const variables = {
         790, // Cosmoem
         791, // Solgaleo
         792, // Lunala
+
         800, // Necrozma
         801, // Magearna
         802, // Marshadow
@@ -725,6 +745,11 @@ export const variables = {
         1007,
         1008,
 
+    ],
+
+    ultraentes: [
+        799,
+        794
     ],
     types: [
         "all",

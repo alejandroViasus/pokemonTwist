@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { functions, variables } from '../../../assets/variables';
+import { battle} from '../../components/BatlleField/BattleFielt';
 
 //!components
 import Card from '../../components/Card/Card';
 import NavMenu from '../../components/NavMenu/NavMenu';
+import BattleField from '../../components/BatlleField/BattleField';
 
 function Trainer() {
   const disPatch = useDispatch();
@@ -15,6 +17,7 @@ function Trainer() {
   const userState = useSelector(state => state.user);
 
   const [state, setState] = useState({
+    switch:true,
     you: {
       user: {},
       team: {
@@ -33,8 +36,8 @@ function Trainer() {
     },
     battle: {
       seed: 0,
-      phaseSelections: true
-
+      timmer:5,
+      phaseSelections: true,
     }
 
   })
@@ -44,7 +47,7 @@ function Trainer() {
       console.log("usuario indeterminado");
       navigate(`/`, { replace: true });
     }
-    console.log(`userState.gametag`, userState.gametag)
+    //console.log(`userState.gametag`, userState.gametag)
   }, [params]);
 
   useEffect(() => {
@@ -138,34 +141,50 @@ function Trainer() {
         pokemons.push(pokemon);
       }
 
-      const pokemonSelected = pokemons[Math.floor(Math.random() * pokemons.length - 1)]
-      console.log("pokemonSelected", pokemonSelected);
-
+      //const pokemonSelected = pokemons[Math.floor(Math.random() * pokemons.length - 1)]
+      const indexSelectorPokemon = Math.round(Math.random() * (pokemons.length - 1))
+      const pokemonSelected = pokemons[indexSelectorPokemon]
+      //console.log("pokemonSelected",indexSelectorPokemon,pokemons.length-1, pokemonSelected);
       const pokemonUserSelected = state.you.team?.pokemons[0]
-
-
       setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: pokemonUserSelected } }, rival: { ...state.rival, team: { ...state.rival.team, pokemons, selected: pokemonSelected } } })
     };
 
     fetchPokemonData();
   }, [state.rival.team.basePokemon,]);
 
+  useEffect(() => {
+    if (state.battle.phaseSelections == false) {
+      
+    }
+  }, [state.battle.phaseSelections]);
+
+  const missOperation = (redirect) => {
+    // alert("desea salir sin seleccionar un alguna carta ")
+    if(!state.switch){
+      const response = window.confirm(`End battle`)
+      if (response) {
+        redirect();
+      }
+    }
+}
+
   const reMatch = () => {
     setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
   }
 
   const ready = () => {
-    setState({ ...state, battle: { ...state.battle, phaseSelections: false } })
+
+    setState({ ...state,switch:!state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } })
   }
   const selection = (e) => {
     const index = e.currentTarget.getAttribute("index");
-    console.log(state.you.team.pokemons[index].name)
+    //console.log(state.you.team.pokemons[index].name)
     setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: state.you.team.pokemons[index] } } })
   }
 
   return (
     <div className='container-trainer'>
-      <NavMenu />
+      <NavMenu switchMenu={state.switch} missOperation={missOperation}/>
       {(state.battle.phaseSelections) && (
         <div className="selections-team">
           <div className="s">...........Selected.........userTeam</div>
@@ -178,8 +197,8 @@ function Trainer() {
             {state.rival.team.pokemons?.map((infoCard) => {
 
               return (
-                <div className={`pokemon ${state.rival.team.selected?.noPokedex===infoCard.noPokedex &&state.rival.team.selected?.level===infoCard.level ? "selected" : ""}`}>
-                  <Card key={`selector-rival${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
+                <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}>
+                  <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
                 </div>
               )
             })}
@@ -194,8 +213,8 @@ function Trainer() {
           <div className="teamUser">
             {state.you.team.pokemons?.map((infoCard, index) => {
               return (
-                <div className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}>
-                  <Card key={`selector${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
+                <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}>
+                  <Card key={`selector-card${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
                 </div>)
             })}
           </div>
@@ -204,6 +223,14 @@ function Trainer() {
 
         // ! EMPEZAR EL COMBATE POKEMON 
       )}
+
+      {(!state.battle.phaseSelections) && (
+        <div className="place-stadium">
+          <BattleField lstate={state} ready={ready} />
+        </div>
+      )}
+      <button onClick={() => {
+      }}>get battle</button>
     </div>
   )
 }
