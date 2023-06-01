@@ -17,11 +17,14 @@ function BattleField({ lstate, ready }) {
         defencePlus: functions.showStat(lstate.you.team.selected, variables.stadistic[9][0]),
         rating: functions.showStat(lstate.you.team.selected, variables.stadistic[11][0]),
         speed: functions.showStat(lstate.you.team.selected, variables.stadistic[13][0]),
+        speedX:1,
+        speedY:1,
         types: functions.showTypes(lstate.you.team.selected.types),
         positionX: 0,
         positionY: 0,
-        initialPosition:true,
-        direction:functionsBattle.getStartDiretion( functions.showStat(lstate.you.team.selected, variables.stadistic[13][0])),
+        rotation: 0,
+        initialPosition: true,
+        direction: functionsBattle.getStartDiretion(functions.showStat(lstate.you.team.selected, variables.stadistic[13][0])),
       },
       rivalPokemon: {
         hp: functions.showStat(lstate.rival.team.selected, variables.stadistic[1][0]),
@@ -31,12 +34,14 @@ function BattleField({ lstate, ready }) {
         defencePlus: functions.showStat(lstate.rival.team.selected, variables.stadistic[9][0]),
         rating: functions.showStat(lstate.rival.team.selected, variables.stadistic[11][0]),
         speed: functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0]),
+        speedX:1,
+        speedY:1,
         types: functions.showTypes(lstate.rival.team.selected.types),
         positionX: 0,
         positionY: 0,
-        rotarion:0,
-        initialPosition:true,
-        direction:functionsBattle.getStartDiretion( functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0])),
+        rotation: 0,
+        initialPosition: true,
+        direction: functionsBattle.getStartDiretion(functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0])),
       },
 
     }
@@ -64,12 +69,12 @@ function BattleField({ lstate, ready }) {
   //   console.log("%%", state.battle.startBattle)
   //   if (state.battle.startBattle === true) {
   //     const intervalCounter = setTimeout(() => {
-       
+
   //       const uPokemonInBattle=state.battle.uPokemon;
   //       const rivalPokemonInBattle=state.battle.rivalPokemon;
 
-        
-        
+
+
   //       const moveUPokemon=functionsBattle.movePokemon(uPokemonInBattle,"uPokemon");
   //       const moveRivalPokemon=functionsBattle.movePokemon(rivalPokemonInBattle,"RivalPokemon");
 
@@ -94,12 +99,8 @@ function BattleField({ lstate, ready }) {
   //       })
   //       const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
   //       const $uPokemon=document.getElementById("pokemon-user-inbattle");
-  //       if($rivalPokemon!==undefined&&$rivalPokemon!==null||$uPokemon!==undefined&&$uPokemon!==null){
-  //         $rivalPokemon.style.transform=`translate(${moveRivalPokemon[0]}px,${moveRivalPokemon[1]}px)`;
+  //     
 
-  //         $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
-  //       }
-          
   //     },5000)
 
 
@@ -110,11 +111,14 @@ function BattleField({ lstate, ready }) {
   useEffect(() => {
     console.log("%%", state.battle.startBattle)
     if (state.battle.startBattle === true) {
+      const newBattle = functionsBattle.battlePokemon({ ...state.battle })
+      //console.log("state...component", { ...state.battle })
+      //console.log("newState...component", newBattle)
       const intervalCounter = setTimeout(() => {
-       
+
         setState({
           ...state,
-          battle:functionsBattle.battlePokemon(state.battle)
+          battle: newBattle,
         })
         // const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
         // const $uPokemon=document.getElementById("pokemon-user-inbattle");
@@ -123,10 +127,8 @@ function BattleField({ lstate, ready }) {
 
         //   $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
         // }
-          
-      },5000)
 
-
+      }, 16)
     }
   }, [state.battle])
 
