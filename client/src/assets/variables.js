@@ -176,6 +176,8 @@ export const functions = {
             shiny: await shiny,
             noPokedex: database.id,
             name: await database.name,
+            height:await database.height,
+            weight:await database.weight,
             trainer: await trainer.email,
             team: false,
             favorite: false,
@@ -282,7 +284,7 @@ export const functions = {
                 return totalStat;
             } else if (indexStat == 5) {
 
-                let totalStat = (parseInt(baseStats[indexStat]) + parseInt(scaleStats[indexStat]) + parseInt(effortStats[indexStat]) + parseInt((level + 1))) / 10;
+                let totalStat = (parseInt(baseStats[indexStat]) + parseInt(scaleStats[indexStat]) + parseInt(effortStats[indexStat]) + parseInt((level + 1))) / 15;
                 //console.log( Pokemon.name, totalStat);
                 return totalStat;
 

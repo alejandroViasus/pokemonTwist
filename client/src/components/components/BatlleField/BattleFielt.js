@@ -63,7 +63,7 @@ export const functionsBattle = {
         rivalPokemon.positionX = moveRivalPokemon[0];
         rivalPokemon.positionY = moveRivalPokemon[1];
         rivalPokemon.rotation = moveRivalPokemon[2];
-        if (rivalPokemon.rotation >= 360) {
+        if (rivalPokemon.rotation > 360) {
             rivalPokemon.rotation = rivalPokemon.rotation - 360;
         }
 
@@ -107,6 +107,7 @@ export const functionsBattle = {
         if (_locationStadium.left !== undefined) {
 
             //console.log("POKEMON LOCATION",_locationPokemon)
+            const reductionSpeed=0.9;
             //*Locations - stadium
             const stadiumLeft = _locationStadium.left;
             const stadiumRight = _locationStadium.right;
@@ -154,15 +155,15 @@ export const functionsBattle = {
                     if (pokemonTop - longMoveY <= stadiumTop) {
                         pokemon.direction[1] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonRight + longMoveX >= stadiumRight) {
                         pokemon.direction[0] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
 
@@ -171,22 +172,22 @@ export const functionsBattle = {
                 case "R-D":
                     //console.log(flag,"x:",directionX, pokemon.positionX,"y: ",directionY,pokemon.positionY)
 
-                    pokemon.positionX = pokemon.positionX + longMoveX;
+                    pokemon.positionX = (pokemon.positionX + longMoveX);
                     pokemon.positionY = pokemon.positionY + longMoveY;
                     //console.log(flag, "Y R-D:", pokemonBottom + longMoveY, stadiumBottom, pokemonBottom + longMoveY >= stadiumBottom);
                     //console.log(flag, "X R-D:", pokemonRight + longMoveX, stadiumRight, pokemonRight + longMoveX >= stadiumRight);
                     if (pokemonBottom + longMoveY >= stadiumBottom) {
                         pokemon.direction[1] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonRight + longMoveX >= stadiumRight) {
                         pokemon.direction[0] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
 
@@ -201,15 +202,15 @@ export const functionsBattle = {
                     if (pokemonTop - longMoveY <= stadiumTop) {
                         pokemon.direction[1] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonLeft - longMoveX <= stadiumLeft) {
                         pokemon.direction[0] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     //console.log(flag,"x:",directionX, pokemon.positionX,"y: ",directionY,pokemon.positionY)
@@ -224,15 +225,15 @@ export const functionsBattle = {
                     if (pokemonBottom + longMoveY >= stadiumBottom) {
                         pokemon.direction[1] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonLeft - longMoveX <= stadiumLeft) {
                         pokemon.direction[0] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0];
-                        pokemon.speedY = limits[1];
+                        pokemon.speedX = limits[0]/reductionSpeed;
+                        pokemon.speedY = limits[1]/reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     //console.log(flag,"x:",directionX, pokemon.positionX,"y: ",directionY,pokemon.positionY)
@@ -275,30 +276,44 @@ export const functionsBattle = {
     phasePunck: (battle) => {
 
 
-        battle.$rivalPokemon = functionsBattle.collisionCheck("rival", battle.rivalPokemon)
-        battle.uPokemon = functionsBattle.collisionCheck("user", battle.uPokemon)
+        battle.$rivalPokemon = functionsBattle.collisionCheck("rival","user", battle.rivalPokemon,"",battle);
+        battle.uPokemon = functionsBattle.collisionCheck("user","rival", battle.uPokemon,"",battle);
+         battle.$rivalPokemon = functionsBattle.collisionCheck("rival","object", battle.rivalPokemon,"obstacule1",battle);
+         battle.uPokemon = functionsBattle.collisionCheck("user","object", battle.uPokemon,"obstacule1",battle);
+         
+         
 
 
 
         return battle;
     },
-    collisionCheck: (flag, pokemon) => {
+    collisionCheck: (flag, rival,pokemon,obstaculoId="",battle) => {
 
         if (pokemon !== undefined) {
 
-            console.log("COLLISION init: ", flag);
+            //console.log("COLLISION init: ", flag,rival);
             let $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
             let $uPokemon = document.getElementById("pokemon-user-inbattle");
+            
+            
 
 
             //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pokemon,flag)
 
-            if (flag === "rival") {
+            if (flag === "rival"&& rival==="user") {
                 $rivalPokemon = document.getElementById("pokemon-user-inbattle");
                 $uPokemon = document.getElementById("pokemon-rival-inbattle");
             }
-            if (flag === "user") {
+            if (flag === "user" && rival==="rival") {
                 $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
+                $uPokemon = document.getElementById("pokemon-user-inbattle");
+            }
+            if(flag==="rival"&&rival==="object"){
+                $rivalPokemon =document.getElementById(`${obstaculoId}`);
+                $uPokemon = document.getElementById("pokemon-rival-inbattle");
+            }
+            if(flag==="user"&&rival==="object"){
+                $rivalPokemon =document.getElementById(`${obstaculoId}`);
                 $uPokemon = document.getElementById("pokemon-user-inbattle");
             }
 
@@ -325,7 +340,7 @@ export const functionsBattle = {
                 },
             };
 
-
+            //! colisionRival
             if (
                 pointsPokemon.LB.x > locationRivalPokemon.left &&
                 pointsPokemon.LB.x < locationRivalPokemon.right &&
@@ -384,11 +399,17 @@ export const functionsBattle = {
                 functionsBattle.collision(pokemon,flag);
                 pokemon.direction[1] = "-";
             };
+
+
+
         }
         return pokemon;
     },
     collision: (pokemon,flag) => {
         console.log(`::___COLLISION___(${pokemon.rotation})=> ${flag} ::`)
+        console.log(`::___POKEMON IN COLLISION___(${flag})=> ::`, pokemon);
+
+
     }
 
 

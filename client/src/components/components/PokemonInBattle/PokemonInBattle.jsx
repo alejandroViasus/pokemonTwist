@@ -6,8 +6,8 @@ function PokemonInBattle({role,pokemon}) {
     let noPokedex=pokemon.noPokedex||1;
 
   return (
-    <div>
-        <img src={dataBaseImages.sprites.front_default(noPokedex)} alt="" style={{height:"5vw",width:"auto"}} />
+    <div style={{height:"100%",width:"auto"}}>
+        <img src={dataBaseImages.sprites.front_default(noPokedex)} alt="" style={{height:"90%",width:"auto"}} />
     </div>
   )
 }

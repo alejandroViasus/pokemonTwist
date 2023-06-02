@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { functions, variables } from '../../../assets/variables';
-import { battle} from '../../components/BatlleField/BattleFielt';
+import { battle } from '../../components/BatlleField/BattleFielt';
 
 //!components
 import Card from '../../components/Card/Card';
@@ -17,7 +17,7 @@ function Trainer() {
   const userState = useSelector(state => state.user);
 
   const [state, setState] = useState({
-    switch:true,
+    switch: true,
     you: {
       user: {},
       team: {
@@ -36,7 +36,7 @@ function Trainer() {
     },
     battle: {
       seed: 0,
-      timmer:5,
+      timmer: 5,
       phaseSelections: true,
     }
 
@@ -57,18 +57,25 @@ function Trainer() {
         fetch(`http://localhost:9000/api/pokemons/${email}/team`)
           .then(response => response.json())
           .then(data => {
-            const rival = {
-              ...userState,
-              email: `rival_${userState.email}`,
-              gametag: "Trainer Rival",
-              level: Math.ceil(Math.random() * (1 + userState.level)) * (userState.level + 12),
-              pictureTrainer: Math.round(Math.random() * variables.imagesTrainers.length)
+
+            if (data.length > 0) {
+              const rival = {
+                ...userState,
+                email: `rival_${userState.email}`,
+                gametag: "Trainer Rival",
+                level: Math.ceil(Math.random() * (1 + userState.level)) * (userState.level + 12),
+                pictureTrainer: Math.round(Math.random() * variables.imagesTrainers.length)
+              }
+
+              const rarityUser = functions.getRarity(userState);
+              const rarityRival = functions.getRarity(rival);
+
+              setState({ ...state, rival: { ...state.rival, user: rival, rarity: rarityRival }, you: { ...state.you, user: userState, team: { ...state.you.team, pokemons: data }, rarity: rarityUser } })
+            }else{
+              alert("UPS!!! ,no posees en este momento un equipo Pokemon");
+              navigate(`/`, { replace: true });
             }
 
-            const rarityUser = functions.getRarity(userState);
-            const rarityRival = functions.getRarity(rival);
-
-            setState({ ...state, rival: { ...state.rival, user: rival, rarity: rarityRival }, you: { ...state.you, user: userState, team: { ...state.you.team, pokemons: data }, rarity: rarityUser } })
           })
       } catch (error) {
         console.log(error);
@@ -154,19 +161,19 @@ function Trainer() {
 
   useEffect(() => {
     if (state.battle.phaseSelections == false) {
-      
+
     }
   }, [state.battle.phaseSelections]);
 
   const missOperation = (redirect) => {
     // alert("desea salir sin seleccionar un alguna carta ")
-    if(!state.switch){
+    if (!state.switch) {
       const response = window.confirm(`End battle`)
       if (response) {
         redirect();
       }
     }
-}
+  }
 
   const reMatch = () => {
     setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
@@ -174,7 +181,7 @@ function Trainer() {
 
   const ready = () => {
 
-    setState({ ...state,switch:!state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } })
+    setState({ ...state, switch: !state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } })
   }
   const selection = (e) => {
     const index = e.currentTarget.getAttribute("index");
@@ -184,7 +191,7 @@ function Trainer() {
 
   return (
     <div className='container-trainer'>
-      <NavMenu switchMenu={state.switch} missOperation={missOperation}/>
+      <NavMenu switchMenu={state.switch} missOperation={missOperation} />
       {(state.battle.phaseSelections) && (
         <div className="selections-team">
           <div className="s">...........Selected.........userTeam</div>
@@ -229,8 +236,6 @@ function Trainer() {
           <BattleField lstate={state} ready={ready} />
         </div>
       )}
-      <button onClick={() => {
-      }}>get battle</button>
     </div>
   )
 }

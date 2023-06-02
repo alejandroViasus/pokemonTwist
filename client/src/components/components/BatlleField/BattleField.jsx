@@ -4,6 +4,7 @@ import { functionsBattle } from "./BattleFielt";
 import PokemonInBattle from "../PokemonInBattle/PokemonInBattle";
 
 function BattleField({ lstate, ready }) {
+  console.log(lstate)
   const replicState = {
     ...lstate,
     battle: {
@@ -17,8 +18,8 @@ function BattleField({ lstate, ready }) {
         defencePlus: functions.showStat(lstate.you.team.selected, variables.stadistic[9][0]),
         rating: functions.showStat(lstate.you.team.selected, variables.stadistic[11][0]),
         speed: functions.showStat(lstate.you.team.selected, variables.stadistic[13][0]),
-        speedX:1,
-        speedY:1,
+        speedX: 1,
+        speedY: 1,
         types: functions.showTypes(lstate.you.team.selected.types),
         positionX: 0,
         positionY: 0,
@@ -34,8 +35,8 @@ function BattleField({ lstate, ready }) {
         defencePlus: functions.showStat(lstate.rival.team.selected, variables.stadistic[9][0]),
         rating: functions.showStat(lstate.rival.team.selected, variables.stadistic[11][0]),
         speed: functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0]),
-        speedX:1,
-        speedY:1,
+        speedX: 1,
+        speedY: 1,
         types: functions.showTypes(lstate.rival.team.selected.types),
         positionX: 0,
         positionY: 0,
@@ -65,49 +66,6 @@ function BattleField({ lstate, ready }) {
     }
   }, [counter]);
 
-  // useEffect(() => {
-  //   console.log("%%", state.battle.startBattle)
-  //   if (state.battle.startBattle === true) {
-  //     const intervalCounter = setTimeout(() => {
-
-  //       const uPokemonInBattle=state.battle.uPokemon;
-  //       const rivalPokemonInBattle=state.battle.rivalPokemon;
-
-
-
-  //       const moveUPokemon=functionsBattle.movePokemon(uPokemonInBattle,"uPokemon");
-  //       const moveRivalPokemon=functionsBattle.movePokemon(rivalPokemonInBattle,"RivalPokemon");
-
-
-
-
-  //       setState({
-  //         ...state,
-  //         battle:{
-  //           ...state.battle,
-  //           rivalPokemon:{
-  //             ...state.battle.rivalPokemon,
-  //             positionX:moveRivalPokemon[0],
-  //             positionY:moveRivalPokemon[1]
-  //           },
-  //           uPokemon:{
-  //             ...state.battle.uPokemon,
-  //             positionX:moveUPokemon[0],
-  //             positionY:moveUPokemon[1]
-  //           }
-  //         }
-  //       })
-  //       const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
-  //       const $uPokemon=document.getElementById("pokemon-user-inbattle");
-  //     
-
-  //     },5000)
-
-
-  //   }
-  // }, [state.battle])
-
-
   useEffect(() => {
     console.log("%%", state.battle.startBattle)
     if (state.battle.startBattle === true) {
@@ -120,34 +78,62 @@ function BattleField({ lstate, ready }) {
           ...state,
           battle: newBattle,
         })
-        // const $rivalPokemon=document.getElementById("pokemon-rival-inbattle");
-        // const $uPokemon=document.getElementById("pokemon-user-inbattle");
-        // if($rivalPokemon!==undefined&&$rivalPokemon!==null||$uPokemon!==undefined&&$uPokemon!==null){
-        //   $rivalPokemon.style.transform=`translate(${moveRivalPokemon[0]}px,${moveRivalPokemon[1]}px)`;
-
-        //   $uPokemon.style.transform=`translate(${moveUPokemon[0]}px,${moveUPokemon[1]}px)`;
-        // }
-
       }, 16)
     }
   }, [state.battle])
 
+  let sizeUpokemon = state.you.team.selected.height/10 || 1;
+  let sizeRivalpokemon = state.rival.team.selected.height/10 || 1;
+
+  if(sizeUpokemon<=0.9){
+    sizeUpokemon=0.9;
+  }
+  if(sizeRivalpokemon<=0.9){
+    sizeRivalpokemon=0.9;
+  }
+  
+  if(sizeUpokemon>=3){
+    sizeUpokemon=3;
+  }
+  if(sizeRivalpokemon>=3){
+    sizeRivalpokemon=3;
+  }
+
+
+
+
+
   return (
     <div className="content-battleField">
       <div className="stadium">
-        <div className="battleField" id="battleField-stadium">
-          <div className="place-pokemon-inBattle" id="pokemon-user-inbattle">
+        <div className="battleField" id="battleField-stadium"
+          style={{ backgroundColor: "rgba(200,200,200,0.8)", borderRadius: "0%" }}
+        >
+          <div className="place-pokemon-inBattle" id="pokemon-user-inbattle"
+            style={{
+              height: `${(sizeUpokemon) * 3}vw`,
+              width: `${(sizeUpokemon) * 3}vw`,
+            }}
+          >
             <PokemonInBattle role="user" pokemon={state.you.team.selected} />
           </div>
           <div className="timmer" id="timmer">
             {counter}
           </div>
-          <div className="place-pokemon-inBattle" id="pokemon-rival-inbattle">
+          <div className="timmer" id="obstacule1" style={{ backgroundColor: "blue", height: "5vw", width: "5vw", position: "relative", top: "0%", left: "-10%", borderRadius: "2vw", transform: `rotate(10deg)` }} > </div>
+
+
+          <div className="place-pokemon-inBattle" id="pokemon-rival-inbattle"
+          style={{ 
+            height: `${(sizeRivalpokemon)*3}vw`, 
+            width: `${(sizeRivalpokemon)*3}vw`, 
+            }}
+          >
             <PokemonInBattle role="rival" pokemon={state.rival.team.selected} />
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
