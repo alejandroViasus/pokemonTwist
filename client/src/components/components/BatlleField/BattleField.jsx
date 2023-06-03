@@ -24,10 +24,13 @@ function BattleField({ lstate, ready }) {
         positionX: 0,
         positionY: 0,
         rotation: 0,
+        actualHealdToCero: 0,//esta propiedad va a hacer un conteo positivo hasta llegar al valor total de la salud total del pokemon , cuando ese valor llegue o sobrepaso el pokemon quedara debilitado
         initialPosition: true,
+        life: true,
         direction: functionsBattle.getStartDiretion(functions.showStat(lstate.you.team.selected, variables.stadistic[13][0])),
       },
       rivalPokemon: {
+        name: lstate.rival.team.selected.name,
         hp: functions.showStat(lstate.rival.team.selected, variables.stadistic[1][0]),
         attack: functions.showStat(lstate.rival.team.selected, variables.stadistic[3][0]),
         deffence: functions.showStat(lstate.rival.team.selected, variables.stadistic[5][0]),
@@ -41,7 +44,9 @@ function BattleField({ lstate, ready }) {
         positionX: 0,
         positionY: 0,
         rotation: 0,
+        actualHealdToCero: 0,//esta propiedad va a hacer un conteo positivo hasta llegar al valor total de la salud total del pokemon , cuando ese valor llegue o sobrepaso el pokemon quedara debilitado
         initialPosition: true,
+        life: true,
         direction: functionsBattle.getStartDiretion(functions.showStat(lstate.rival.team.selected, variables.stadistic[13][0])),
       },
 
@@ -67,36 +72,52 @@ function BattleField({ lstate, ready }) {
   }, [counter]);
 
   useEffect(() => {
-    console.log("%%", state.battle.startBattle)
-    if (state.battle.startBattle === true) {
-      const newBattle = functionsBattle.battlePokemon({ ...state.battle })
-      //console.log("state...component", { ...state.battle })
-      //console.log("newState...component", newBattle)
-      const intervalCounter = setTimeout(() => {
 
-        setState({
-          ...state,
-          battle: newBattle,
-        })
-      }, 16)
+    if (state.battle.rivalPokemon.life && state.battle.uPokemon.life) {
+      console.log("%%", state.battle.startBattle)
+      if (state.battle.startBattle === true) {
+        const newBattle = functionsBattle.battlePokemon({ ...state.battle })
+        //console.log("state...component", { ...state.battle })
+        //console.log("newState...component", newBattle)
+        const intervalCounter = setTimeout(() => {
+
+          setState({
+            ...state,
+            battle: newBattle,
+          })
+        }, 16)
+      }
     }
   }, [state.battle])
 
-  let sizeUpokemon = state.you.team.selected.height/10 || 1;
-  let sizeRivalpokemon = state.rival.team.selected.height/10 || 1;
+  useEffect(() => {
 
-  if(sizeUpokemon<=0.9){
-    sizeUpokemon=0.9;
+    if (state.battle.uPokemon.life === false || state.battle.rivalPokemon.life === false) {
+
+      if(!state.battle.uPokemon.life){
+        ready(state.battle.uPokemon,"you");
+      }else{
+        ready(state.battle.rival,"rival");
+      }
+
+    }
+  }, [state.battle.uPokemon.life, state.battle.rivalPokemon.life])
+
+  let sizeUpokemon = state.you.team.selected.height / 10 || 1;
+  let sizeRivalpokemon = state.rival.team.selected.height / 10 || 1;
+
+  if (sizeUpokemon <= 1) {
+    sizeUpokemon = 1;
   }
-  if(sizeRivalpokemon<=0.9){
-    sizeRivalpokemon=0.9;
+  if (sizeRivalpokemon <= 1) {
+    sizeRivalpokemon = 1;
   }
-  
-  if(sizeUpokemon>=3){
-    sizeUpokemon=3;
+
+  if (sizeUpokemon >= 3) {
+    sizeUpokemon = 3;
   }
-  if(sizeRivalpokemon>=3){
-    sizeRivalpokemon=3;
+  if (sizeRivalpokemon >= 3) {
+    sizeRivalpokemon = 3;
   }
 
 
@@ -105,14 +126,14 @@ function BattleField({ lstate, ready }) {
 
   return (
     <div className="content-battleField">
-      <div className="stadium">
+      <div className="stadium" style={{ display: "flex", flexDirection: "column" }}>
         <div className="battleField" id="battleField-stadium"
           style={{ backgroundColor: "rgba(200,200,200,0.8)", borderRadius: "0%" }}
         >
           <div className="place-pokemon-inBattle" id="pokemon-user-inbattle"
             style={{
-              height: `${(sizeUpokemon) * 3}vw`,
-              width: `${(sizeUpokemon) * 3}vw`,
+              height: `${(sizeUpokemon) * 4}vw`,
+              width: `${(sizeUpokemon) * 4}vw`,
             }}
           >
             <PokemonInBattle role="user" pokemon={state.you.team.selected} />
@@ -120,18 +141,20 @@ function BattleField({ lstate, ready }) {
           <div className="timmer" id="timmer">
             {counter}
           </div>
-          <div className="timmer" id="obstacule1" style={{ backgroundColor: "blue", height: "5vw", width: "5vw", position: "relative", top: "0%", left: "-10%", borderRadius: "2vw", transform: `rotate(10deg)` }} > </div>
+          <div className="timmer" id="obstacule1" style={{ backgroundColor: "blue", height: "0vw", width: "0vw", position: "relative", top: "0%", left: "-10%", borderRadius: "2vw", transform: `rotate(10deg)` }} > </div>
 
 
           <div className="place-pokemon-inBattle" id="pokemon-rival-inbattle"
-          style={{ 
-            height: `${(sizeRivalpokemon)*3}vw`, 
-            width: `${(sizeRivalpokemon)*3}vw`, 
+            style={{
+              height: `${(sizeRivalpokemon) * 3}vw`,
+              width: `${(sizeRivalpokemon) * 3}vw`,
             }}
           >
             <PokemonInBattle role="rival" pokemon={state.rival.team.selected} />
           </div>
         </div>
+        <div>uPokemon {state.battle.uPokemon.name}: {state.battle.uPokemon.hp - state.battle.uPokemon.actualHealdToCero}</div>
+        <div>rivalPokemon {state.battle.rivalPokemon.name}: {state.battle.rivalPokemon.hp - state.battle.rivalPokemon.actualHealdToCero}</div>
       </div>
     </div >
   );

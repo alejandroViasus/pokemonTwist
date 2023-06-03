@@ -71,7 +71,7 @@ function Trainer() {
               const rarityRival = functions.getRarity(rival);
 
               setState({ ...state, rival: { ...state.rival, user: rival, rarity: rarityRival }, you: { ...state.you, user: userState, team: { ...state.you.team, pokemons: data }, rarity: rarityUser } })
-            }else{
+            } else {
               alert("UPS!!! ,no posees en este momento un equipo Pokemon");
               navigate(`/`, { replace: true });
             }
@@ -179,14 +179,34 @@ function Trainer() {
     setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
   }
 
-  const ready = () => {
+  const ready = (pokemonLose, user="you") => {
 
-    setState({ ...state, switch: !state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } })
+    let heald = 100;
+    let index = 0;
+    let pokemon = state[user].team
+    
+    // if (pokemon !== undefined) {
+    //   pokemon = state[user].team
+    //   state[user].team.pokemons.map((misspoke, i) => {
+    //     if (misspoke.scale === pokemonLose.scale && misspoke.level === pokemonLose.level) {
+    //       index = i;
+    //       heald = 0;
+    //     }
+    //   })
+    // }
+
+    const newState = { ...state, switch: !state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } }
+
+    newState[user].team.pokemons[index].heald = heald
+
+    setState(newState)
   }
   const selection = (e) => {
     const index = e.currentTarget.getAttribute("index");
     //console.log(state.you.team.pokemons[index].name)
-    setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: state.you.team.pokemons[index] } } })
+    if(state.you.team.pokemons[index].heald===100){
+      setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: state.you.team.pokemons[index] } } })
+    }
   }
 
   return (
@@ -201,15 +221,23 @@ function Trainer() {
           <div className="s">..........Selected..........userTeam</div>
           <div className="s">....................RivalTeam</div>
           <div className="teamUser">
-            {state.rival.team.pokemons?.map((infoCard) => {
-
+            {state.rival.team.pokemons?.map((infoCard, index) => {
+              let opacity = "1";
+              if (infoCard.heald === 0) {
+                opacity = "0.5";
+              }
               return (
-                <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}>
+
+                <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}
+                  style={{ opacity }}
+                >
                   <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
                 </div>
               )
+              //)
             })}
           </div>
+
           <button onClick={reMatch}>re-Match</button>
           <div className="s">........................................................</div>
           <div className="s">...........Selected.........userTeam</div>
@@ -219,10 +247,17 @@ function Trainer() {
           <div className="s">..........Selected..........userTeam</div>
           <div className="teamUser">
             {state.you.team.pokemons?.map((infoCard, index) => {
+              let opacity = "1";
+              if (infoCard.heald === 0) {
+                opacity = "0.5";
+              }
               return (
-                <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}>
+                <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}
+                  style={{ opacity }}
+                >
                   <Card key={`selector-card${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
                 </div>)
+
             })}
           </div>
           <button onClick={ready}> Ready !!</button>

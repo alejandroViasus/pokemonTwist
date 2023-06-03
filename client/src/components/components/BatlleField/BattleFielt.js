@@ -32,19 +32,22 @@ export const functionsBattle = {
         return direction;
     },
     //!BattlePokemon.................................................................................................................
-    battlePokemon: (battle) => {
+    battlePokemon: (battle, campTotalState) => {
         console.log("InitBattlePokemon.....", battle)
         const stadium = battle.stadium;
         const uPokemon = battle.uPokemon;
         const rivalPokemon = battle.rivalPokemon;
         const $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
+        const $rivalPokemonImg = document.getElementById("rivalPokemonImg");
         const $uPokemon = document.getElementById("pokemon-user-inbattle");
+        const $uPokemonImg = document.getElementById("userPokemonImg");
         const $stadium = document.getElementById("battleField-stadium");
 
 
         const moveUPokemon = functionsBattle.movePokemon(uPokemon, $uPokemon, $stadium, "uPokemon");
         const moveRivalPokemon = functionsBattle.movePokemon(rivalPokemon, $rivalPokemon, $stadium, "rivalPokemon");
 
+        
         //console.log("uPokemon", moveUPokemon);
         //console.log("RivalPokemon", moveRivalPokemon);
         uPokemon.positionX = moveUPokemon[0];
@@ -52,47 +55,66 @@ export const functionsBattle = {
         uPokemon.rotation = moveUPokemon[2];
         if (uPokemon.rotation >= 360) {
             uPokemon.rotation = uPokemon.rotation - 360;
+            //console.log("change", uPokemon.rotation);
         }
-
+        if (uPokemon.rotation <= 0) {
+            uPokemon.rotation = uPokemon.rotation + 360;
+            //console.log("change", uPokemon.rotation);
+        }
+        
+        
         //uPokemon.direction=[moveUPokemon[3],moveUPokemon[4]]
         uPokemon.direction[0] = moveUPokemon[3];
         uPokemon.direction[1] = moveUPokemon[4];
         uPokemon.speedX = moveUPokemon[5];
         uPokemon.speedY = moveUPokemon[6];
-
+        
         rivalPokemon.positionX = moveRivalPokemon[0];
         rivalPokemon.positionY = moveRivalPokemon[1];
         rivalPokemon.rotation = moveRivalPokemon[2];
         if (rivalPokemon.rotation > 360) {
             rivalPokemon.rotation = rivalPokemon.rotation - 360;
+            console.log("change", rivalPokemon.rotation);
         }
-
+        if (rivalPokemon.rotation <= 0) {
+            rivalPokemon.rotation = rivalPokemon.rotation + 360;
+            console.log("change", rivalPokemon.rotation);
+        }
+        
+        
         //rivalPokemon.direction=[moveRivalPokemon[3],moveRivalPokemon[4]]
         rivalPokemon.direction[0] = moveRivalPokemon[3];
         rivalPokemon.direction[1] = moveRivalPokemon[4];
         rivalPokemon.speedX = moveRivalPokemon[5];
         rivalPokemon.speedY = moveRivalPokemon[6];
-
+        
         //console.log("assingature", moveRivalPokemon)
-
+        
         if ($rivalPokemon !== undefined && $rivalPokemon !== null || $uPokemon !== undefined && $uPokemon !== null) {
-
+            
             const limitRivalPokemon = $rivalPokemon.getBoundingClientRect();
             const limitUPokemon = $uPokemon.getBoundingClientRect();
             const limitStadium = $stadium.getBoundingClientRect();
             const fractionStadiumX = limitStadium.width / 1000;
             const fractionStadiumY = limitStadium.height / 1000;
             //console.log("LIMI STADIUM: ", limitStadium);
-
-
+            
+            
             $rivalPokemon.style.transform = `translate(${moveRivalPokemon[0] * fractionStadiumX}px,${moveRivalPokemon[1] * fractionStadiumY}px) rotate(${moveRivalPokemon[2] || rivalPokemon.rotation}deg)`;
+            $rivalPokemonImg.style.transform = `rotate(${-1*(moveRivalPokemon[2] || rivalPokemon.rotation)}deg)`;
+            
+            
+            
             $uPokemon.style.transform = `translate(${moveUPokemon[0] * fractionStadiumX}px,${moveUPokemon[1] * fractionStadiumY}px) rotate(${moveUPokemon[2] || uPokemon.rotation}deg)`;
+            $uPokemonImg.style.transform = `rotate(${-1*(moveUPokemon[2] || uPokemon.rotation)}deg)`;
         }
-
+        
         const newBattle = { ...battle, uPokemon, rivalPokemon }
-
+        
         const otherBattle = functionsBattle.phasePunck(newBattle);
-
+        //!0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000vamos Aqui
+        //!000 El estado esta Cambiando y entra en cnflicto Al intentar cambiar el estado local , se debe intentar el mismo proceso pero en vez de usar u estado local se debe implementar en el local
+        
         //console.log("otherBattle..........", otherBattle);
         return otherBattle;
     },
@@ -107,7 +129,7 @@ export const functionsBattle = {
         if (_locationStadium.left !== undefined) {
 
             //console.log("POKEMON LOCATION",_locationPokemon)
-            const reductionSpeed=0.9;
+            const reductionSpeed = 1;
             //*Locations - stadium
             const stadiumLeft = _locationStadium.left;
             const stadiumRight = _locationStadium.right;
@@ -126,8 +148,8 @@ export const functionsBattle = {
             const directionX = pokemon.direction[0]
             const directionY = pokemon.direction[1]
             const rotation = pokemon.rotation + ((0.1 + parseInt(pokemon.speed * pokemon.direction[2]) / 2))
-            const longMoveX = (1 + parseInt(pokemon.speedX * pokemon.direction[3])) / 3
-            const longMoveY = (1 + parseInt(pokemon.speedY * pokemon.direction[4])) / 3
+            const longMoveX = (1 + parseInt(pokemon.speedX * pokemon.direction[3])) / 6
+            const longMoveY = (1 + parseInt(pokemon.speedY * pokemon.direction[4])) / 6
             //console.log("i.i", longMoveY)
 
             let direction = "R-U";
@@ -155,15 +177,15 @@ export const functionsBattle = {
                     if (pokemonTop - longMoveY <= stadiumTop) {
                         pokemon.direction[1] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonRight + longMoveX >= stadiumRight) {
                         pokemon.direction[0] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
 
@@ -179,15 +201,15 @@ export const functionsBattle = {
                     if (pokemonBottom + longMoveY >= stadiumBottom) {
                         pokemon.direction[1] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonRight + longMoveX >= stadiumRight) {
                         pokemon.direction[0] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
 
@@ -202,15 +224,15 @@ export const functionsBattle = {
                     if (pokemonTop - longMoveY <= stadiumTop) {
                         pokemon.direction[1] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonLeft - longMoveX <= stadiumLeft) {
                         pokemon.direction[0] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     //console.log(flag,"x:",directionX, pokemon.positionX,"y: ",directionY,pokemon.positionY)
@@ -225,15 +247,15 @@ export const functionsBattle = {
                     if (pokemonBottom + longMoveY >= stadiumBottom) {
                         pokemon.direction[1] = "-";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     if (pokemonLeft - longMoveX <= stadiumLeft) {
                         pokemon.direction[0] = "+";
                         const limits = functionsBattle.limitStadium(pokemon.speed)
-                        pokemon.speedX = limits[0]/reductionSpeed;
-                        pokemon.speedY = limits[1]/reductionSpeed;
+                        pokemon.speedX = limits[0] / reductionSpeed;
+                        pokemon.speedY = limits[1] / reductionSpeed;
                         pokemon.rotation = limits[2];
                     }
                     //console.log(flag,"x:",directionX, pokemon.positionX,"y: ",directionY,pokemon.positionY)
@@ -273,47 +295,49 @@ export const functionsBattle = {
         console.log("DIRECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!! ", direction)
         return direction;
     },
+
+    //!phasePunch
     phasePunck: (battle) => {
 
 
-        battle.$rivalPokemon = functionsBattle.collisionCheck("rival","user", battle.rivalPokemon,"",battle);
-        battle.uPokemon = functionsBattle.collisionCheck("user","rival", battle.uPokemon,"",battle);
-         battle.$rivalPokemon = functionsBattle.collisionCheck("rival","object", battle.rivalPokemon,"obstacule1",battle);
-         battle.uPokemon = functionsBattle.collisionCheck("user","object", battle.uPokemon,"obstacule1",battle);
-         
-         
+        battle.rivalPokemon = functionsBattle.collisionCheck("rival", "user", battle.rivalPokemon, "", battle.uPokemon);
+        battle.uPokemon = functionsBattle.collisionCheck("user", "rival", battle.uPokemon, "", battle.rivalPokemon);
+        battle.rivalPokemon = functionsBattle.collisionCheck("rival", "object", battle.rivalPokemon, "obstacule1",);
+        battle.uPokemon = functionsBattle.collisionCheck("user", "object", battle.uPokemon, "obstacule1",);
+
+
 
 
 
         return battle;
     },
-    collisionCheck: (flag, rival,pokemon,obstaculoId="",battle) => {
+    collisionCheck: (flag, rival, pokemon, obstaculoId = "", dataRival) => {
 
         if (pokemon !== undefined) {
 
             //console.log("COLLISION init: ", flag,rival);
             let $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
             let $uPokemon = document.getElementById("pokemon-user-inbattle");
-            
-            
+
+
 
 
             //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pokemon,flag)
 
-            if (flag === "rival"&& rival==="user") {
+            if (flag === "rival" && rival === "user") {
                 $rivalPokemon = document.getElementById("pokemon-user-inbattle");
                 $uPokemon = document.getElementById("pokemon-rival-inbattle");
             }
-            if (flag === "user" && rival==="rival") {
+            if (flag === "user" && rival === "rival") {
                 $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
                 $uPokemon = document.getElementById("pokemon-user-inbattle");
             }
-            if(flag==="rival"&&rival==="object"){
-                $rivalPokemon =document.getElementById(`${obstaculoId}`);
+            if (flag === "rival" && rival === "object") {
+                $rivalPokemon = document.getElementById(`${obstaculoId}`);
                 $uPokemon = document.getElementById("pokemon-rival-inbattle");
             }
-            if(flag==="user"&&rival==="object"){
-                $rivalPokemon =document.getElementById(`${obstaculoId}`);
+            if (flag === "user" && rival === "object") {
+                $rivalPokemon = document.getElementById(`${obstaculoId}`);
                 $uPokemon = document.getElementById("pokemon-user-inbattle");
             }
 
@@ -352,7 +376,10 @@ export const functionsBattle = {
                 pointsPokemon.LT.y > locationRivalPokemon.top &&
                 pointsPokemon.LT.y < locationRivalPokemon.bottom
             ) {
-                functionsBattle.collision(pokemon,flag);
+
+                if(rival!=="object"){
+                    functionsBattle.collision(pokemon, flag,dataRival);
+                }
                 pokemon.direction[0] = "+";
 
             };
@@ -367,7 +394,9 @@ export const functionsBattle = {
                 pointsPokemon.RT.x > locationRivalPokemon.left &&
                 pointsPokemon.RT.x < locationRivalPokemon.right
             ) {
-                functionsBattle.collision(pokemon,flag);
+                if(rival!=="object"){
+                    functionsBattle.collision(pokemon, flag,dataRival);
+                }
                 pokemon.direction[1] = "+";
             };
             if (
@@ -381,7 +410,9 @@ export const functionsBattle = {
                 pointsPokemon.RT.y > locationRivalPokemon.top &&
                 pointsPokemon.RT.y < locationRivalPokemon.bottom
             ) {
-                functionsBattle.collision(pokemon,flag);
+                if(rival!=="object"){
+                    functionsBattle.collision(pokemon, flag,dataRival);
+                }
                 pokemon.direction[0] = "-";
             };
             if (
@@ -396,7 +427,9 @@ export const functionsBattle = {
                 pointsPokemon.RB.x < locationRivalPokemon.right
 
             ) {
-                functionsBattle.collision(pokemon,flag);
+                if(rival!=="object"){
+                    functionsBattle.collision(pokemon, flag,dataRival);
+                }
                 pokemon.direction[1] = "-";
             };
 
@@ -405,9 +438,59 @@ export const functionsBattle = {
         }
         return pokemon;
     },
-    collision: (pokemon,flag) => {
-        console.log(`::___COLLISION___(${pokemon.rotation})=> ${flag} ::`)
-        console.log(`::___POKEMON IN COLLISION___(${flag})=> ::`, pokemon);
+    collision: (pokemon, flag,rival) => {
+
+        let rotation=pokemon.rotation
+
+        
+
+
+        let Type=pokemon.types[0];
+        let TypeOponent=rival.types[0];
+
+        if(pokemon.rotation>180&&pokemon.rotation<=270){
+            if(pokemon.types.length>1){
+                Type=pokemon.types[1];
+            }else{
+                Type=pokemon.types[0];
+            }
+        }
+        if(rival.rotation>180&&rival.rotation<=270){
+            if(rival.types.length>1){
+                TypeOponent=rival.types[1];
+            }else{
+                TypeOponent=rival.types[0];
+            }
+        }
+
+        let scaleAttack=1;
+        
+        console.log(Type,TypeOponent);
+
+        if(variables.PokemonStrengthsTypes[Type].weaknesses.includes(TypeOponent)){
+            scaleAttack=0.5;
+        } 
+
+        if (variables.PokemonStrengthsTypes[Type].strengths.includes(TypeOponent)){
+            scaleAttack=2;
+        }
+
+
+        scaleAttack=Math.round(scaleAttack*(rival.attack*Math.random())+rival.attack/2);
+
+        let punch=scaleAttack-pokemon.deffence
+
+        if(punch<=0){
+            punch=0;
+        }
+
+        pokemon.actualHealdToCero=pokemon.actualHealdToCero+punch  
+
+        console.log(`//=>`,flag,TypeOponent,rival.attack,`// x${punch} //=>`,Type,pokemon.deffence,pokemon.actualHealdToCero,pokemon.hp)
+
+        if(pokemon.actualHealdToCero>=pokemon.hp){
+            pokemon.life=false;
+        }
 
 
     }

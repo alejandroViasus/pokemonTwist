@@ -88,10 +88,8 @@ code {
   justify-content: space-around;
 }
 .content-battleField .stadium .battleField .place-pokemon-inBattle {
-  background-color: #505050;
-  border-radius: 50%;
-  height: 6vw;
-  width: 6vw;
+  background-color: #707070;
+  border-radius: 20%;
   display: flex;
   justify-content: center;
   align-items: center;

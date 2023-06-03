@@ -176,8 +176,8 @@ export const functions = {
             shiny: await shiny,
             noPokedex: database.id,
             name: await database.name,
-            height:await database.height,
-            weight:await database.weight,
+            height: await database.height,
+            weight: await database.weight,
             trainer: await trainer.email,
             team: false,
             favorite: false,
@@ -774,6 +774,83 @@ export const variables = {
         "steel",
         "water",
     ],
+
+    PokemonStrengthsTypes: {
+        water: {
+          weaknesses: ["electric", "grass"],
+          strengths: ["fire", "ground", "rock"],
+        },
+        fire: {
+          weaknesses: ["water", "ground", "rock"],
+          strengths: ["grass", "ice", "bug", "steel"],
+        },
+        grass: {
+          weaknesses: ["fire", "ice", "poison", "flying", "bug"],
+          strengths: ["water", "ground", "rock"],
+        },
+        electric: {
+          weaknesses: ["ground"],
+          strengths: ["water", "flying"],
+        },
+        ice: {
+          weaknesses: ["fire", "fighting", "rock", "steel"],
+          strengths: ["grass", "ground", "flying", "dragon"],
+        },
+        normal: {
+          weaknesses: [],
+          strengths: [],
+        },
+        ice: {
+          weaknesses: ["fire", "fighting", "rock", "steel"],
+          strengths: ["grass", "ground", "flying", "dragon"],
+        },
+        fighting: {
+          weaknesses: ["flying", "psychic", "fairy"],
+          strengths: ["normal", "ice", "rock", "dark", "steel"],
+        },
+        poison: {
+          weaknesses: ["ground", "psychic"],
+          strengths: ["grass", "fairy"],
+        },
+        ground: {
+          weaknesses: ["water", "grass", "ice"],
+          strengths: ["fire", "electric", "poison", "rock", "steel"],
+        },
+        flying: {
+          weaknesses: ["electric", "ice", "rock"],
+          strengths: ["grass", "fighting", "bug"],
+        },
+        psychic: {
+          weaknesses: ["bug", "ghost", "dark"],
+          strengths: ["fighting", "poison"],
+        },
+        bug: {
+          weaknesses: ["fire", "flying", "rock"],
+          strengths: ["grass", "psychic", "dark"],
+        },
+        rock: {
+          weaknesses: ["water", "grass", "fighting", "ground", "steel"],
+          strengths: ["fire", "ice", "flying", "bug"],
+        },
+        ghost: {
+          weaknesses: ["ghost", "dark"],
+          strengths: ["psychic", "ghost"],
+        },
+        dragon: {
+          weaknesses: ["ice", "dragon", "fairy"],
+          strengths: ["dragon"],
+        },
+        steel: {
+          weaknesses: ["fire", "fighting", "ground"],
+          strengths: ["ice", "rock", "fairy"],
+        },
+        fairy: {
+          weaknesses: ["poison", "steel"],
+          strengths: ["fighting", "dragon", "dark"],
+        },
+      },
+      
+
     stadistic: [
         ["---", ""],
 

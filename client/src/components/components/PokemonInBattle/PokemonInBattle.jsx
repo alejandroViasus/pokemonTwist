@@ -7,7 +7,7 @@ function PokemonInBattle({role,pokemon}) {
 
   return (
     <div style={{height:"100%",width:"auto"}}>
-        <img src={dataBaseImages.sprites.front_default(noPokedex)} alt="" style={{height:"90%",width:"auto"}} />
+        <img id={`${role}PokemonImg`} src={dataBaseImages.sprites.front_default(noPokedex)} alt="" style={{height:"90%",width:"auto"}} />
     </div>
   )
 }
