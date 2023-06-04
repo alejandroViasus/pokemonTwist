@@ -8,6 +8,8 @@ function Home() {
     <div>
       <div className="navBar">
         <Nav/>
+
+        JJJJJJJJJJJJJJJJJJJJJJJJJJJJ
       </div>
     </div>
   )

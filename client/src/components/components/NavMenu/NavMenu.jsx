@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 function NavMenu({ switchMenu = true, missOperation }) {
   const navigate = useNavigate();
-  const userState = useSelector(state => state.user);
+  const userState = useSelector(state => state.you.user);
   const redirectTo = (redirect) => {
     navigate(`/${userState.gametag}/${redirect}`, { replace: true });
   }

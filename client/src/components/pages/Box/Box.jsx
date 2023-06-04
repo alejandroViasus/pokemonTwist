@@ -10,7 +10,7 @@ import Envelope from '../../components/Envelope/Envelope';
 
 function Box() {
     const dispatch = useDispatch();
-    const userState = useSelector((state) => state.user);
+    const userState = useSelector((state) => state.you.user);
     const navigate = useNavigate();
     const params = useParams();
     const posiblesPokemons = [];

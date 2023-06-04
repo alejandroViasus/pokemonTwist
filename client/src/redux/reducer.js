@@ -5,6 +5,7 @@ import {
     UPDATE,
     FILTER_LIST,
     RELEASE,
+    DISPATCH_USER,
 } from "./actions";
 
 import { variables } from "../assets/variables";
@@ -14,15 +15,25 @@ const { functions } = require("./funtions")
 
 const initialState = variables.initialState;
 
-const rootReducer = (state = initialState, action) => {
+const rootReducer = (state = initialState.state, action) => {
     //console.log(action.type)
     switch (action.type) {
         default: return state;
+
+        case DISPATCH_USER:{
+            //console.log(INITIAL_USER, action.payload);
+            const newState=action.payload;
+            return newState;
+        }
+
         case INITIAL_USER:{
             //console.log(INITIAL_USER, action.payload);
             const newState={
                 ...state,
-                user:action.payload
+                you:{
+                    ...state.you,
+                    user:action.payload
+                }
             }
             return newState
         }
@@ -50,6 +61,8 @@ const rootReducer = (state = initialState, action) => {
             }
             return newState;
         }
+
+        
         // case LOGIN: {
         //     const user = functions.user(state, action)
         //     console.log("LOGIN: __|", action.type, user.gametag);

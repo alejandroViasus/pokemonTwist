@@ -4,166 +4,82 @@ import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { functions, variables } from '../../../assets/variables';
 import { battle } from '../../components/BatlleField/BattleFielt';
-
-//!components
+import { dispatchState } from '../../../redux/actions';
+// //!components
 import Card from '../../components/Card/Card';
 import NavMenu from '../../components/NavMenu/NavMenu';
 import BattleField from '../../components/BatlleField/BattleField';
 
+
 function Trainer() {
+
   const disPatch = useDispatch();
-  const navigate = useNavigate();
-  const params = useParams();
-  const userState = useSelector(state => state.user);
+    const navigate = useNavigate();
+    const params = useParams();
+    const globalState = useSelector(state => state);
+    const userState = useSelector(state => state.you.user);
 
-  const [state, setState] = useState({
-    switch: true,
-    you: {
-      user: {},
-      team: {
-        pokemons: [],
-        selected: {}
-      },
-    },
-    rival: {
-      user: {},
-      team: {
-        basePokemon: [],
-        dataPokemon: [],
-        pokemons: [],
-        selected: {}
-      },
-    },
-    battle: {
-      seed: 0,
-      timmer: 5,
-      phaseSelections: true,
-    }
+  const [state, setState] = useState(variables.initialState.state);
 
-  })
-
-  useEffect(() => {
-    if (params.gametag !== userState.gametag) {
+   useEffect(() => {
+    if (params.gametag !== userState.gametag||globalState.rival.team.basePokemon.length<5) {
       console.log("usuario indeterminado");
       navigate(`/`, { replace: true });
     }
     //console.log(`userState.gametag`, userState.gametag)
   }, [params]);
 
+  
+
   useEffect(() => {
-    if (userState.gametag) {
-      try {
-        const email = userState.email
-        fetch(`http://localhost:9000/api/pokemons/${email}/team`)
-          .then(response => response.json())
-          .then(data => {
+        if (userState.gametag) {
+          try {
+            const email = userState.email
+            fetch(`http://localhost:9000/api/pokemons/${email}/team`)
+              .then(response => response.json())
+              .then(data => {
+    
+                if (data.length > 0) {
+                  const rarityUser = functions.getRarity(userState);    
+                  const newState={ ...globalState,
+                    battle:{...globalState.battle,
+                      phaseSelections:true
+                    }, 
+                    you: { ...globalState.you,rarity:rarityUser,
+                      team: { ...globalState.you.team, pokemons: data,selected:data[0] }} }
+                  setState(newState)
+                } else {
+                  alert("UPS!!! ,no posees en este momento un equipo Pokemon");
+                  navigate(`/`, { replace: true });
+                }
+    
+              })
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }, [userState, state.battle.seed]);
 
-            if (data.length > 0) {
-              const rival = {
-                ...userState,
-                email: `rival_${userState.email}`,
-                gametag: "Trainer Rival",
-                level: Math.ceil(Math.random() * (1 + userState.level)) * (userState.level + 12),
-                pictureTrainer: Math.round(Math.random() * variables.imagesTrainers.length)
-              }
+  
 
-              const rarityUser = functions.getRarity(userState);
-              const rarityRival = functions.getRarity(rival);
+   const reMatch = () => {
+    setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
+  }
 
-              setState({ ...state, rival: { ...state.rival, user: rival, rarity: rarityRival }, you: { ...state.you, user: userState, team: { ...state.you.team, pokemons: data }, rarity: rarityUser } })
-            } else {
-              alert("UPS!!! ,no posees en este momento un equipo Pokemon");
-              navigate(`/`, { replace: true });
-            }
+  const ready = (pokemonLose, user="you") => {
+    console.log("Ok",state);
+    const toGlobalState={...state,battle:{...state.battle,phaseSelections:false}}
+    setState(toGlobalState);
+    
+  }
 
-          })
-      } catch (error) {
-        console.log(error);
-      }
+  const selection = (e) => {
+    const index = e.currentTarget.getAttribute("index");
+    //console.log(state.you.team.pokemons[index].name)
+    if(state.you.team.pokemons[index].heald===100){
+      setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: state.you.team.pokemons[index] } } })
     }
-  }, [userState, state.battle.seed]);
-
-  useEffect(() => {
-    const posiblesPokemons = [
-      functions.getNoPokedex(),
-      functions.getNoPokedex(),
-      functions.getNoPokedex(),
-      functions.getNoPokedex(),
-      functions.getNoPokedex(),
-      functions.getNoPokedex(),
-    ];
-
-    const fetchPokemonData = async () => {
-      try {
-        const responses = await Promise.all(posiblesPokemons.map(pokemon => fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)));
-        const pokemonData = await Promise.all(responses.map(response => response.json()));
-
-        setState(prevState => ({
-          ...prevState,
-          rival: {
-            ...prevState.rival,
-            team: {
-              ...prevState.rival.team,
-              dataPokemon: pokemonData,
-            },
-          },
-        }));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchPokemonData();
-  }, [state.you.user, state.battle.seed]);
-
-  useEffect(() => {
-    const basePokemon = [];
-
-    state.rival.team.dataPokemon?.map((pokemon) => {
-      const base = {
-        levelPokemon: functions.getLevelPokemon(state.rival.user),
-        noPokedex: pokemon.id,
-        shiny: functions.getShiny(),
-        genre: functions.getGenre(),
-      }
-      basePokemon.push(base);
-    })
-
-    setState({ ...state, rival: { ...state.rival, team: { ...state.rival.team, basePokemon } } })
-  }, [state.rival.team.dataPokemon]);
-
-  useEffect(() => {
-    const fetchPokemonData = async () => {
-      const pokemons = [];
-
-      for (let i = 0; i < state.rival.team.basePokemon.length - 1; i++) {
-        const basePokemon = state.rival.team.basePokemon[i];
-        const pokemon = await functions.getPokemon(
-          state.rival.user,
-          state.rival.team.dataPokemon[i],
-          basePokemon.levelPokemon,
-          state.rival.rarity,
-          basePokemon.shiny,
-          basePokemon.genre
-        );
-        pokemons.push(pokemon);
-      }
-
-      //const pokemonSelected = pokemons[Math.floor(Math.random() * pokemons.length - 1)]
-      const indexSelectorPokemon = Math.round(Math.random() * (pokemons.length - 1))
-      const pokemonSelected = pokemons[indexSelectorPokemon]
-      //console.log("pokemonSelected",indexSelectorPokemon,pokemons.length-1, pokemonSelected);
-      const pokemonUserSelected = state.you.team?.pokemons[0]
-      setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: pokemonUserSelected } }, rival: { ...state.rival, team: { ...state.rival.team, pokemons, selected: pokemonSelected } } })
-    };
-
-    fetchPokemonData();
-  }, [state.rival.team.basePokemon,]);
-
-  useEffect(() => {
-    if (state.battle.phaseSelections == false) {
-
-    }
-  }, [state.battle.phaseSelections]);
+  }
 
   const missOperation = (redirect) => {
     // alert("desea salir sin seleccionar un alguna carta ")
@@ -175,104 +91,208 @@ function Trainer() {
     }
   }
 
-  const reMatch = () => {
-    setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
+  const goToBack=()=>{
+    navigate(`/`, { replace: true });
   }
 
-  const ready = (pokemonLose, user="you") => {
 
-    let heald = 100;
-    let index = 0;
-    let pokemon = state[user].team
-    
-    // if (pokemon !== undefined) {
-    //   pokemon = state[user].team
-    //   state[user].team.pokemons.map((misspoke, i) => {
-    //     if (misspoke.scale === pokemonLose.scale && misspoke.level === pokemonLose.level) {
-    //       index = i;
-    //       heald = 0;
-    //     }
-    //   })
-    // }
+ return (
+       <div className='container-trainer'>
+         <NavMenu switchMenu={state.switch} missOperation={missOperation} />
+         {(state.battle.phaseSelections) && (
+           <div className="selections-team">
+             <button onClick={goToBack}>BACK HOME</button>
+             <div className="s">...........Selected.........userTeam</div>
+             {(state.rival.team.selected?.noPokedex) && (
+               <Card infoPokemon={state.rival.team.selected} structure='selectorCard' />
+             )}
+             <div className="s">..........Selected..........userTeam</div>
+             <div className="s">....................RivalTeam</div>
+             <div className="teamUser" style={{display:"flex"}}>
+               {state.rival.team.pokemons?.map((infoCard, index) => {
+                 let opacity = "1";
+                 if (infoCard.heald === 0) {
+                   opacity = "0.5";
+                 }
+                 return (
+  
+                   <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}
+                     style={{ opacity }}
+                   >
+                     <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
+                   </div>
+                 )
+                 //)
+               })}
+             </div>
+  
+             <button onClick={reMatch}>re-Match</button>
+             <div className="s">........................................................</div>
+             <div className="s">...........Selected.........userTeam</div>
+             {(state.you.team.selected?.noPokedex) && (
+               <Card infoPokemon={state.you.team.selected} structure='selectorCard' />
+             )}
+             <div className="s">..........Selected..........userTeam</div>
+             <div className="teamUser" style={{display:"flex"}}>
+               {state.you.team.pokemons?.map((infoCard, index) => {
+                 let opacity = "1";
+                 if (infoCard.heald === 0) {
+                   opacity = "0.5";
+                 }
+                 return (
+                   <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}
+                     style={{ opacity }}
+                   >
+                     <Card key={`selector-card${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
+                   </div>)
+  
+               })}
+             </div>
+             <button onClick={ready}> Ready !!</button>
+           </div>
+  
+           // ! EMPEZAR EL COMBATE POKEMON 
+         )}
+           {(!state.battle.phaseSelections) && (
+           <div className="place-stadium">
+             <BattleField lstate={state} ready={ready} />
+           </div>
+         )}
+       </div>
+     )
+   }
 
-    const newState = { ...state, switch: !state.switch, battle: { ...state.battle, phaseSelections: !state.battle.phaseSelections } }
-
-    newState[user].team.pokemons[index].heald = heald
-
-    setState(newState)
-  }
-  const selection = (e) => {
-    const index = e.currentTarget.getAttribute("index");
-    //console.log(state.you.team.pokemons[index].name)
-    if(state.you.team.pokemons[index].heald===100){
-      setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: state.you.team.pokemons[index] } } })
-    }
-  }
-
-  return (
-    <div className='container-trainer'>
-      <NavMenu switchMenu={state.switch} missOperation={missOperation} />
-      {(state.battle.phaseSelections) && (
-        <div className="selections-team">
-          <div className="s">...........Selected.........userTeam</div>
-          {(state.rival.team.selected?.noPokedex) && (
-            <Card infoPokemon={state.rival.team.selected} structure='selectorCard' />
-          )}
-          <div className="s">..........Selected..........userTeam</div>
-          <div className="s">....................RivalTeam</div>
-          <div className="teamUser">
-            {state.rival.team.pokemons?.map((infoCard, index) => {
-              let opacity = "1";
-              if (infoCard.heald === 0) {
-                opacity = "0.5";
-              }
-              return (
-
-                <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}
-                  style={{ opacity }}
-                >
-                  <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
-                </div>
-              )
-              //)
-            })}
-          </div>
-
-          <button onClick={reMatch}>re-Match</button>
-          <div className="s">........................................................</div>
-          <div className="s">...........Selected.........userTeam</div>
-          {(state.you.team.selected?.noPokedex) && (
-            <Card infoPokemon={state.you.team.selected} structure='selectorCard' />
-          )}
-          <div className="s">..........Selected..........userTeam</div>
-          <div className="teamUser">
-            {state.you.team.pokemons?.map((infoCard, index) => {
-              let opacity = "1";
-              if (infoCard.heald === 0) {
-                opacity = "0.5";
-              }
-              return (
-                <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}
-                  style={{ opacity }}
-                >
-                  <Card key={`selector-card${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
-                </div>)
-
-            })}
-          </div>
-          <button onClick={ready}> Ready !!</button>
-        </div>
-
-        // ! EMPEZAR EL COMBATE POKEMON 
-      )}
-
-      {(!state.battle.phaseSelections) && (
-        <div className="place-stadium">
-          <BattleField lstate={state} ready={ready} />
-        </div>
-      )}
-    </div>
-  )
-}
 
 export default Trainer
+
+
+
+
+
+
+
+// function Trainer() {
+
+
+//   const [state, setState] = useState({
+//     switch: true,
+//     you: {
+//       user: {},
+//       team: {
+//         pokemons: [],
+//         selected: {}
+//       },
+//     },
+//     rival: {
+//       user: {},
+//       team: {
+//         basePokemon: [],
+//         dataPokemon: [],
+//         pokemons: [],
+//         selected: {}
+//       },
+//     },
+//     battle: {
+//       seed: 0,
+//       timmer: 5,
+//       phaseSelections: true,
+//     }
+
+//   })
+
+
+
+//  
+
+//   useEffect(() => {
+
+    
+    
+//     const posiblesPokemons = [
+//       functions.getNoPokedex(),
+//       functions.getNoPokedex(),
+//       functions.getNoPokedex(),
+//       functions.getNoPokedex(),
+//       functions.getNoPokedex(),
+//       functions.getNoPokedex(),
+//     ];
+
+//     const fetchPokemonData = async () => {
+//       try {
+//         const responses = await Promise.all(posiblesPokemons.map(pokemon => fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)));
+//         const pokemonData = await Promise.all(responses.map(response => response.json()));
+
+//         setState(prevState => ({
+//           ...prevState,
+//           rival: {
+//             ...prevState.rival,
+//             team: {
+//               ...prevState.rival.team,
+//               dataPokemon: pokemonData,
+//             },
+//           },
+//         }));
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+//     fetchPokemonData();
+//   }, [state.you.user, state.battle.seed]);
+
+//   useEffect(() => {
+//     const basePokemon = [];
+
+//     state.rival.team.dataPokemon?.map((pokemon) => {
+//       const base = {
+//         levelPokemon: functions.getLevelPokemon(state.rival.user),
+//         noPokedex: pokemon.id,
+//         shiny: functions.getShiny(),
+//         genre: functions.getGenre(),
+//       }
+//       basePokemon.push(base);
+//     })
+
+//     setState({ ...state, rival: { ...state.rival, team: { ...state.rival.team, basePokemon } } })
+//   }, [state.rival.team.dataPokemon]);
+
+//   useEffect(() => {
+//     const fetchPokemonData = async () => {
+//       const pokemons = [];
+
+//       for (let i = 0; i < state.rival.team.basePokemon.length - 1; i++) {
+//         const basePokemon = state.rival.team.basePokemon[i];
+//         const pokemon = await functions.getPokemon(
+//           state.rival.user,
+//           state.rival.team.dataPokemon[i],
+//           basePokemon.levelPokemon,
+//           state.rival.rarity,
+//           basePokemon.shiny,
+//           basePokemon.genre
+//         );
+//         pokemons.push(pokemon);
+//       }
+
+//       //const pokemonSelected = pokemons[Math.floor(Math.random() * pokemons.length - 1)]
+//       const indexSelectorPokemon = Math.round(Math.random() * (pokemons.length - 1))
+//       const pokemonSelected = pokemons[indexSelectorPokemon]
+//       //console.log("pokemonSelected",indexSelectorPokemon,pokemons.length-1, pokemonSelected);
+//       const pokemonUserSelected = state.you.team?.pokemons[0]
+//       setState({ ...state, you: { ...state.you, team: { ...state.you.team, selected: pokemonUserSelected } }, rival: { ...state.rival, team: { ...state.rival.team, pokemons, selected: pokemonSelected } } })
+//     };
+//     console.log("11111111111 userState", userState)
+//     fetchPokemonData();
+//   }, [state.rival.team.basePokemon,]);
+
+//   useEffect(() => {
+//     if (state.battle.phaseSelections == false) {
+
+//     }
+//   }, [state.battle.phaseSelections]);
+
+
+
+
+
+//  
+
+// export default Trainer

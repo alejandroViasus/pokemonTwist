@@ -170,7 +170,7 @@ export const functions = {
         }
     },
 
-    getPokemon: async (trainer, database, levelPokemon, rarity, shiny, genre) => {
+    getPokemon: async (trainer, database, levelPokemon, rarity, shiny, genre, indexPokemon) => {
         return {
             genre: await genre,
             shiny: await shiny,
@@ -191,6 +191,7 @@ export const functions = {
             heald: 100,
             level: await levelPokemon,
             types: await functions.getTypes(database),
+            indexPokemon
         }
     },
 
@@ -537,21 +538,85 @@ export const variables = {
             phone: 0,
             addmin: false,
         },
-        cards: [],
-        rival: {},
-        battle: {},
-        filtersList: {
-            noPokedex: "",
-            name: "",
-            stadistic: "all",
-            type1: "all",
-            type2: "all",
-            rating: "all",
-            news: false,
-            favorite: false,
+        state: {
+            switch: true,
+            you: {
+                user: {
+                    version: "0.1",
+                    ban: false,
+                    email: "ejemplo@correo.com",
+                    gametag: "invitado",
+                    pictureTrainer: "0",
+                    experience: 0,
+                    tickets: 5,
+                    pokeballs: 50,
+                    bagPokemons: 30,
+                    coins: 1500,
+                    box: 5,
+                    wins: 0,
+                    loss: 0,
+                    league: 1,
+                    level: 1,
+                    fractionLevel: 5,
+                    phone: 0,
+                    addmin: false,
+                },
+                team: {
+                    pokemons: [],
+                    selected: {}
+                },
+            },
+            rival: {
+                user: {},
+                team: {
+                    basePokemon: [],
+                    dataPokemon: [],
+                    pokemons: [],
+                    selected: {}
+                },
+            },
+            battle: {
+                seed: 0,
+                timmer: 5,
+                phaseSelections: true,
+            },
+            app: {
+                loging: false,
+                register: false,
+                release: 0,
+            },
+            filtersList: {
+                noPokedex: "",
+                name: "",
+                stadistic: "all",
+                type1: "all",
+                type2: "all",
+                rating: "all",
+                news: false,
+                favorite: false,
+        
+            },
+            
 
-        },
+        
     },
+    cards: [],
+    rival: {},
+    battle: {
+
+    },
+    filtersList: {
+        noPokedex: "",
+        name: "",
+        stadistic: "all",
+        type1: "all",
+        type2: "all",
+        rating: "all",
+        news: false,
+        favorite: false,
+
+    },
+},
     imagesTrainers: [
         "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
         "https://assets.pokemon.com/assets/cms2/img/pokedex/full/026.png",
@@ -777,79 +842,79 @@ export const variables = {
 
     PokemonStrengthsTypes: {
         water: {
-          weaknesses: ["electric", "grass"],
-          strengths: ["fire", "ground", "rock"],
+            weaknesses: ["electric", "grass"],
+            strengths: ["fire", "ground", "rock"],
         },
         fire: {
-          weaknesses: ["water", "ground", "rock"],
-          strengths: ["grass", "ice", "bug", "steel"],
+            weaknesses: ["water", "ground", "rock"],
+            strengths: ["grass", "ice", "bug", "steel"],
         },
         grass: {
-          weaknesses: ["fire", "ice", "poison", "flying", "bug"],
-          strengths: ["water", "ground", "rock"],
+            weaknesses: ["fire", "ice", "poison", "flying", "bug"],
+            strengths: ["water", "ground", "rock"],
         },
         electric: {
-          weaknesses: ["ground"],
-          strengths: ["water", "flying"],
+            weaknesses: ["ground"],
+            strengths: ["water", "flying"],
         },
         ice: {
-          weaknesses: ["fire", "fighting", "rock", "steel"],
-          strengths: ["grass", "ground", "flying", "dragon"],
+            weaknesses: ["fire", "fighting", "rock", "steel"],
+            strengths: ["grass", "ground", "flying", "dragon"],
         },
         normal: {
-          weaknesses: [],
-          strengths: [],
+            weaknesses: [],
+            strengths: [],
         },
         ice: {
-          weaknesses: ["fire", "fighting", "rock", "steel"],
-          strengths: ["grass", "ground", "flying", "dragon"],
+            weaknesses: ["fire", "fighting", "rock", "steel"],
+            strengths: ["grass", "ground", "flying", "dragon"],
         },
         fighting: {
-          weaknesses: ["flying", "psychic", "fairy"],
-          strengths: ["normal", "ice", "rock", "dark", "steel"],
+            weaknesses: ["flying", "psychic", "fairy"],
+            strengths: ["normal", "ice", "rock", "dark", "steel"],
         },
         poison: {
-          weaknesses: ["ground", "psychic"],
-          strengths: ["grass", "fairy"],
+            weaknesses: ["ground", "psychic"],
+            strengths: ["grass", "fairy"],
         },
         ground: {
-          weaknesses: ["water", "grass", "ice"],
-          strengths: ["fire", "electric", "poison", "rock", "steel"],
+            weaknesses: ["water", "grass", "ice"],
+            strengths: ["fire", "electric", "poison", "rock", "steel"],
         },
         flying: {
-          weaknesses: ["electric", "ice", "rock"],
-          strengths: ["grass", "fighting", "bug"],
+            weaknesses: ["electric", "ice", "rock"],
+            strengths: ["grass", "fighting", "bug"],
         },
         psychic: {
-          weaknesses: ["bug", "ghost", "dark"],
-          strengths: ["fighting", "poison"],
+            weaknesses: ["bug", "ghost", "dark"],
+            strengths: ["fighting", "poison"],
         },
         bug: {
-          weaknesses: ["fire", "flying", "rock"],
-          strengths: ["grass", "psychic", "dark"],
+            weaknesses: ["fire", "flying", "rock"],
+            strengths: ["grass", "psychic", "dark"],
         },
         rock: {
-          weaknesses: ["water", "grass", "fighting", "ground", "steel"],
-          strengths: ["fire", "ice", "flying", "bug"],
+            weaknesses: ["water", "grass", "fighting", "ground", "steel"],
+            strengths: ["fire", "ice", "flying", "bug"],
         },
         ghost: {
-          weaknesses: ["ghost", "dark"],
-          strengths: ["psychic", "ghost"],
+            weaknesses: ["ghost", "dark"],
+            strengths: ["psychic", "ghost"],
         },
         dragon: {
-          weaknesses: ["ice", "dragon", "fairy"],
-          strengths: ["dragon"],
+            weaknesses: ["ice", "dragon", "fairy"],
+            strengths: ["dragon"],
         },
         steel: {
-          weaknesses: ["fire", "fighting", "ground"],
-          strengths: ["ice", "rock", "fairy"],
+            weaknesses: ["fire", "fighting", "ground"],
+            strengths: ["ice", "rock", "fairy"],
         },
         fairy: {
-          weaknesses: ["poison", "steel"],
-          strengths: ["fighting", "dragon", "dark"],
+            weaknesses: ["poison", "steel"],
+            strengths: ["fighting", "dragon", "dark"],
         },
-      },
-      
+    },
+
 
     stadistic: [
         ["---", ""],

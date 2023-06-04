@@ -12,7 +12,7 @@ import ReleasePokemon from '../ReleasePokemon/ReleasePokemon';
 
 
 function Card({ infoPokemon, changeUpdate, structure = "card" }) {
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.you.user)
   const dispatch = useDispatch();
   const iconImage = "";
   const onClick = (e) => { }
