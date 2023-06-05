@@ -9,6 +9,7 @@ import { dispatchState } from '../../../redux/actions';
 import Card from '../../components/Card/Card';
 import NavMenu from '../../components/NavMenu/NavMenu';
 import BattleField from '../../components/BatlleField/BattleField';
+import DisplayEndBattle from '../../components/DisplayEndBattle/DisplayEndBattle';
 
 
 function Trainer() {
@@ -40,14 +41,23 @@ function Trainer() {
               .then(data => {
     
                 if (data.length > 0) {
-                  const rarityUser = functions.getRarity(userState);    
+                  const rarityUser = functions.getRarity(userState); 
+                  
+                  data.map((pokemon,i)=>{
+                    pokemon.indexPokemon=i
+                  })
+
+                  console.log("USERpOKEMON: ", data);
+
                   const newState={ ...globalState,
                     battle:{...globalState.battle,
-                      phaseSelections:true
+                      phaseSelections:true,
                     }, 
                     you: { ...globalState.you,rarity:rarityUser,
                       team: { ...globalState.you.team, pokemons: data,selected:data[0] }} }
+
                   setState(newState)
+                  disPatch(dispatchState(newState))
                 } else {
                   alert("UPS!!! ,no posees en este momento un equipo Pokemon");
                   navigate(`/`, { replace: true });
@@ -63,14 +73,31 @@ function Trainer() {
   
 
    const reMatch = () => {
-    setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
+    //setState({ ...state, battle: { ...state.battle, seed: Math.random() * 2 } })
+    const newState={...state}
+    let index=Math.round(Math.random()*(newState.rival.team.pokemons.length-1))
+    if(index<=0){
+      index=0;
+    }
+    if(newState.rival.team.pokemons[index].heald===100){
+      newState.rival.team.selected=newState.rival.team.pokemons[index]
+      setState(newState)
+    }else{
+      reMatch()
+    }
   }
 
-  const ready = (pokemonLose, user="you") => {
-    console.log("Ok",state);
-    const toGlobalState={...state,battle:{...state.battle,phaseSelections:false}}
-    setState(toGlobalState);
-    
+  const ready = () => {
+    if(state.you.team.selected.heald===100&&state.rival.team.selected.heald===100){
+      const toGlobalState={...state,battle:{...state.battle,phaseSelections:false}}
+      console.log("Ok",toGlobalState);
+      setState(toGlobalState);
+      disPatch(dispatchState(toGlobalState))
+    }else if(state.rival.team.selected.heald!==100){
+      reMatch()
+    }else{
+      alert("tu pokemon ha sido ha sido inabilitado")
+    }
   }
 
   const selection = (e) => {
@@ -94,14 +121,39 @@ function Trainer() {
   const goToBack=()=>{
     navigate(`/`, { replace: true });
   }
+  const again= async(selection="")=>{
+    const newState= await functions.otherRival(globalState)
+    newState.you.team.pokemons.map((pokemon)=>{
+      pokemon.heald=100;
+    })
+    newState.battle.loseBattle="";
+    newState.battle.phaseSelections=true;
+    newState.battle.finalBattle=false;
+    console.log("AGAIN new State",newState);
+    disPatch(dispatchState(newState));
+    if(selection==="change-team"){
+      navigate(`/${params.gametag}/cards`, { replace: true });
+    }
+    if(selection==="go-to-home"){
+      navigate(`/`, { replace: true });
+    }
+  }
 
+  
+
+//! Falta hacer un chace Pokemon en medio de la partida y tambien llevar un contador de salud Actual de cda pokemon
 
  return (
        <div className='container-trainer'>
          <NavMenu switchMenu={state.switch} missOperation={missOperation} />
+         {(state.battle.finalBattle)&&(<div>
+          <DisplayEndBattle again={again}/>
+          </div>)}
          {(state.battle.phaseSelections) && (
            <div className="selections-team">
              <button onClick={goToBack}>BACK HOME</button>
+
+
              <div className="s">...........Selected.........userTeam</div>
              {(state.rival.team.selected?.noPokedex) && (
                <Card infoPokemon={state.rival.team.selected} structure='selectorCard' />
@@ -153,9 +205,9 @@ function Trainer() {
   
            // ! EMPEZAR EL COMBATE POKEMON 
          )}
-           {(!state.battle.phaseSelections) && (
+           {(!state.battle.phaseSelections&&!state.battle.finalBattle) && (
            <div className="place-stadium">
-             <BattleField lstate={state} ready={ready} />
+             <BattleField lstate={state} ready={ready}/>
            </div>
          )}
        </div>

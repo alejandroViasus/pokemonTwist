@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react';
 import { variables } from '../../../assets/variables';
 import { functionsBattle } from './BattleFielt';
+import { nextMatch ,dispatchState} from '../../../redux/actions';
 
 //! comonents 
 
@@ -25,7 +26,7 @@ function BattleField() {
         }
       }, 1000)
     } else {
-      console.log("00")
+      console.log("00",globalState)
       setState({ ...state, battle: { ...state.battle, startBattle: true } })
     }
   }, [counter]);
@@ -38,32 +39,64 @@ function BattleField() {
 
   useEffect(() => {
 
-    
       if (state.battle.startBattle === true) {
         console.log("start Batle",state)
       }
-      
+      console.log(state.rival.team.selected.heald,state.you.team.selected.heald)
       //!! no esta funcionando el selectroe del pokemon del usuario ( SELECTED )
-    // if (state.battle.rivalPokemon.life && state.battle.uPokemon.life) {
-    //   console.log("%%", state.battle.startBattle)
-    //     const newBattle = functionsBattle.battlePokemon({ ...state })
-    //     //console.log("state...component", { ...state.battle })
-    //     //console.log("newState...component", newBattle)
-    //     const intervalCounter = setTimeout(() => {
+    if (state.rival.team.selected.heald>0 && state.you.team.selected.heald>0) {
+      console.log("%%", state.battle.startBattle)
+        const newBattle = functionsBattle.setBattlePokemon({ ...state })
+        //console.log("state...component", { ...state.battle })
+        console.log("newState...component", newBattle)
+        const intervalCounter = setTimeout(() => {
 
-    //       setState({
-    //         ...state,
-    //         battle: newBattle,
-    //       })
-    //     }, 16)
-    //   }
-    // }
+          setState(newBattle)
+        }, 16)
+      }
+    
   }, [state.battle])
 
 
 
-  const nextMatch = () => {
+  const nextMatchUp = (pokemon,user,banPokemons) => {
+    console.log("reMatch")
 
+
+
+    const newState={...state}
+    let index=Math.round(Math.random()*(newState[user].team.pokemons.length-1))
+    if(index<=0){index=0};
+    console.log(index)
+    if(
+      newState[user].team.pokemons[index].heald===100&&
+      newState[user].team.selected.indexPokemon!==index
+      ){
+      const nextPokemon=newState[user].team.pokemons[index]
+      dispatch(nextMatch(pokemon,user,nextPokemon))
+    }else{
+      console.log("again",index)
+      let count=0;
+      newState[user].team.pokemons.map((pokemon)=>{
+        if(pokemon.heald===0){
+          count++;
+        }
+      })
+
+      if(count>=newState[user].team.pokemons.length-1){
+        endBattle(user);
+      }else{
+        console.log("counter: ", count ,newState[user].team.pokemons.length)
+        nextMatchUp(pokemon,user,banPokemons)
+      }
+    }
+  }
+
+  const endBattle=(lose)=>{
+    const newState={...state};
+    newState.battle.finalBattle=true;
+    newState.battle.loseBattle=lose
+    dispatch(dispatchState(newState))
   }
 
 
@@ -102,7 +135,7 @@ function BattleField() {
                 width: `${(sizeUpokemon) * 4}vw`,
               }}
             >
-              <PokemonInBattle role="user" pokemon={state.you} />
+              <PokemonInBattle role="user" pokemon={state.you.team.selected} />
             </div>
             <div className="timmer" id="timmer">
               {counter}
@@ -125,8 +158,11 @@ function BattleField() {
       </div >
 
 
-      <button onClick={nextMatch}>
-        nextMatch
+      <button onClick={()=>nextMatchUp(state.you.team.selected,"you")}>
+        nextMatch User
+      </button>
+      <button onClick={()=>nextMatchUp(state.rival.team.selected,"rival")}>
+        nextMatch Rival
       </button>
     </div>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import { dataBaseImages } from '../../../assets/variables'
 
 function PokemonInBattle({role,pokemon}) {
-    console.log(role,pokemon)
+   // console.log(role,pokemon)
     let noPokedex=pokemon?.noPokedex||1;
 
   return (

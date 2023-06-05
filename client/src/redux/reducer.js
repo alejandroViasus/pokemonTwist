@@ -1,11 +1,12 @@
 import {
     // LOGIN,
     // REGISTER
-    INITIAL_USER, 
+    INITIAL_USER,
     UPDATE,
     FILTER_LIST,
     RELEASE,
     DISPATCH_USER,
+    NEXT_MATCH
 } from "./actions";
 
 import { variables } from "../assets/variables";
@@ -20,49 +21,62 @@ const rootReducer = (state = initialState.state, action) => {
     switch (action.type) {
         default: return state;
 
-        case DISPATCH_USER:{
-            //console.log(INITIAL_USER, action.payload);
-            const newState=action.payload;
+        case DISPATCH_USER: {
+            console.log(INITIAL_USER, action.payload);
+            const newState = action.payload;
             return newState;
         }
 
-        case INITIAL_USER:{
+        case INITIAL_USER: {
             //console.log(INITIAL_USER, action.payload);
-            const newState={
+            const newState = {
                 ...state,
-                you:{
+                you: {
                     ...state.you,
-                    user:action.payload
+                    user: action.payload
                 }
             }
             return newState
         }
-        case UPDATE:{
-            const newState={
+        case UPDATE: {
+            const newState = {
                 ...state,
-                user:action.payload
+                user: action.payload
             }
             return newState
 
         }
 
-        case FILTER_LIST:{
-            const newState={
+        case FILTER_LIST: {
+            const newState = {
                 ...state,
-                filtersList:action.payload
+                filtersList: action.payload
             }
             return newState
         }
-        
-        case RELEASE:{
-            const newState={
+
+        case RELEASE: {
+            const newState = {
                 ...state,
-                app:{...state.app,release:action.payload}
+                app: { ...state.app, release: action.payload }
             }
             return newState;
         }
+        case NEXT_MATCH: {
+            const newState = {
+                //   ...state,[user]:{...state[user],team:{...state[user].team,pokemons:[...state[user].team.pokemons,]}}
+                ...state
+            }
+            newState[action.payload.user].team.pokemons[action.payload.pokemon.indexPokemon].heald=0;
+            newState[action.payload.user].team.selected=action.payload.nextPokemon;
+            newState.battle.phaseSelections=true;
+            console.log("STATE REDUCER NEXT MATCH",newState);
+            return newState;
+        }
+    }
+}
 
-        
+
         // case LOGIN: {
         //     const user = functions.user(state, action)
         //     console.log("LOGIN: __|", action.type, user.gametag);
@@ -73,9 +87,7 @@ const rootReducer = (state = initialState.state, action) => {
         //     console.log("register: __|", action.type, user.gametag);
         //     return user;
         // };
-    }
-
-}
+   
 
 export default rootReducer;
 

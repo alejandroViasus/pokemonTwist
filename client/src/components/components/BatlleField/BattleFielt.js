@@ -4,33 +4,84 @@ const { variables, functions } = require("../../../assets/variables");
 export const functionsBattle = {
 
     getStartDiretion: (speed) => {
-        const directionX = Math.random();
-        const directionY = Math.random();
-        const speedX = Math.round(Math.random() * speed);
-        const speedY = Math.round(Math.random() * speed);
-        const rotation = Math.random();
+        if (speed !== undefined) {
+            const directionX = Math.random();
+            const directionY = Math.random();
+            const speedX = Math.round(Math.random() * speed);
+            const speedY = Math.round(Math.random() * speed);
+            const rotation = Math.random();
 
-        const direction = []
+            const direction = []
 
-        if (directionX >= 0.5) {
-            direction.push("+");
-        } else {
-            direction.push("-");
+            if (directionX >= 0.5) {
+                direction.push("+");
+            } else {
+                direction.push("-");
+            }
+            if (directionY >= 0.5) {
+                direction.push("+");
+            } else {
+                direction.push("-");
+            } if (rotation >= 0.5) {
+                direction.push(0.1 + (rotation * speed / 4));
+            } else {
+                direction.push(-1 * (0.1 + (rotation * speed / 4)));
+            }
+            direction.push(speedX, speedY);
+            console.log("DIR",direction)
+            return direction;
         }
-        if (directionY >= 0.5) {
-            direction.push("+");
-        } else {
-            direction.push("-");
-        } if (rotation >= 0.5) {
-            direction.push(0.1 + (rotation * speed / 4));
-        } else {
-            direction.push(-1 * (0.1 + (rotation * speed / 4)));
-        }
-        direction.push(speedX, speedY);
-
-
-        return direction;
     },
+
+    //*BattlePokemon.................................................................................................................
+    setBattlePokemon: (state) => {
+        const newState = { ...state }
+
+        const uPokemon = state.you.team.selected;
+        const rivalPokemon = state.rival.team.selected;
+        const $rivalPokemon = document.getElementById("pokemon-rival-inbattle");
+        const $rivalPokemonImg = document.getElementById("rivalPokemonImg");
+        const $uPokemon = document.getElementById("pokemon-user-inbattle");
+        const $uPokemonImg = document.getElementById("userPokemonImg");
+        const $stadium = document.getElementById("battleField-stadium");
+
+        if (uPokemon.direction === undefined) {
+            let speed = functions.showStat(uPokemon, variables.stadistic[11][0])
+            console.log("DIRECTION ... ", speed)
+            console.log("no Direction");
+            uPokemon.direction = functionsBattle.getStartDiretion(speed);
+            uPokemon.positionX= 0;
+            uPokemon.positionY =0;
+        }
+        if (rivalPokemon.direction === undefined) {
+            let speed = functions.showStat(rivalPokemon, variables.stadistic[11][0])
+            console.log("DIRECTION ... ", speed)
+            console.log("no Direction");
+            rivalPokemon.direction = functionsBattle.getStartDiretion(speed)
+        }
+
+        const moveUPokemon = functionsBattle.setMovePokemon(uPokemon, $uPokemon, $stadium, "uPokemon")
+
+        console.log("444444444444444444444444", moveUPokemon)
+
+
+        console.log("ññññññññññññññññññññ", uPokemon)
+        console.log("aaaaaaaaaaaaaaaaaaaaa", rivalPokemon)
+
+        newState.battle.seed = Math.random() + Math.random() * Math.random() + Math.random();
+
+
+        return state
+
+    },
+
+    setMovePokemon: (pokemon, locationPokemon, locationStadium, flag) => {
+
+        console.log("MOVEEEEEEEEEE", pokemon)
+  
+    },
+    //*BattlePokemon.................................................................................................................
+
     //!BattlePokemon.................................................................................................................
     battlePokemon: (battle, campTotalState) => {
         console.log("InitBattlePokemon.....", battle)
@@ -47,7 +98,9 @@ export const functionsBattle = {
         const moveUPokemon = functionsBattle.movePokemon(uPokemon, $uPokemon, $stadium, "uPokemon");
         const moveRivalPokemon = functionsBattle.movePokemon(rivalPokemon, $rivalPokemon, $stadium, "rivalPokemon");
 
-        
+
+
+
         //console.log("uPokemon", moveUPokemon);
         //console.log("RivalPokemon", moveRivalPokemon);
         uPokemon.positionX = moveUPokemon[0];
@@ -61,14 +114,14 @@ export const functionsBattle = {
             uPokemon.rotation = uPokemon.rotation + 360;
             //console.log("change", uPokemon.rotation);
         }
-        
-        
+
+
         //uPokemon.direction=[moveUPokemon[3],moveUPokemon[4]]
         uPokemon.direction[0] = moveUPokemon[3];
         uPokemon.direction[1] = moveUPokemon[4];
         uPokemon.speedX = moveUPokemon[5];
         uPokemon.speedY = moveUPokemon[6];
-        
+
         rivalPokemon.positionX = moveRivalPokemon[0];
         rivalPokemon.positionY = moveRivalPokemon[1];
         rivalPokemon.rotation = moveRivalPokemon[2];
@@ -80,41 +133,41 @@ export const functionsBattle = {
             rivalPokemon.rotation = rivalPokemon.rotation + 360;
             console.log("change", rivalPokemon.rotation);
         }
-        
-        
+
+
         //rivalPokemon.direction=[moveRivalPokemon[3],moveRivalPokemon[4]]
         rivalPokemon.direction[0] = moveRivalPokemon[3];
         rivalPokemon.direction[1] = moveRivalPokemon[4];
         rivalPokemon.speedX = moveRivalPokemon[5];
         rivalPokemon.speedY = moveRivalPokemon[6];
-        
+
         //console.log("assingature", moveRivalPokemon)
-        
+
         if ($rivalPokemon !== undefined && $rivalPokemon !== null || $uPokemon !== undefined && $uPokemon !== null) {
-            
+
             const limitRivalPokemon = $rivalPokemon.getBoundingClientRect();
             const limitUPokemon = $uPokemon.getBoundingClientRect();
             const limitStadium = $stadium.getBoundingClientRect();
             const fractionStadiumX = limitStadium.width / 1000;
             const fractionStadiumY = limitStadium.height / 1000;
             //console.log("LIMI STADIUM: ", limitStadium);
-            
-            
+
+
             $rivalPokemon.style.transform = `translate(${moveRivalPokemon[0] * fractionStadiumX}px,${moveRivalPokemon[1] * fractionStadiumY}px) rotate(${moveRivalPokemon[2] || rivalPokemon.rotation}deg)`;
-            $rivalPokemonImg.style.transform = `rotate(${-1*(moveRivalPokemon[2] || rivalPokemon.rotation)}deg)`;
-            
-            
-            
+            $rivalPokemonImg.style.transform = `rotate(${-1 * (moveRivalPokemon[2] || rivalPokemon.rotation)}deg)`;
+
+
+
             $uPokemon.style.transform = `translate(${moveUPokemon[0] * fractionStadiumX}px,${moveUPokemon[1] * fractionStadiumY}px) rotate(${moveUPokemon[2] || uPokemon.rotation}deg)`;
-            $uPokemonImg.style.transform = `rotate(${-1*(moveUPokemon[2] || uPokemon.rotation)}deg)`;
+            $uPokemonImg.style.transform = `rotate(${-1 * (moveUPokemon[2] || uPokemon.rotation)}deg)`;
         }
-        
+
         const newBattle = { ...battle, uPokemon, rivalPokemon }
-        
+
         const otherBattle = functionsBattle.phasePunck(newBattle);
         //!0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000vamos Aqui
         //!000 El estado esta Cambiando y entra en cnflicto Al intentar cambiar el estado local , se debe intentar el mismo proceso pero en vez de usar u estado local se debe implementar en el local
-        
+
         //console.log("otherBattle..........", otherBattle);
         return otherBattle;
     },
@@ -377,8 +430,8 @@ export const functionsBattle = {
                 pointsPokemon.LT.y < locationRivalPokemon.bottom
             ) {
 
-                if(rival!=="object"){
-                    functionsBattle.collision(pokemon, flag,dataRival);
+                if (rival !== "object") {
+                    functionsBattle.collision(pokemon, flag, dataRival);
                 }
                 pokemon.direction[0] = "+";
 
@@ -394,8 +447,8 @@ export const functionsBattle = {
                 pointsPokemon.RT.x > locationRivalPokemon.left &&
                 pointsPokemon.RT.x < locationRivalPokemon.right
             ) {
-                if(rival!=="object"){
-                    functionsBattle.collision(pokemon, flag,dataRival);
+                if (rival !== "object") {
+                    functionsBattle.collision(pokemon, flag, dataRival);
                 }
                 pokemon.direction[1] = "+";
             };
@@ -410,8 +463,8 @@ export const functionsBattle = {
                 pointsPokemon.RT.y > locationRivalPokemon.top &&
                 pointsPokemon.RT.y < locationRivalPokemon.bottom
             ) {
-                if(rival!=="object"){
-                    functionsBattle.collision(pokemon, flag,dataRival);
+                if (rival !== "object") {
+                    functionsBattle.collision(pokemon, flag, dataRival);
                 }
                 pokemon.direction[0] = "-";
             };
@@ -427,8 +480,8 @@ export const functionsBattle = {
                 pointsPokemon.RB.x < locationRivalPokemon.right
 
             ) {
-                if(rival!=="object"){
-                    functionsBattle.collision(pokemon, flag,dataRival);
+                if (rival !== "object") {
+                    functionsBattle.collision(pokemon, flag, dataRival);
                 }
                 pokemon.direction[1] = "-";
             };
@@ -438,58 +491,58 @@ export const functionsBattle = {
         }
         return pokemon;
     },
-    collision: (pokemon, flag,rival) => {
+    collision: (pokemon, flag, rival) => {
 
-        let rotation=pokemon.rotation
-
-        
+        let rotation = pokemon.rotation
 
 
-        let Type=pokemon.types[0];
-        let TypeOponent=rival.types[0];
 
-        if(pokemon.rotation>180&&pokemon.rotation<=270){
-            if(pokemon.types.length>1){
-                Type=pokemon.types[1];
-            }else{
-                Type=pokemon.types[0];
+
+        let Type = pokemon.types[0];
+        let TypeOponent = rival.types[0];
+
+        if (pokemon.rotation > 180 && pokemon.rotation <= 270) {
+            if (pokemon.types.length > 1) {
+                Type = pokemon.types[1];
+            } else {
+                Type = pokemon.types[0];
             }
         }
-        if(rival.rotation>180&&rival.rotation<=270){
-            if(rival.types.length>1){
-                TypeOponent=rival.types[1];
-            }else{
-                TypeOponent=rival.types[0];
+        if (rival.rotation > 180 && rival.rotation <= 270) {
+            if (rival.types.length > 1) {
+                TypeOponent = rival.types[1];
+            } else {
+                TypeOponent = rival.types[0];
             }
         }
 
-        let scaleAttack=1;
-        
-        console.log(Type,TypeOponent);
+        let scaleAttack = 1;
 
-        if(variables.PokemonStrengthsTypes[Type].weaknesses.includes(TypeOponent)){
-            scaleAttack=0.5;
-        } 
+        console.log(Type, TypeOponent);
 
-        if (variables.PokemonStrengthsTypes[Type].strengths.includes(TypeOponent)){
-            scaleAttack=2;
+        if (variables.PokemonStrengthsTypes[Type].weaknesses.includes(TypeOponent)) {
+            scaleAttack = 0.5;
+        }
+
+        if (variables.PokemonStrengthsTypes[Type].strengths.includes(TypeOponent)) {
+            scaleAttack = 2;
         }
 
 
-        scaleAttack=Math.round(scaleAttack*(rival.attack*Math.random())+rival.attack/2);
+        scaleAttack = Math.round(scaleAttack * (rival.attack * Math.random()) + rival.attack / 2);
 
-        let punch=scaleAttack-pokemon.deffence
+        let punch = scaleAttack - pokemon.deffence
 
-        if(punch<=0){
-            punch=0;
+        if (punch <= 0) {
+            punch = 0;
         }
 
-        pokemon.actualHealdToCero=pokemon.actualHealdToCero+punch  
+        pokemon.actualHealdToCero = pokemon.actualHealdToCero + punch
 
-        console.log(`//=>`,flag,TypeOponent,rival.attack,`// x${punch} //=>`,Type,pokemon.deffence,pokemon.actualHealdToCero,pokemon.hp)
+        console.log(`//=>`, flag, TypeOponent, rival.attack, `// x${punch} //=>`, Type, pokemon.deffence, pokemon.actualHealdToCero, pokemon.hp)
 
-        if(pokemon.actualHealdToCero>=pokemon.hp){
-            pokemon.life=false;
+        if (pokemon.actualHealdToCero >= pokemon.hp) {
+            pokemon.life = false;
         }
 
 

@@ -6,6 +6,7 @@ export const UPDATE = "UPDATE";
 export const FILTER_LIST = "FILTER_LIST";
 export const RELEASE = "RELEASE";
 export const DISPATCH_USER = "DISPATCH_USER";
+export const NEXT_MATCH = "NEXT_MATCH";
 
 
 export const dispatchState=(state) => {
@@ -18,6 +19,17 @@ export const dispatchState=(state) => {
         })
     }
 };
+
+export const nextMatch=(pokemon,user,nextPokemon)=>{
+    if(pokemon.indexPokemon!==undefined){
+        return (dispatch) => {
+            dispatch({
+                type: NEXT_MATCH,
+                payload: {pokemon,user,nextPokemon}
+            })
+        }
+    }
+}
 
 export const initialUser = (user) => {
     return (dispatch) => {
