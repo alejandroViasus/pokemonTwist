@@ -17,6 +17,7 @@ function Navbar() {
       if (isAuthenticated && !userState.app.loging) {
         //console.log("userAutenticated", user);
         try {
+          
           const response = await fetch(`http://localhost:9000/api/users/email/${user.email}`);
           const data = await response.json();
           if (data.email === undefined) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react';
-import { variables } from '../../../assets/variables';
+import { functions, variables } from '../../../assets/variables';
 import { functionsBattle } from './BattleFielt';
 import { nextMatch ,dispatchState} from '../../../redux/actions';
 
@@ -53,18 +53,33 @@ function BattleField() {
 
           setState(newBattle)
         }, 16)
+      }else{
+        console.log("finalBattle",state) 
+
+        const newState={...state}
+        newState.you.team.pokemons[newState.you.team.selected.indexPokemon].actualHealdToCero=newState.you.team.selected.actualHealdToCero;
+        newState.you.team.pokemons[newState.you.team.selected.indexPokemon].heald=newState.you.team.selected.heald;
+        
+        newState.rival.team.pokemons[newState.rival.team.selected.indexPokemon].actualHealdToCero=newState.rival.team.selected.actualHealdToCero;
+        newState.rival.team.pokemons[newState.rival.team.selected.indexPokemon].heald=newState.rival.team.selected.heald;
+        if(newState.you.team.selected.heald<=0){
+          console.log("??= finalBattle lossek you")
+          nextMatchUp(state.you.team.selected,"you",newState)
+        }
+        if(newState.rival.team.selected.heald<=0){
+          console.log("??= finalBattle lossek rival")
+          nextMatchUp(state.rival.team.selected,"rival",newState)
+        }
       }
     
   }, [state.battle])
 
 
 
-  const nextMatchUp = (pokemon,user,banPokemons) => {
-    console.log("reMatch")
-
-
-
+  const nextMatchUp = (pokemon,user,state) => {
     const newState={...state}
+    console.log("reMatch",user,newState)
+
     let index=Math.round(Math.random()*(newState[user].team.pokemons.length-1))
     if(index<=0){index=0};
     console.log(index)
@@ -78,24 +93,28 @@ function BattleField() {
       console.log("again",index)
       let count=0;
       newState[user].team.pokemons.map((pokemon)=>{
-        if(pokemon.heald===0){
+        if(pokemon.heald===0||false){
           count++;
+          console.log("Count search :", count, newState[user].team.pokemons.length)
         }
       })
 
-      if(count>=newState[user].team.pokemons.length-1){
-        endBattle(user);
+      if(count>=newState[user].team.pokemons.length&&newState[user].team.pokemons[index].heald===0){
+        console.log("Count", count, newState[user].team.pokemons.length)
+        endBattle(user,newState);
       }else{
-        console.log("counter: ", count ,newState[user].team.pokemons.length)
-        nextMatchUp(pokemon,user,banPokemons)
+        console.log("counter:__", count ,newState[user].team.pokemons.length)
+        nextMatchUp(pokemon,user,newState)
       }
     }
   }
-
-  const endBattle=(lose)=>{
+  
+  const endBattle=(lose,state=state)=>{
     const newState={...state};
     newState.battle.finalBattle=true;
     newState.battle.loseBattle=lose
+    newState.battle.seed=Math.random()*Math.random();
+    console.log("__!!!!!!!!!!!!!!!!!!!!!!!! END",newState)
     dispatch(dispatchState(newState))
   }
 
@@ -152,16 +171,17 @@ function BattleField() {
               <PokemonInBattle role="rival" pokemon={state.rival.team.selected} />
             </div>
           </div>
-          <div>uPokemon: {state.you.team.selected?.name}: {globalState.you.team.selected?.hp}</div>
+          <div>uPokemon: {state.you.team.selected?.name}: {functions.showStat(state.you.team.selected,variables.stadistic[1][0])-(globalState.you.team.selected?.actualHealdToCero||0)}</div> 
+          <div>rivalPokemon: {state.rival.team.selected?.name}: {functions.showStat(state.rival.team.selected,variables.stadistic[1][0])-(globalState.rival.team.selected?.actualHealdToCero||0)}</div> 
          
         </div>
       </div >
 
 
-      <button onClick={()=>nextMatchUp(state.you.team.selected,"you")}>
+      <button onClick={()=>nextMatchUp(state.you.team.selected,"you",state)}>
         nextMatch User
       </button>
-      <button onClick={()=>nextMatchUp(state.rival.team.selected,"rival")}>
+      <button onClick={()=>nextMatchUp(state.rival.team.selected,"rival",state)}>
         nextMatch Rival
       </button>
     </div>

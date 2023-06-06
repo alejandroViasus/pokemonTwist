@@ -68,7 +68,14 @@ function Trainer() {
             console.log(error);
           }
         }
-      }, [userState, state.battle.seed]);
+      }, [userState, state.battle.seed,state.battle.finalBattle]);
+
+      useEffect(()=>{
+        console.log("__ABISMAL", globalState)
+        if(globalState?.battle.finalBattle){
+          setState(globalState)
+        };
+      },[globalState])
 
   
 
@@ -149,7 +156,7 @@ function Trainer() {
          {(state.battle.finalBattle)&&(<div>
           <DisplayEndBattle again={again}/>
           </div>)}
-         {(state.battle.phaseSelections) && (
+         {(state.battle.phaseSelections&&!state.battle.finalBattle) && (
            <div className="selections-team">
              <button onClick={goToBack}>BACK HOME</button>
 
