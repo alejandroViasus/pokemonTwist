@@ -1,0 +1,225 @@
+.content-home {
+
+    width: 98.5vw;
+    background-color: @bg-color-black;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    min-height: 700vh;
+    font-family: @fontAlmarai;
+
+    .boddy-home-image {
+        position: absolute;
+        top: 0%;
+        width: 85%;
+        height: 700vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: @bg-color-black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-image: inherit;
+        filter: blur(10px); /* Aplica el efecto de desenfoque */
+        backdrop-filter: brightness(0.7) blur(5px); /* Aplica el efecto de cristal biselado */
+    }
+
+    .boddy-home {
+        position: absolute;
+        top: 0%;
+        width: 85%;
+        height: 700vh;
+        background-position: center;
+        background-repeat: no-repeat;
+      
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+
+        .image-logo {
+            width: 100%;
+            z-index: 2;
+            img {
+                width: 60%;
+            }
+        }
+
+        .options-home {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+
+            .button-init {
+                z-index: 1;
+                width: 30%;
+                background-color: rgba(58, 176, 222, 0.4);
+                border: 2px solid rgba(138, 222, 222, 1);
+                padding: 15px;
+                border-radius: 30px;
+                color: @bg-color-white;
+                transition: 0.2s;
+                cursor: pointer;
+                font-size: 30px;
+
+                &:hover {
+                    scale: 1.05;
+                    background-color: rgba(58, 176, 222, 0.8);
+                }
+            }
+        }
+
+        //!-----------------------------------------------------------------
+        .sky-principal {
+            position: absolute;
+            top: 60vh;
+            width: 97vw;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+            overflow: hidden;
+            //background-color: aqua;
+            img{
+                position: relative;
+                width: 90%;
+
+            }
+            
+            #skyPrincipal2{
+                position: absolute;
+                //background-color: aqua;
+                z-index: 1;
+            }
+            #skyPrincipal2{
+                position: absolute;
+                //background-color: aqua;
+                opacity: 0.5;
+                z-index: 0;
+            }
+        }
+
+        //!-----------------------------------------------------------------
+        .sky {
+            height: 100vh;
+            width: 97vw;
+            overflow: hidden;
+            //background-color: orangered;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .sky1 {
+                width: 20%;
+                position: relative;
+                top: 10%;
+                right: 40%;
+                //background-color: red;
+                z-index: 1;
+            }
+            
+            .sky2 {
+                width: 20%;
+                position: absolute;
+                top: 50%;
+                right: 0%;
+                //background-color: blue;
+            }
+            
+            .bgSkys{
+                position: absolute;
+                //background-color: red;
+                top: 10%;
+                
+            }
+        }
+
+        //!-----------------------------------------------------------------
+
+        .info{
+            margin-top: 15%;
+            width: 60vw;
+    
+            display: flex;
+            z-index: 3;
+            //background-color: rgba(138, 222, 222, 0.1);
+            align-items: center;
+            flex-direction: column;
+            gap: 7vh;
+        }
+    }
+}
+
+.space{
+    margin-top: 25vh;
+}
+
+
+//!--------------------------FRAMES ----------------------------------------
+
+@keyframes skyHorizontal  {
+    0% {
+        top: 40%;
+        left: 0%;
+        opacity: 0.4;
+    }
+    25% {
+        top: 38%;
+        left: 5%;
+        opacity: 0.5;
+    }
+    50% {
+        top: 36%;
+        left: 0%;
+        opacity: 0.4;
+    }
+    75% {
+        top: 38%;
+        left: 5%;
+        opacity: 0.5;
+    }
+    100% {
+        top: 40%;
+        left: 0%;
+        opacity: 0.4;
+    }
+  }
+
+  @keyframes fadeScale {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeScaleHorizontal  {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+      left: 0%;
+    }
+    10% {
+      opacity: 0.3;
+      transform: scale(1);
+      left: 10%;
+    }
+    
+    100% {
+        left: 100%;
+      opacity: 0.1;
+      transform: scale(1);
+    }
+  }

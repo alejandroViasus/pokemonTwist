@@ -17,7 +17,6 @@ function Navbar() {
       if (isAuthenticated && !userState.app.loging) {
         //console.log("userAutenticated", user);
         try {
-          
           const response = await fetch(`http://localhost:9000/api/users/email/${user.email}`);
           const data = await response.json();
           if (data.email === undefined) {
@@ -41,17 +40,8 @@ function Navbar() {
 
   return (
     <div className='content-nav'>
-      <div className="info">
-        <div className="user-principal">
-          <div className='user-name'>{userState.gametag}</div>
-          <div className='user-progress'>{/* Aquí puedes usar userState.experience para mostrar el progreso */}</div>
-        </div>
-        {isAuthenticated ? <LogOutButton /> : <LoginButton />}
-        <div className="user-picture">
-          <img className='picture' src={userState.pictureTrainer} alt="" />
-        </div>
-      </div>
-      <Outlet /> 
+      {isAuthenticated ? <LogOutButton /> : <LoginButton />}
+      <Outlet />
     </div>
   );
 }
