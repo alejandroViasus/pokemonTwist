@@ -26,7 +26,7 @@ function NavBar() {
       <div className="NavBar-league">{userState.league}</div>
       <div className="NavBar-img">
         <img
-          src={`${variables.imagesTrainers[userState.pictureTrainer]}`}
+          src={`${variables.imagesTrainers[userState.pictureTrainer][0]}`}
           alt={`image user ${userState.gametag}`}
           style={{ height: '150px', width: 'auto' }}
         />

@@ -54,7 +54,10 @@ function Trainer() {
                       phaseSelections:true,
                     }, 
                     you: { ...globalState.you,rarity:rarityUser,
-                      team: { ...globalState.you.team, pokemons: data,selected:data[0] }} }
+                      team: { ...globalState.you.team, pokemons: data,selected:data[0] 
+                      }
+                    }
+                   }
 
                   setState(newState)
                   disPatch(dispatchState(newState))

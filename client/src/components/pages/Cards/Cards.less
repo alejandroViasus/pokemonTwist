@@ -1,0 +1,114 @@
+.content-cards {
+    width: @margensViewPort;
+    height: 100vh;
+    background-color: gray;
+    background: linear-gradient(to bottom, rgba(51, 85, 183, 1), rgba(58, 142, 201, 1));
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+    align-items: center;
+
+
+    .nav {
+        position: relative;
+        width: @totalSizeViewPortX;
+        top: 2%
+    }
+
+    .boddy {
+        width: 95%;
+        height: 80%;
+        display: flex;
+        gap: 1%;
+        background-color: @cards-color-tables;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .content-boddy {
+            //background-color: @cards-color-tables;
+            border-radius: @table-border-radius;
+            //background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            height: 95%;
+            //background-color: aqua;
+            gap: 3%;
+
+            .place-filter {
+                width: 90%;
+                height: 10%;
+                background-color: rgba(51, 85, 183, 0.1);
+                display: flex;
+                align-items: center;
+            }
+
+            .place-cards {
+                width: 90%;
+                height: 95%;
+                border-radius: @table-border-radius;
+                //background-color: rgba(51, 185, 183, 0.6);
+                display: grid;
+                align-items: center;
+                justify-content: center;
+                grid-template-columns: repeat(4, 23.5%);
+                grid-template-rows: repeat(2, 49%);
+                gap: 2% 2%;
+
+                .statemet-card {
+                    height: 100%;
+                    width: 100%;
+                    //background-color: rgba(51, 185, 183, 1);
+
+                    &:hover {
+                        scale: 1.1;
+                    }
+                }
+
+            }
+
+            .place-selector-page {
+                width: 90%;
+                height: 8%;
+                background-color: rgba(51, 85, 183, 0.11);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        .perfil {
+            width: 25%;
+            height: 95%;
+            //background-color: blueviolet;
+            background-color: @navMenu-color-blue;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 2%;
+
+            .perfil-user {
+                height: 60%;
+                width: 100%;
+                //background-color: rgba(22,22,222,1);
+            }
+
+            .team-user {
+                height: 37%;
+                width: 100%;
+                //background-color: rgba(22, 22, 22, 0.3);
+            }
+
+        }
+
+        .cards {
+            width: 71%;
+            height: 95%;
+            //background-color: blueviolet;
+        }
+    }
+}

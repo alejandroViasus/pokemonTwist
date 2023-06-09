@@ -8,6 +8,8 @@ import { functions, variables } from '../../../assets/variables';
 import NavMenu from '../../components/NavMenu/NavMenu';
 import NavBar from '../../components/NavBar/NavBar';
 
+//!icons
+
 function HomeLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,14 +35,12 @@ function HomeLogin() {
       // setState({ ...state, rival: { ...state.rival, user: rival, rarity: rarityRival }, you: { ...state.you, user: userState, team: { ...state.you.team, pokemons: data }, rarity: rarityUser } })
 
       console.log(state);
-      const posiblesPokemons = [
-        functions.getNoPokedex(),
-        functions.getNoPokedex(),
-        functions.getNoPokedex(),
-        functions.getNoPokedex(),
-        functions.getNoPokedex(),
-        functions.getNoPokedex(),
-      ];
+      const posiblesPokemons = [];
+
+      for (let index = 0; index < variables.sizeTeam; index++) {
+        console.log(index)
+        posiblesPokemons.push(functions.getNoPokedex())
+      }
 
       const fetchPokemonData = async () => {
         try {
@@ -90,11 +90,11 @@ function HomeLogin() {
 
   useEffect(() => {
 
-    if (state.rival.team.pokemons.length < 5) {
+    if (state.rival.team.pokemons.length <= variables.sizeTeam-1) {
       const fetchPokemonData = async () => {
         const pokemons = [];
 
-        for (let i = 0; i < state.rival.team.basePokemon.length - 1; i++) {
+        for (let i = 0; i < state.rival.team.basePokemon.length ; i++) {
           const basePokemon = state.rival.team.basePokemon[i];
           const pokemon = await functions.getPokemon(
             state.rival.user,
@@ -141,9 +141,7 @@ function HomeLogin() {
 
   return (
     <div>
-      <div className="place-menu-nav">
         <NavMenu />
-      </div>
 
       <div className="body-login-home">
         <div className="place-NavBar">

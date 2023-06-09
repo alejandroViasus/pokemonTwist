@@ -1,26 +1,36 @@
+#root{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    background-color: red
+}
+
 //! App
 @import "../src/App.less";
 @import "../src/index.less";
 @import "./variables.less";
 
 
+
+//! pages
+@import "../src/components/pages/Home/Home.less";//! -- Home
+@import "../src/components/pages/HomeLoging/HomeLoging.less";//! --HomeLoging
+@import "../src/components/pages/Cards/Cards.less";//! -- Cards
+
+
 //! Components
 
-//?Home
-@import "../src/components/pages/Home/Home.less";
-//?InfoCard
-@import "../src/components/components/InfoCard/InfoCard.less";
 
-//?Envelope
-@import "../src/components/components/Envelope/Envelope.less";
-
-
-
-
-//?trainer
-@import "../src/components/pages/Trainer/Trainer.less";
-//?battleField
-@import "../src/components/components/BatlleField/BattleField.less";
-
-//?pokemonInBattle
-@import "../src/components/components/PokemonInBattle/PokemonInBattle.less";
+@import "../src/components/pages/Cards/Cards.less";//! -- Cards
+@import "../src/components/components/Card/Card.less";//! -- Card
+@import "../src/components/components/Envelope/Envelope.less"; //! --Envelope
+@import "../src/components/components/InfoCard/InfoCard.less";//!-- InfoCard
+@import "../src/components/components/NavMenu/NavMenu.less"; //! --NavMenu
+@import "../src/components/pages/Trainer/Trainer.less";//! -- trainer
+@import "../src/components/components/BatlleField/BattleField.less";//! -- battleField
+@import "../src/components/components/PokemonInBattle/PokemonInBattle.less";//! -- pokemonInBattle
+@import "../src/components/components/Perfil/Perfil.less";//! -- erfil
+@import "../src/components/Icons/SelectorIcon.less";//! -- selectorIcons
+@import "../src/components/components/MiniTeamBox/MiniTeamBox.less";//! -- miniTeamBox
+@import "../src/components/components/separator/Separator.less";//! -- separator

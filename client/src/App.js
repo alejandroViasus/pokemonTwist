@@ -24,6 +24,7 @@ function App() {
         <Route exact path="/register/trainer" element={<Register/>} />
         <Route exact path="/:gametag/box" element={<Box/>} />
         <Route exact path="/:gametag/cards" element={<Cards/>} />
+        <Route exact path="/:gametag/travel" element={<Cards/>} />
         <Route exact path="/:gametag/trainer" element={<Trainer/>} />
       </Routes>
 

@@ -1,0 +1,306 @@
+.content-card {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    //background-color:rgba(115, 52, 109, 0.8);
+
+    //!---------------------------------------------- | MINI |-------------------
+    .structure-card-mini {
+        //background-color: blue;
+        padding: 10% 0%;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border-radius: @table-border-radius;
+        background-color: rgba(22, 22, 22, 0.1);
+        transition: all 0.3s;
+
+        &:hover {
+            scale: 1.1;
+            background-color: rgba(22, 22, 22, 0.3);
+        }
+
+        .icon-close {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background-color: rgba(215, 52, 19, 0.9);
+            z-index: 2;
+            right: 4%;
+            top: 4%;
+            padding: 2%;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .x {
+                font-weight: 600;
+                color: white;
+            }
+        }
+
+        .sprites {
+            width: 90%;
+            //background-color: antiquewhite;
+        }
+    }
+
+
+    //!---------------------------------------------- | BIG |--------------------
+
+    .structure-card {
+        height: 90%;
+        width: 90%;
+        //background-color: aqua;
+        transition: all 0.4s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border-radius: @card-border-radius;
+        border: 5px solid rgba(22, 22, 22, 0.3);
+
+        &:hover {
+            scale: 1.1;
+
+            .secundary-bg {
+                height: 100%;
+                opacity: 1;
+                transition: 1s;
+
+            }
+            
+            .aura-bg {
+                height: 94%;
+                opacity: 3;
+                transition: 0.8s;
+                animation: rotar 15s infinite linear;
+            }
+            
+            .semi-circle {
+                opacity: 0;
+                width: 30%;
+                transition: opacity 1s width 0.5s;
+            }
+
+            .content-icon-selector {
+                scale: 2.1;
+                transition: 1s;
+            }
+            
+            .content-icon-selector-mini {
+                transition: 0.3s;
+                top: 0.8%;
+                scale: 0.3;
+            }
+            
+            .img-pokemon {
+                width: 80%;
+                transition: 1s;
+            }
+
+            .shadow{
+                bottom: 20%;
+                background-color: rgba(22,22,22,0);
+                transition: all 0.3s;
+            }
+           
+            
+            .stats-simple {
+                bottom: -7%;
+                height: 15%;
+                transition: all 0.4s;
+                .content-stat {
+                    border-radius: @table-border-radius;
+                    gap: 0%;
+                    transition: all 0.4s;
+                    //background-color: aquamarine;
+                    .stat-name {
+                        display: flex;
+                        opacity: 1;
+                        top: 8%;
+                        scale: 1.1;
+                        transition: all 0.4s;
+                    }
+                    .separate {
+                        display: flex;
+                        opacity: 1;
+                        transition: all 0.4s;
+                    }
+                    
+                    .value {
+                        //font-family:@font-anton;
+                        scale: 1;
+                        bottom: 5%;
+                        transition: all 0.4s;
+                    }
+                }
+            }
+        }
+
+        .secundary-bg {
+            position: absolute;
+            height: 70%;
+            opacity: 0;
+            filter: blur(5px);
+            
+            transition: 1s;
+
+        }
+
+        .aura-bg {
+            position: absolute;
+            height: 10%;
+            opacity: 0;
+            filter: blur(9px);
+            transition: 1s;
+        }
+
+        .content-icon-selector {
+            position: absolute;
+            //background-color: aqua;
+            transition: 1s;
+
+        }
+
+        .semi-circle {
+            opacity: 0.4;
+            width: 95%;
+            transition: all 0.54s;
+        }
+
+        .content-icon-selector-mini {
+            position: absolute;
+            top: 1%;
+            left: 2%;
+            height: 10%;
+            width: 10%;
+            scale: 0.2;
+            transition: 0.3s;
+            // background-color: aqua;
+
+        }
+
+        .img-titleCard {
+            position: absolute;
+            width: 100%;
+            top: 3%;
+        }
+
+        .img-pokemon {
+            position: absolute;
+            width: 75%;
+            transition: 1s;
+        }
+
+        .shadow{
+            bottom: 24%;
+            position: absolute;
+            color: rgba(0, 0, 0, 0);
+            border-radius: 50%;
+            width: 55%;
+            height: 9%;
+            background-color: rgba(22,22,22,0.5);
+            filter: blur(9px);
+            transition: all 0.3s;
+        }
+
+        .name {
+            font-family: @font-comfortaa;
+            position: absolute;
+            top: 5%;
+            width: auto;
+            left: 20%;
+            text-align: left;
+        }
+
+        .no-pokedex {
+            font-family: @font-comfortaa;
+            position: absolute;
+            top: 13.5%;
+            font-size: 80%;
+            width: auto;
+            left: 8%;
+            text-align: left;
+            font-weight: 900;
+        }
+
+        .stats-simple {
+            position: absolute;
+           
+            bottom: -5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 10%;
+            //background-color: aqua;
+            gap: 3%;
+            transition: all 0.4s;
+
+            .content-stat {
+                border-radius: @card-border-radius;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 25%;
+                height: 100%;
+                gap: 1%;
+                //background-color: aquamarine;
+                color: @navMenu-color-white;
+                border: 2px solid rgba(22, 22, 22, 0.5);
+                position: relative;
+                transition: all 0.4s;
+                
+                .stat-name {
+                    position: absolute;
+                    display: none;
+                    opacity: 0;
+                    font-weight: 700;
+                    transition: all 0.4s;
+                }
+                
+                .separate {
+                    position: absolute;
+                    display: none;
+                    opacity: 0;
+                    width: 100%;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: all 0.4s;
+                }
+                
+                .value {
+                    position: absolute;
+                    //font-family:@font-anton;
+                    scale: 1.1;
+                    font-weight: 900;
+                    transition: all 0.4s;
+                }
+            }
+        }
+        
+    }
+    
+}
+
+@keyframes rotar {
+    0% {
+        transform: rotate(0deg);
+    }
+    
+    100% {
+        transform: rotate(360deg);
+    }
+}

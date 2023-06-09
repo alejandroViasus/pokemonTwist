@@ -1,0 +1,97 @@
+.content-nav-menu {
+    width: 100%;
+    height: 8vh;
+    background-color: @navMenu-color-blue;
+    color: @navMenu-color-white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1%;
+    overflow: hidden;
+
+    @media (max-width: @size-monitor-middle) {
+        //background-color: blue;
+    }
+
+
+
+    .option-menu {
+        position: relative;
+        height: 50%;
+        width: 8%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+        background-color: @navMenu-color-blue;
+        color: @navMenu-color-white;
+        padding: 1px 5px;
+        border: 2px solid @navMenu-color-white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        overflow: hidden;
+        
+        @media (max-width: @size-monitor-middle) {
+            //background-color: blue;
+            width: 9%;
+            height: 52%;
+        }
+
+        &:hover {
+            background-color: @navMenu-color-white;
+            color: @navMenu-color-blue;
+            scale: 1.1;
+
+            .icon-selector {
+                scale: 3.6;
+                left: 50px;
+
+            }
+        }
+
+
+        .icon-selector {
+            position: absolute;
+            transition: all 1s;
+            left: 0px;
+        }
+
+        .text {
+            z-index: 1;
+        }
+
+        .icon-count {
+            // position: absolute;
+            // left: 3%;
+            height: 100%;
+            width: 30%;
+            //background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+            .count {
+                width: 20px;
+                height: 20px;
+                background-color: @navMenu-color-blue-secundary;
+                opacity: 0.8;
+                color: @navMenu-color-white;
+                font-size: 9px;
+                border-radius: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 3%;
+                //margin: 5%;
+
+            }
+        }
+    }
+}
+
+@keyframes btnHover {
+    0% {}
+}

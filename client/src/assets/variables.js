@@ -1,4 +1,10 @@
+import pPokecolector from "../assets/images/trainers/p-pokecolector.png"
+import bPokecolector from "../assets/images/trainers/b-pokecolector.png"
 
+
+
+//!icons types
+import typeBug from "../assets/svg/icons/type-bug.svg"
 
 const today = new Date();
 const year = today.getFullYear();
@@ -293,7 +299,7 @@ export const functions = {
                         totalStat = totalStat + parseInt(scale);
                     }
                 })
-                //console.log(totalStat,Pokemon.name)
+                console.log(totalStat,Pokemon.name)
                 return totalStat;
             } else if (indexStat == 7) {
                 let totalStat = Pokemon.level;
@@ -718,20 +724,23 @@ export const variables = {
         },
     },
     imagesTrainers: [
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/026.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/027.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/028.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/029.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/030.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/031.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/032.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/033.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/034.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/035.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/036.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/037.png",
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/038.png",
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        [pPokecolector,bPokecolector],
+        
     ],
 
 
@@ -798,13 +807,13 @@ export const variables = {
         },
     ],
     navMenuOptions: [
-        ["Home", "home"],
-        ["Box", "box"],
-        ["Cards", "cards"],
-        ["Trainer", "trainer"],
-        ["Expedition", "expedition"],
+        //["Home", "home"],
+        ["Cards", "cards",],
+        ["Box", "box",],
+        ["Trainer", "trainer",],
+        ["travel", "travel"],
         ["League", "league"],
-        ["About Us", "about-us"],
+        //["About Us", "about-us"],
     ],
 
     percentageRarity: {
@@ -817,7 +826,7 @@ export const variables = {
     },
     percentageShiny: 0.99,
     sizePokedex: [1, 1010],
-    sizeTeam: 5,
+    sizeTeam: 6,
     totalScore4battlePokemon:200,
     cautionPokemons: [
         144, // Articuno

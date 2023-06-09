@@ -6,10 +6,20 @@ import { useState, useEffect } from 'react';
 import { release, update } from '../../../redux/actions';
 
 
+
 //!components
 
 import ReleasePokemon from '../ReleasePokemon/ReleasePokemon';
+import SecundaryBG from '../CardCompnents/SecundaryBG';
+import AuraBgComponent from '../CardCompnents/AuraBgComponent';
+import SelectorIconType from '../CardCompnents/SelectorIconType';
+import SelectorIconTypeMini from '../CardCompnents/SelectorIconTypeMini';
+import bgCardTitle from "../../../assets/svg/componentsCard/bgCardTitle.svg"
+import ShowStack from '../ShowStack/ShowStack';
 
+
+import iconBug from "../../../assets/svg/icons/type-bug.svg"
+import bgSemicirculo from "../../../assets/svg/componentsCard/fondoSemiCirculo.svg"
 
 function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const user = useSelector(state => state.you.user)
@@ -178,61 +188,51 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
     setState({ ...state, release: [0, 0] })
   }
 
+  const types = infoPokemon.types.split(",")
 
-  //console.log(infoPokemon)
+  const type1 = variables.types[types[0]]
+  const type2 = variables.types[types[1] || types[0]]
+  console.log(type1)
+
+  const bgColor = variables.colorTypes[type1].primaryColorBg || `rgba(222,222,222,0.1)`;
+  const bgSecondColor = variables.colorTypes[type1].secondaryColorBg || `rgba(222,222,222,0.1)`;
+  const auraColor = variables.colorTypes[type1].colorHalo || `rgba(222,222,222,0.1)`;
+  let noPokedex = infoPokemon.noPokedex;
   return (
-    <div>
+    <div className='content-card'>
+
       {(structure === "card") && (
-        <div className="structure-card">
-          <div className="s">------------------------------------------</div>
-          {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
 
-          <div className="icons">
-            <button onClick={onClickTeam}>TEAM</button>
-            <button onClick={onClickFavorite}>FAVORITE</button>
-            {(infoPokemon.team) && (<div>in Team</div>)}
-            {(infoPokemon.favorite) && (<div>in Favorite</div>)}
-          </div>
-
-
-          <div className="sprites">
-            {infoPokemon.name}
-            <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
-            <div className="stadistics">
-              {`HP:${functions.showStat(infoPokemon, variables.stadistic[1][0])}  ||`}
-              {`ATT:${functions.showStat(infoPokemon, variables.stadistic[3][0])}  ||`}
-              {`DFS:${functions.showStat(infoPokemon, variables.stadistic[5][0])}  ||`}
-              {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
-              {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
-              <div className="buttons">
-                <div className="button-card"
-                  id={infoPokemon._id}
-                  scale={infoPokemon.scale}
-                  level={infoPokemon.level}
-                  nopokedex={infoPokemon.noPokedex}
-                  shiny={(infoPokemon.shiny) ? 1 : 0}
-                  onClick={onClickRelease}
-                > Release</div>
-              </div>
-            </div>
+        <div className="structure-card" style={{ backgroundColor: `${bgColor}` }}>
+          <SecundaryBG fill={bgSecondColor} />
+          <img className='img-titleCard' src={`${bgCardTitle}`} alt="" />
+          <AuraBgComponent fill={auraColor} />
+          <img className='semi-circle' src={bgSemicirculo} alt="" />
+          <SelectorIconType type={type1} color={bgColor} />
+          <SelectorIconTypeMini type={type1} color={bgColor} />
+          <div className="shadow">.</div>
+          <img className='img-pokemon' src={`${imagePokemon}`} alt="" />
+          <div className="no-pokedex" style={{ color: `${bgColor}` }} ># {noPokedex}</div>
+          <div className="name" style={{ color: `${bgColor}` }} >{infoPokemon.name}</div>
+          <div className="stats-simple">
+            <ShowStack infoPokemon={infoPokemon} stack="HP" />
+            <ShowStack infoPokemon={infoPokemon} stack="ATK" />
+            <ShowStack infoPokemon={infoPokemon} stack="DFS" />
           </div>
         </div>
       )}
 
       {(structure === "miniCard") && (
-        <div className="structure-card">
-          <div className="s">------------------------------------------</div>
+        <div className="structure-card-mini">
 
-          <div className="icons">
-            <button onClick={onClickTeam}>TEAM</button>
 
+          <div className="icon-close" onClick={onClickTeam}>
+            <div className="x">
+              X
+            </div>
           </div>
           <div className="sprites">
-            {infoPokemon.name}
-            <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
-            <div className="stadistics">
-              {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
-            </div>
+            <img src={`${imagePokemon}`} style={{ width: "70%" }} alt="" />
           </div>
 
         </div>
@@ -259,10 +259,65 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
 
         </div>
       )}
-
-
     </div>
   )
 }
 
 export default Card
+
+
+
+
+
+
+//!!
+
+
+//!!
+
+
+
+
+
+{/*
+        <div className="structure-card-big">
+          <div className="lamina" style={{ backgroundColor: `${bgColor}` }}></div>
+         
+          
+          
+          
+
+
+          
+        
+
+         {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
+          <div className="icons">
+            <button onClick={onClickTeam}>TEAM</button>
+            <button onClick={onClickFavorite}>FAVORITE</button>
+            {(infoPokemon.team) && (<div>in Team</div>)}
+            {(infoPokemon.favorite) && (<div>in Favorite</div>)}
+          </div>
+
+
+          <div className="sprites">
+            
+            <div className="stadistics">
+              {`HP:${functions.showStat(infoPokemon, variables.stadistic[1][0])}  ||`}
+              {`ATT:${functions.showStat(infoPokemon, variables.stadistic[3][0])}  ||`}
+              {`DFS:${functions.showStat(infoPokemon, variables.stadistic[5][0])}  ||`}
+              {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
+              {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
+              <div className="buttons">
+                <div className="button-card"
+                  id={infoPokemon._id}
+                  scale={infoPokemon.scale}
+                  level={infoPokemon.level}
+                  #
+                  shiny={(infoPokemon.shiny) ? 1 : 0}
+                  onClick={onClickRelease}
+                > Release</div>
+              </div>
+            </div>
+            </div>
+          </div> */}
