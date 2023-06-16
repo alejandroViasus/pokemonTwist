@@ -57,93 +57,144 @@
     //!---------------------------------------------- | BIG |--------------------
 
     .structure-card {
+        animation: animacionComponente 0.1s ease-in-out;
         height: 90%;
         width: 90%;
-        //background-color: aqua;
-        transition: all 0.4s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        border-radius: @card-border-radius;
-        border: 5px solid rgba(22, 22, 22, 0.3);
+        transition: 0.3s;
+        
+
+
+
 
         &:hover {
-            scale: 1.1;
 
-            .secundary-bg {
-                height: 100%;
-                opacity: 1;
-                transition: 1s;
 
-            }
-            
-            .aura-bg {
-                height: 94%;
-                opacity: 3;
-                transition: 0.8s;
-                animation: rotar 15s infinite linear;
-            }
-            
-            .semi-circle {
-                opacity: 0;
-                width: 30%;
-                transition: opacity 1s width 0.5s;
-            }
-
-            .content-icon-selector {
-                scale: 2.1;
-                transition: 1s;
-            }
-            
-            .content-icon-selector-mini {
+            .card-a ,.card-b{
+                scale: 1.1;
+                box-shadow: 0px 15px 5px rgba(0, 0, 0, 0.15);
                 transition: 0.3s;
-                top: 0.8%;
-                scale: 0.3;
-            }
-            
-            .img-pokemon {
-                width: 80%;
-                transition: 1s;
-            }
 
-            .shadow{
-                bottom: 20%;
-                background-color: rgba(22,22,22,0);
-                transition: all 0.3s;
-            }
-           
-            
-            .stats-simple {
-                bottom: -7%;
-                height: 15%;
-                transition: all 0.4s;
-                .content-stat {
-                    border-radius: @table-border-radius;
-                    gap: 0%;
-                    transition: all 0.4s;
-                    //background-color: aquamarine;
-                    .stat-name {
+                .secundary-bg {
+                    height: 100%;
+                    opacity: 1;
+                    transition: 1s;
+
+                }
+
+                .aura-bg {
+                    height: 89%;
+                    opacity: 3;
+                    transition: 0.8s;
+                    animation: rotar 15s infinite linear;
+                    border-radius: 50%;
+                    //background-color: aqua;
+                }
+
+                .semi-circle {
+                    opacity: 0;
+                    width: 30%;
+                    transition: opacity 1s width 0.5s;
+                }
+
+                .content-icon-selector {
+                    scale: 2.1;
+                    opacity: 0.6;
+                    transition: 1s;
+
+                }
+
+                .content-icon-selector-mini {
+                    transition: 0.3s;
+                    top: 0.8%;
+                    scale: 0.3;
+                }
+
+                .img-pokemon {
+                    width: 80%;
+                    transition: 1s;
+                }
+
+                .shadow {
+                    bottom: 20%;
+                    background-color: rgba(22, 22, 22, 0);
+                    transition: all 0.3s;
+                }
+
+                .status {
+                    scale: 1.1;
+
+                    //background-color: aqua;
+                    .team {
                         display: flex;
-                        opacity: 1;
-                        top: 8%;
-                        scale: 1.1;
-                        transition: all 0.4s;
+                        opacity: 100%;
+                        width: 95%;
+                        transition: 0.3s;
+
+                        &:hover {
+                            scale: 1.1;
+                        }
                     }
-                    .separate {
-                        display: flex;
-                        opacity: 1;
-                        transition: all 0.4s;
+
+                    .active {
+                        transition: all 1s;
+                        opacity: 100%;
                     }
-                    
-                    .value {
-                        //font-family:@font-anton;
-                        scale: 1;
-                        bottom: 5%;
-                        transition: all 0.4s;
+
+                    .team:not(.active) {
+                        transition: all 1s;
+                        opacity: 100%;
                     }
                 }
+
             }
+        }
+
+        //background-color: aqua;
+
+        .card-b{
+            height: 100%;
+            width: 100%;
+            background-color: rgba(22, 22, 22, 0.1);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: @card-border-radius;
+            box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(10, 10, 10, 1);
+            transform: perspective(500px) rotateY(180deg);
+            backface-visibility: hidden;
+            transition: all 0.4s;
+        }
+        .card-a {
+            top: -102%;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-radius: @card-border-radius;
+            box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(10, 10, 10, 1);
+            backface-visibility: hidden;
+            transition: all 0.4s;
+            
+            
+            .bg-card {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                opacity: 0.25;
+                color: rgba(0, 0, 0, 0);
+                filter: blur(12px);
+                border-radius: @card-border-radius;
+            }
+
+
+
+
+
         }
 
         .secundary-bg {
@@ -151,7 +202,7 @@
             height: 70%;
             opacity: 0;
             filter: blur(5px);
-            
+
             transition: 1s;
 
         }
@@ -168,13 +219,19 @@
             position: absolute;
             //background-color: aqua;
             transition: 1s;
-
+            opacity: 0;
         }
 
         .semi-circle {
-            opacity: 0.4;
+            opacity: 1;
             width: 95%;
-            transition: all 0.54s;
+            transition: all 1s;
+        }
+
+        .semi-circle-c {
+            opacity: 1;
+            width: 95%;
+            transition: all 1s;
         }
 
         .content-icon-selector-mini {
@@ -201,26 +258,19 @@
             transition: 1s;
         }
 
-        .shadow{
+        .shadow {
             bottom: 24%;
             position: absolute;
             color: rgba(0, 0, 0, 0);
             border-radius: 50%;
             width: 55%;
             height: 9%;
-            background-color: rgba(22,22,22,0.5);
+            background-color: rgba(22, 22, 22, 0.5);
             filter: blur(9px);
             transition: all 0.3s;
         }
 
-        .name {
-            font-family: @font-comfortaa;
-            position: absolute;
-            top: 5%;
-            width: auto;
-            left: 20%;
-            text-align: left;
-        }
+
 
         .no-pokedex {
             font-family: @font-comfortaa;
@@ -233,74 +283,197 @@
             font-weight: 900;
         }
 
-        .stats-simple {
+        .name {
+            font-family: @font-comfortaa;
             position: absolute;
-           
-            bottom: -5%;
+            top: 5%;
+            width: auto;
+            left: 20%;
+            text-align: left;
+        }
+
+        .level-stats {
+            position: absolute;
+            width: 100%;
+            //font-family: @font-comfortaa;
             display: flex;
             justify-content: center;
+            align-items: baseline;
+            color: rgba(255, 255, 255, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 10%;
-            //background-color: aqua;
-            gap: 3%;
-            transition: all 0.4s;
+            bottom: 8%;
+            gap: 0%;
 
-            .content-stat {
-                border-radius: @card-border-radius;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 25%;
-                height: 100%;
+            .level {
+                font-family: @font-Rubik;
                 gap: 1%;
-                //background-color: aquamarine;
-                color: @navMenu-color-white;
-                border: 2px solid rgba(22, 22, 22, 0.5);
-                position: relative;
-                transition: all 0.4s;
-                
-                .stat-name {
-                    position: absolute;
-                    display: none;
-                    opacity: 0;
-                    font-weight: 700;
-                    transition: all 0.4s;
+                display: flex;
+                justify-content: center;
+                align-items: last baseline;
+                width: 100%;
+                font-weight: 100;
+                scale: 0.7;
+
+                .text {
+                    scale: 1;
                 }
-                
-                .separate {
-                    position: absolute;
-                    display: none;
-                    opacity: 0;
-                    width: 100%;
-                    height: auto;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    transition: all 0.4s;
-                }
-                
-                .value {
-                    position: absolute;
-                    //font-family:@font-anton;
-                    scale: 1.1;
-                    font-weight: 900;
-                    transition: all 0.4s;
+
+                .value-lvl {
+                    font-size: 24px;
                 }
             }
         }
-        
+
+        .stats-simple {
+            position: absolute;
+            left: -8%;
+            bottom: 5%;
+            display: flex;
+            flex-direction: column;
+            height: 30%;
+            width: 25%;
+            //background-color: aqua;
+            justify-content: center;
+            align-items: center;
+            gap: 4%;
+
+            .content-stat {
+                color: rgba(255, 255, 255, 1);
+                width: 100%;
+                border: 2px solid rgba(10, 10, 10, 1);
+                height: 20%;
+                font-weight: 500;
+                font-family: @font-almarai;
+                padding: 4% 2%;
+                border-radius: @table-border-radius;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+
+                .value {
+                    height: 80%;
+                    position: absolute;
+                    right: 10%;
+                }
+
+                .icon-stack {
+                    height: 80%;
+                    position: absolute;
+                    left: 10%;
+                }
+
+            }
+            
+        }
+
+        .content-show-icon-selector {
+            position: absolute;
+            right: 10%;
+            top: 14.5%;
+            scale: 1;
+            background-color: rgba(22, 22, 22, 1);
+            height: auto;
+            width: auto;
+            height: 8%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: @card-border-radius;
+            padding: 0% 8%;
+
+
+            .type-icon-show {
+                //background-color: red;
+                //flex-direction: column;
+                height: 100%;
+                width: 60%;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                gap: 35%;
+                padding: 0% 1%;
+
+
+                .box {
+                    height: 70%;
+
+                    .img-type-icon {
+                        height: 100%;
+                    }
+                }
+            }
+        }
+
+        .status {
+            cursor: pointer;
+            position: absolute;
+            z-index: 2;
+            height: 25%;
+            width: 20%;
+            top: -3%;
+            left: -11%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0%;
+
+            // background-color: aqua;
+            .team {
+                width: 90%;
+                transition: 0.3s;
+
+                &:hover {
+                    scale: 1.1;
+                }
+            }
+
+            .active {
+                transition: all 0.3s;
+                opacity: 100%;
+            }
+
+            .team:not(.active) {
+                transition: all 0.3s;
+                opacity: 0%;
+
+            }
+        }
+
+        .icon-turn{
+            position: absolute;
+            z-index: 2;
+            top:3%;
+            right: -8%;
+            cursor: pointer;
+        }
     }
-    
+
 }
 
 @keyframes rotar {
     0% {
         transform: rotate(0deg);
     }
-    
+
     100% {
         transform: rotate(360deg);
+    }
+}
+
+
+@keyframes animacionComponente {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }

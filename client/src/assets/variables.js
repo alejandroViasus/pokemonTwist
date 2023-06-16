@@ -507,7 +507,7 @@ export const functions = {
         if (data.shiny == 1) {
             score = score * 2.5
         }
-        //console.log(score);
+        console.log(score);
         return [Math.round(score / 7), Math.round(score / 10), Math.round(score * 1.25)];
 
     },
@@ -915,6 +915,7 @@ export const variables = {
         904,
         905,
         993,
+        995,
         1001,
         1002,
         1003,

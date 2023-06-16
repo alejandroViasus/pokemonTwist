@@ -16,16 +16,35 @@ import SelectorIconType from '../CardCompnents/SelectorIconType';
 import SelectorIconTypeMini from '../CardCompnents/SelectorIconTypeMini';
 import bgCardTitle from "../../../assets/svg/componentsCard/bgCardTitle.svg"
 import ShowStack from '../ShowStack/ShowStack';
+import ShowIconTypes from '../ShowIconTypes/ShowIconTypes';
+import SemiCircle from '../CardCompnents/SemiCircle';
+import FaceB from '../CardCompnents/FaceB';
 
 
-import iconBug from "../../../assets/svg/icons/type-bug.svg"
+
 import bgSemicirculo from "../../../assets/svg/componentsCard/fondoSemiCirculo.svg"
+import Separator from '../separator/Separator';
+
+
+import IconLike from "../../../assets/svg/icons/iconLike.svg"
+import IconLike0 from "../../../assets/svg/icons/iconLike0.svg"
+import IconTeam from "../../../assets/svg/icons/iconTeam.svg"
+import IconTeam0 from "../../../assets/svg/icons/iconTeam0.svg"
+import IconTurn from "../../../assets/svg/icons/iconTurn.svg"
+
 
 function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const user = useSelector(state => state.you.user)
   const dispatch = useDispatch();
   const iconImage = "";
+  let iconTeam = IconTeam0;
+  let iconLike = IconLike0;
+  if (infoPokemon.team) iconTeam = IconTeam;
+  if (infoPokemon.favorite) iconLike = IconLike
+
   const onClick = (e) => { }
+
+
   //console.log(infoPokemon);
   let imagePokemon = dataBaseImages.sprites.front_default(infoPokemon?.noPokedex)
 
@@ -44,6 +63,8 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
 
   const [state, setState] = useState({
     release: [0, 0, 0],
+    rotation: [0, 180],
+    opacity: [100, 0],
   })
 
   const onClickTeam = async () => {
@@ -131,7 +152,7 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
         id: e.target.id,
       }
       const releaseReward = functions.release(atributes);
-      //console.log(releaseReward)
+      console.log("__--__--", releaseReward)
 
       setState({ ...state, release: releaseReward })
     } else {
@@ -188,6 +209,44 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
     setState({ ...state, release: [0, 0] })
   }
 
+  const turn = () => {
+    // const cardB=document.getElementById("card-b");
+    // const cardA=document.getElementById("card-a");
+    // cardA.style.transform.rotateY="360deg"
+
+    let rotateCardA = state.rotation[0];
+    let rotateCardB = state.rotation[1];
+
+    let opacityA = state.opacity[0];
+    let opacityB = state.opacity[1];
+
+    if (rotateCardA === 0) {
+      rotateCardA = rotateCardA + 180;
+      rotateCardB = rotateCardB + 180;
+    } else {
+      rotateCardA = rotateCardA - 180;
+      rotateCardB = rotateCardB - 180;
+    }
+
+    if (rotateCardA === 180) {
+      opacityA = 0;
+    } else {
+      opacityA = 100;
+    }
+    if (rotateCardA === 180) {
+      opacityB = 0;
+    } else {
+      opacityB = 100;
+    }
+
+    setState({
+      ...state,
+      rotation: [rotateCardA, rotateCardB],
+      opacity: [opacityA, opacityB]
+    })
+
+  }
+
   const types = infoPokemon.types.split(",")
 
   const type1 = variables.types[types[0]]
@@ -198,27 +257,122 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const bgSecondColor = variables.colorTypes[type1].secondaryColorBg || `rgba(222,222,222,0.1)`;
   const auraColor = variables.colorTypes[type1].colorHalo || `rgba(222,222,222,0.1)`;
   let noPokedex = infoPokemon.noPokedex;
+
   return (
     <div className='content-card'>
 
+
       {(structure === "card") && (
 
-        <div className="structure-card" style={{ backgroundColor: `${bgColor}` }}>
-          <SecundaryBG fill={bgSecondColor} />
-          <img className='img-titleCard' src={`${bgCardTitle}`} alt="" />
-          <AuraBgComponent fill={auraColor} />
-          <img className='semi-circle' src={bgSemicirculo} alt="" />
-          <SelectorIconType type={type1} color={bgColor} />
-          <SelectorIconTypeMini type={type1} color={bgColor} />
-          <div className="shadow">.</div>
-          <img className='img-pokemon' src={`${imagePokemon}`} alt="" />
-          <div className="no-pokedex" style={{ color: `${bgColor}` }} ># {noPokedex}</div>
-          <div className="name" style={{ color: `${bgColor}` }} >{infoPokemon.name}</div>
-          <div className="stats-simple">
-            <ShowStack infoPokemon={infoPokemon} stack="HP" />
-            <ShowStack infoPokemon={infoPokemon} stack="ATK" />
-            <ShowStack infoPokemon={infoPokemon} stack="DFS" />
+        <div className="structure-card" >
+
+          <div
+            className="card-b"
+            id='card-b'
+            style={{
+              transform: `perspective(500px) rotateY(${state.rotation[1]}deg)`
+            }}
+          >
+            {/* 
+            <img className='img-titleCard' src={`${bgCardTitle}`} alt="" />
+            <div className="no-pokedex" style={{ color: `${bgColor}` }} ># {noPokedex}</div>
+            <div className="name" style={{ color: `${bgColor}` }} >{infoPokemon.name}</div>
+            <SelectorIconTypeMini type={type1} color={bgColor} />
+            {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
+
+            <img
+              src={IconTurn}
+              alt="icon-turn"
+              className="icon-turn"
+              id={infoPokemon._id}
+              scale={infoPokemon.scale}
+              level={infoPokemon.level}
+              shiny={(infoPokemon.shiny) ? 1 : 0}
+              onClick={turn}
+            /> 
+            */}
+
+            <img
+              src={IconTurn}
+              alt="icon-turn"
+              className="icon-turn"
+              id={infoPokemon._id}
+              scale={infoPokemon.scale}
+              level={infoPokemon.level}
+              shiny={(infoPokemon.shiny) ? 1 : 0}
+              onClick={turn}
+            />
+
+            <FaceB color={bgColor} info={infoPokemon}/>
           </div>
+
+          <div className="card-a" id='card-a'
+            style={{
+              backgroundColor: `${bgColor}`,
+              backgroundColor: `rgba(22,22,22,0.5)`,
+              transform: `perspective(500px) rotateY(${state.rotation[0]}deg)`,
+              opacity: `${state.opacity[0]}%`
+            }}>
+            <div className="bg-card" style={{ backgroundColor: `${bgColor}` }} >
+              .
+            </div>
+            <SecundaryBG fill={bgSecondColor} />
+            <img className='img-titleCard' src={`${bgCardTitle}`} alt="" />
+            <AuraBgComponent fill={auraColor} />
+            <SemiCircle fill={auraColor} />
+            <SelectorIconType type={type1} color={bgColor} />
+            <SelectorIconTypeMini type={type1} color={bgColor} />
+            <div className="shadow">.</div>
+            <img className='img-pokemon' src={`${imagePokemon}`} alt="" />
+            <div className="no-pokedex" style={{ color: `${bgColor}` }} ># {noPokedex}</div>
+            <div className="name" style={{ color: `${bgColor}` }} >{infoPokemon.name}</div>
+            <div className="level-stats">
+              <div className="level">
+                <div className="text">lvl.</div>
+                <div className="value-lvl">{infoPokemon.level}</div>
+              </div>
+              <Separator height={2} width={40} color={`rgba(222 ,222,222,1`} />
+              <div className="stats"> {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}`} </div>
+            </div>
+
+            <ShowIconTypes infoPokemon={infoPokemon} />
+            <div className="stats-simple">
+              <ShowStack infoPokemon={infoPokemon} stack="HP" />
+              <ShowStack infoPokemon={infoPokemon} stack="ATK" />
+              <ShowStack infoPokemon={infoPokemon} stack="DFS" />
+            </div>
+
+            <div className="status">
+              <img
+                src={iconTeam}
+                alt="icon-team"
+                className={`team ${infoPokemon.team ? 'active' : 'no-active'}`}
+                onClick={onClickTeam}
+              />
+              <img
+                src={iconLike}
+                alt="icon-like"
+                className={`team ${infoPokemon.favorite ? 'active' : 'no-active'}`}
+                onClick={onClickFavorite}
+              />
+
+
+            </div>
+
+            <img
+              src={IconTurn}
+              alt="icon-turn"
+              className="icon-turn"
+              id={infoPokemon._id}
+              scale={infoPokemon.scale}
+              level={infoPokemon.level}
+              shiny={(infoPokemon.shiny) ? 1 : 0}
+              onClick={turn}
+            />
+
+
+          </div>
+
         </div>
       )}
 
@@ -291,7 +445,7 @@ export default Card
           
         
 
-         {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
+        
           <div className="icons">
             <button onClick={onClickTeam}>TEAM</button>
             <button onClick={onClickFavorite}>FAVORITE</button>
@@ -309,14 +463,7 @@ export default Card
               {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
               {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
               <div className="buttons">
-                <div className="button-card"
-                  id={infoPokemon._id}
-                  scale={infoPokemon.scale}
-                  level={infoPokemon.level}
-                  #
-                  shiny={(infoPokemon.shiny) ? 1 : 0}
-                  onClick={onClickRelease}
-                > Release</div>
+                
               </div>
             </div>
             </div>

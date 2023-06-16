@@ -7,23 +7,50 @@
     flex-direction: column;
     gap: 8%;
     align-items: center;
-
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://i.pinimg.com/564x/f6/ec/ac/f6ecac01856f45fe209380f8561776f4.jpg");
+    background-image: url("https://i.pinimg.com/564x/98/ed/23/98ed23f689275877b8b5900f3daeda9c.jpg");
+    
+    
+    
+    .bg {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        filter: blur(5px);
+        background-color: rgba(100,100,100,0.6);
+        z-index: 0;
+        //background-image: url("https://i.pinimg.com/564x/98/ed/23/98ed23f689275877b8b5900f3daeda9c.jpg");
+        background-size: cover;
+        background-position: center;
+        //opacity: 0.6;
+    }
 
     .nav {
         position: relative;
         width: @totalSizeViewPortX;
         top: 2%
     }
+    
 
     .boddy {
+        z-index: 1;
         width: 95%;
         height: 80%;
         display: flex;
         gap: 1%;
-        background-color: @cards-color-tables;
+        border-radius: @table-border-radius;
+        background-color: rgba(200,250,250,0.25);
+        //background-color: red;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: absolute;
+        top: 15%;
 
         .content-boddy {
             //background-color: @cards-color-tables;
@@ -36,7 +63,7 @@
             width: 80%;
             height: 95%;
             //background-color: aqua;
-            gap: 3%;
+            gap: 1%;
 
             .place-filter {
                 width: 90%;
@@ -47,21 +74,21 @@
             }
 
             .place-cards {
-                width: 90%;
+                width: 95%;
                 height: 95%;
                 border-radius: @table-border-radius;
                 //background-color: rgba(51, 185, 183, 0.6);
                 display: grid;
                 align-items: center;
                 justify-content: center;
-                grid-template-columns: repeat(4, 23.5%);
+                grid-template-columns: repeat(5, 18.5%);
                 grid-template-rows: repeat(2, 49%);
                 gap: 2% 2%;
 
                 .statemet-card {
                     height: 100%;
                     width: 100%;
-                    //background-color: rgba(51, 185, 183, 1);
+                    //background-color: rgba(251, 185, 183, 1);
 
                     &:hover {
                         scale: 1.1;
@@ -73,7 +100,7 @@
             .place-selector-page {
                 width: 90%;
                 height: 8%;
-                background-color: rgba(51, 85, 183, 0.11);
+                //background-color: rgba(51, 85, 183, 0.8);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -81,7 +108,7 @@
         }
 
         .perfil {
-            width: 25%;
+            width: 15%;
             height: 95%;
             //background-color: blueviolet;
             background-color: @navMenu-color-blue;
@@ -90,6 +117,7 @@
             align-items: center;
             justify-content: flex-start;
             gap: 2%;
+            box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
 
             .perfil-user {
                 height: 60%;
@@ -102,13 +130,12 @@
                 width: 100%;
                 //background-color: rgba(22, 22, 22, 0.3);
             }
-
         }
 
         .cards {
-            width: 71%;
+            width: 82%;
             height: 95%;
-            //background-color: blueviolet;
+            // background-color: blueviolet;
         }
     }
 }

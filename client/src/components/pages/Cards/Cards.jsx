@@ -32,7 +32,7 @@ function Cards() {
         windows: { release: false },
         update: 0,
         index: 1,
-        show: 8
+        show: 10
     });
 
     useEffect(() => {
@@ -101,6 +101,8 @@ function Cards() {
 
     return (
         <div className='content-cards'>
+        
+        <div className="bg">assssssssssssssssssssssssssssssssssssssssssssss</div>
             <div className="nav">
                 <NavMenu />
             </div>
@@ -122,10 +124,8 @@ function Cards() {
                                 (infoCard, index) => {
                                     if (infoCard !== undefined && infoCard !== `empty`) {
                                         return <Card key={infoCard._id} infoPokemon={infoCard} changeUpdate={changeUpdate} />
-                                        
-                                            return <div className="statemet-card" key={`infoCard${index}`}>empty</div>
                                     } else {
-                                        return <div className="statemet-card" key={`infoCard${index}`}>empty</div>
+                                        return <div className="statemet-card" key={`infoCard${index}`}></div>
                                     }
                                 }
                             )

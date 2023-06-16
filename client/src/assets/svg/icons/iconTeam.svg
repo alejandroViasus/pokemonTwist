@@ -1,0 +1,17 @@
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="25mm" height="21mm" version="1.1" viewBox="0 0 25 21" xmlns="http://www.w3.org/2000/svg">
+ <circle transform="rotate(-25.024)" cx="1.4571" cy="13.267" r="6.9322" stroke-width=".048072"/>
+ <path transform="rotate(-25.024)" d="m7.403 13.267a5.9459 5.9459 0 0 1-2.9729 5.1493 5.9459 5.9459 0 0 1-5.9459 0 5.9459 5.9459 0 0 1-2.9729-5.1493h5.9459z" fill="#fff" stroke-width=".041233"/>
+ <rect transform="rotate(-25.024)" x="-4.9228" y="12.762" width="12.76" height="1.0104" rx=".087599" stroke-width=".036644"/>
+ <path transform="matrix(.90613 -.423 -.423 -.90613 0 0)" d="m7.403-13.08a5.9459 5.9459 0 0 1-2.9729 5.1493 5.9459 5.9459 0 0 1-5.9459-1e-7 5.9459 5.9459 0 0 1-2.9729-5.1493h5.9459z" fill="#800000" stroke-width=".041233"/>
+ <circle transform="rotate(-25.024)" cx="13.288" cy="14.249" r="6.9322" stroke-width=".048072"/>
+ <path transform="rotate(-25.024)" d="m19.234 14.249a5.9459 5.9459 0 0 1-2.9729 5.1493 5.9459 5.9459 0 0 1-5.9459 0 5.9459 5.9459 0 0 1-2.9729-5.1493h5.9459z" fill="#fff" stroke-width=".041233"/>
+ <path transform="matrix(.90613 -.423 -.423 -.90613 0 0)" d="m19.234-14.063a5.9459 5.9459 0 0 1-2.9729 5.1493 5.9459 5.9459 0 0 1-5.9459-2e-7 5.9459 5.9459 0 0 1-2.9729-5.1493h5.9459z" fill="#800000" stroke-width=".041233"/>
+ <rect transform="rotate(-25.024)" x="6.9079" y="13.744" width="12.76" height="1.0104" rx=".087599" stroke-width=".036644"/>
+ <circle transform="rotate(-25.024)" cx="7.2305" cy="16.017" r="9.5447" stroke-width=".066189"/>
+ <path transform="rotate(-25.024)" d="m15.417 16.017a8.1867 8.1867 0 0 1-4.0934 7.0899 8.1867 8.1867 0 0 1-8.1867 0 8.1867 8.1867 0 0 1-4.0934-7.0899h8.1867z" fill="#fff" stroke-width=".056772"/>
+ <path transform="matrix(.90613 -.423 -.423 -.90613 0 0)" d="m15.417-15.761a8.1867 8.1867 0 0 1-4.0934 7.0899 8.1867 8.1867 0 0 1-8.1867-2e-7 8.1867 8.1867 0 0 1-4.0934-7.0899h8.1867z" fill="#800000" stroke-width=".056772"/>
+ <rect transform="rotate(-25.024)" x="-1.5538" y="15.322" width="17.569" height="1.3912" rx=".12061" stroke-width=".050454"/>
+ <circle transform="rotate(-25.024)" cx="7.2305" cy="16.017" r="3.88" stroke-width=".026906"/>
+ <circle transform="rotate(-25.024)" cx="7.2305" cy="16.017" r="2.4056" fill="#fff" stroke-width=".016682"/>
+</svg>
