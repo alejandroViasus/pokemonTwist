@@ -214,7 +214,7 @@ function Box() {
     const missOperation = (redirect) => {
         // alert("desea salir sin seleccionar un alguna carta ")
         if (state.select) {
-            confirm ();
+            confirm();
             alert(`carta seleccionada almacenada con exito`);
             redirect();
         } else {
@@ -258,13 +258,13 @@ function Box() {
     //console.log(userState.box)
 
     return (
-        <div>
+        <div className='container-box'>
             <div className="place-menu-nav">
                 <NavMenu switchMenu={state.switch} missOperation={missOperation} />
             </div>
             <div className="body-box">
 
-                <div className="prueba" onClick={()=>{functions.getEvolution(1)}}>Prueba</div>
+                {/* <div className="prueba" onClick={()=>{functions.getEvolution(1)}}>Prueba</div> */}
                 <div className="pack">
                     {state.boosterPack && Object.keys(state.selectCard).map((card) => {
                         return <div className="card-pack" key={`${card}`}>
@@ -281,7 +281,7 @@ function Box() {
                 <div className="buttons-">
                     {!state.boosterPack && <div className="open-pack" onClick={openPack}>({`open Pack (${userState.box})`})</div>}
                     {state.boosterPack && <div className="open-pack" onClick={confirm}>(confirm)</div>}
-                </div>box
+                </div>
             </div>
         </div>
     )

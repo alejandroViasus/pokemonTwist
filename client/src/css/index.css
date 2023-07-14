@@ -254,7 +254,7 @@ code {
 }
 .content-cards .nav {
   position: relative;
-  width: 100vw;
+  width: 90vw;
   top: 2%;
 }
 .content-cards .boddy {
@@ -335,12 +335,69 @@ code {
   width: 82%;
   height: 95%;
 }
+.container-box {
+  background-color: aqua;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.container-box .place-menu-nav {
+  width: 100%;
+  position: absolute;
+  top: 2%;
+}
+.container-box .body-box {
+  position: absolute;
+  top: 15%;
+  width: 100%;
+  height: 80%;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-box .pack {
+  display: flex;
+  width: 95%;
+  height: 70%;
+  background-color: blue;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+}
+.container-box .pack .card-pack {
+  background-color: red;
+  width: 23%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-box .buttons- {
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  height: 15%;
+  background-color: yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-box .buttons- .open-pack {
+  background-color: aqua;
+  height: 80%;
+  width: 30%;
+}
 .content-card {
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .content-card .structure-card-mini {
   padding: 10% 0%;
@@ -498,6 +555,17 @@ code {
   color: rgba(0, 0, 0, 0);
   filter: blur(12px);
   border-radius: 18px;
+}
+.content-card .structure-card .card-a .release {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -3%;
+  bottom: 10%;
 }
 .content-card .structure-card .secundary-bg {
   position: absolute;
@@ -706,6 +774,91 @@ code {
   right: -8%;
   cursor: pointer;
 }
+.content-card .pokemon-selection {
+  width: 95%;
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #afdde9;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.content-card .pokemon-selection:hover {
+  scale: 1.05;
+  border: 2px solid rgba(22, 22, 22, 0.3);
+}
+.content-card .pokemon-selection:hover .level {
+  top: -30%;
+  opacity: 1;
+  color: white;
+}
+.content-card .pokemon-selection .icon-selection-pokemon {
+  height: 180%;
+  width: 100%;
+  transition: all 0.4s;
+  border: 2px solid rgba(22, 22, 22, 0);
+}
+.content-card .pokemon-selection .level {
+  position: absolute;
+  top: -33%;
+  right: -5%;
+  height: 30%;
+  width: 100%;
+  font-size: 95%;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comfortaa', cursive;
+  font-weight: 900;
+  transition: all 0.5s;
+  scale: 0.9;
+  opacity: 1;
+}
+.content-card .selected-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.content-card .selected-card .img-pokemon-selected {
+  position: absolute;
+  width: 100%;
+  top: -20%;
+  left: -10%;
+  scale: 1.3;
+}
+.content-card .selected-card .name-pokemon-selected {
+  position: absolute;
+  bottom: -25%;
+  width: auto;
+  font-size: 1.5vw;
+  font-family: 'Bebas Neue', sans-serif;
+  opacity: 0.5;
+  font-weight: 800;
+}
+.content-card .selected-card .level-pokemon-selected {
+  position: absolute;
+  top: 15%;
+  font-size: 4vw;
+  height: 40%;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: right;
+  width: 90%;
+  padding: 0% 5.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  color: #78c3ed;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
 @keyframes rotar {
   0% {
     transform: rotate(0deg);
@@ -724,11 +877,17 @@ code {
     transform: scale(1);
   }
 }
+.container-enveloped {
+  width: 100%;
+  height: 90%;
+  background-color: aquamarine;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+}
 .enveloped-selected {
   border: solid 2px #1e1e1e;
-}
-.container-enveloped {
-  background-color: aquamarine;
 }
 .content-infoCard {
   width: 100%;
@@ -836,21 +995,177 @@ code {
   align-items: center;
   padding: 3%;
 }
-.pokemon {
-  border: solid 2px rgba(22, 22, 22, 0);
+.container-trainer {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(22, 22, 22, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.selected {
-  border: solid 2px #161616;
+.container-trainer .box-selection {
+  background-color: white;
+  width: 70vw;
+  height: 60%;
+  height: 30vw;
+  border-radius: 18px;
+  background: linear-gradient(97.9deg, #78c3ed 50%, #ff4c4a 50%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
-.selections-team {
-  height: auto;
-  color: white;
+.container-trainer .box-selection .ligthning {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  bottom: 5px;
-  right: 5px;
-  background-color: #de1616;
+  left: 44%;
+}
+.container-trainer .box-selection .pokeball {
+  position: absolute;
+  left: 44%;
+  top: 40%;
+  z-index: 2;
+  scale: 1.5;
+}
+.container-trainer .box-selection .rivals-place {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4%;
+}
+.container-trainer .box-selection .rivals-place .user {
+  height: 100%;
+  width: 48%;
+  position: relative;
+}
+.container-trainer .box-selection .rivals-place .user .trainder-details {
+  position: absolute;
+  height: 46%;
+  top: -2%;
+  right: 9%;
+}
+.container-trainer .box-selection .rivals-place .user .posterName {
+  z-index: 1;
+  position: absolute;
+  left: 0%;
+  top: 45%;
+  width: 100%;
+  height: 15%;
+  transform: rotate(-3deg) scale(1.1);
+  image-rendering: optimizeQuality;
+  backface-visibility: hidden;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  font-family: 'Anton', sans-serif;
+  font-size: 3vw;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+.container-trainer .box-selection .rivals-place .user .pokemon-selected {
+  position: absolute;
+  left: 5%;
+  top: 4%;
+  width: 35%;
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-trainer .box-selection .rivals-place .user .teamUser {
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10%;
+  left: 2%;
+  width: 89%;
+  height: 18%;
+  gap: 1.5%;
+}
+.container-trainer .box-selection .rivals-place .user .teamUser .pokemon {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  color: #afdde9;
+  border: 2px solid rgba(22, 22, 22, 0);
+}
+.container-trainer .box-selection .rivals-place .user .teamUser .selected {
+  scale: 1.05;
+  border: 2px solid rgba(22, 22, 22, 0.5);
+  background-color: #afdde9;
+  color: aliceblue;
+}
+.container-trainer .box-selection .rivals-place .rival {
+  height: 100%;
+  width: 48%;
+  position: relative;
+}
+.container-trainer .box-selection .rivals-place .rival .trainder-details {
+  position: absolute;
+  height: 46%;
+  top: -2%;
+  left: 9%;
+}
+.container-trainer .box-selection .rivals-place .rival .posterName {
+  z-index: 1;
+  position: absolute;
+  right: 0%;
+  top: 43%;
+  width: 100%;
+  height: 15%;
+  transform: rotate(-3deg) scale(1.1);
+  image-rendering: optimizeQuality;
+  backface-visibility: hidden;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  font-family: 'Anton', sans-serif;
+  font-size: 3vw;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+.container-trainer .box-selection .rivals-place .rival .pokemon-selected {
+  position: absolute;
+  left: 5%;
+  top: 4%;
+  width: 35%;
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-trainer .box-selection .rivals-place .rival .teamUser {
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10%;
+  left: 2%;
+  width: 89%;
+  height: 18%;
+  gap: 1.5%;
+}
+.container-trainer .box-selection .rivals-place .rival .teamUser .pokemon {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  color: #afdde9;
+  border: 2px solid rgba(22, 22, 22, 0);
+}
+.container-trainer .box-selection .rivals-place .rival .teamUser .selected {
+  scale: 1.05;
+  border: 2px solid rgba(22, 22, 22, 0.5);
+  background-color: #afdde9;
+  color: aliceblue;
 }
 .content-battleField {
   color: red;
@@ -1067,6 +1382,8 @@ code {
 }
 .release-pokemon-content {
   position: absolute;
+  top: 0%;
+  right: 0%;
   height: 100%;
   width: 100%;
   border-radius: 18px;
@@ -1137,4 +1454,16 @@ code {
   height: 80%;
   position: absolute;
   left: 10%;
+}
+.content-face-b .release {
+  z-index: 10;
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -3%;
+  bottom: 10%;
 }

@@ -8,24 +8,24 @@
     align-items: center;
     justify-content: center;
 
-    .name-b{
+    .name-b {
         position: absolute;
         top: 4%;
-        background-color: rgba(22,22,22,0.8);
+        background-color: rgba(22, 22, 22, 0.8);
         border-radius: @card-border-radius;
         width: 70%;
         padding: 1%;
     }
-    
+
     .img-sprite {
         position: absolute;
-        background-color: rgba(22,22,22,0.4);
+        background-color: rgba(22, 22, 22, 0.4);
         right: 3%;
         top: 20%;
         border-radius: @card-border-radius;
         //transform: rotateY(180deg);
     }
-    
+
     .stats-complete {
         position: absolute;
         left: 10%;
@@ -66,6 +66,21 @@
             }
 
         }
-        
+
+
+    }
+
+    .release {
+        position: absolute;
+        z-index: 10;
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        background-color: aqua;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: -3%;
+        bottom: 10%;
     }
 }

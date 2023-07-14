@@ -1,17 +1,230 @@
-.pokemon{
-    border: solid 2px rgba(22,22,22,0);
-}
-.selected{
-    border: solid 2px rgba(22,22,22,1);
-}
+// .pokemon{
+//     border: solid 2px rgba(22,22,22,0);
+// }
+// .selected{
+//     border: solid 2px rgba(22,22,22,1);
+// }
 
-.selections-team{
-    height: auto;
-    color:white;
-    position: absolute;
-    top :5px;
-    left:5px;
-    bottom: 5px;
-    right: 5px;
-    background-color: rgba(222,22,22,1);
+// .selections-team{
+//     height: auto;
+//     color:white;
+//     position: absolute;
+//     top :5px;
+//     left:5px;
+//     bottom: 5px;
+//     right: 5px;
+//     background-color: rgba(222,22,22,1);
+// }
+
+.container-trainer {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(22, 22, 22, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .box-selection {
+        background-color: white;
+        width: 70vw;
+        height: 60%;
+        height: 30vw;
+        border-radius: @card-border-radius;
+        background: linear-gradient(97.9deg, @blue-user 50%, @red-rival 50%);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .ligthning {
+            position: absolute;
+            left: 44%;
+        }
+
+        .pokeball {
+            position: absolute;
+            left: 44%;
+            top: 40%;
+            z-index: 2;
+            scale: 1.5;
+        }
+
+        .rivals-place {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4%;
+
+            //! user -----------------------------------------------------------------------------------
+            
+
+            .user {
+                height: 100%;
+                width: 48%;
+                //background-color: black;
+                position: relative;
+
+                .trainder-details {
+                    position: absolute;
+                    height: 46%;
+                    top: -2%;
+                    right: 9%;
+                }
+
+                .posterName {
+                    z-index: 1;
+                    position: absolute;
+                    left: 0%;
+                    top: 45%;
+                    width: 100%;
+                    height: 15%;
+                    transform: rotate(-3deg) scale(1.1);
+                    image-rendering: optimizeQuality;
+                    backface-visibility: hidden;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
+                    font-family: @font-anton;
+                    font-size: 3vw;
+                    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+                }
+
+                .pokemon-selected {
+                    position: absolute;
+                    //background-color: red;
+                    left: 5%;
+                    top: 4%;
+                    width: 35%;
+                    height: 35%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .teamUser {
+                    //background-color: aqua;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                    bottom: 10%;
+                    left: 2%;
+                    width: 89%;
+                    height: 18%;
+                    gap: 1.5%;
+
+                    .pokemon {
+                        //background-color: red;
+                        width: 15%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: @table-border-radius;
+                        color: @blue-user-secondary;
+                        border: 2px solid rgba(22, 22, 22, 0);
+
+
+                    }
+
+                    .selected {
+                        scale: 1.05;
+                        border: 2px solid rgba(22, 22, 22, 0.5);
+                        background-color: @blue-user-secondary;
+                        color: aliceblue;
+                    }
+                }
+            }
+
+            //! rival -----------------------------------------------------------------------------------
+
+            .rival {
+                height: 100%;
+                width: 48%;
+                //background-color: black;
+                position: relative;
+
+                .trainder-details {
+                    position: absolute;
+                    height: 46%;
+                    top: -2%;
+                    left: 9%;
+                }
+
+                .posterName {
+                    z-index: 1;
+                    position: absolute;
+                    right: 0%;
+                    top: 43%;
+                    width: 100%;
+                    height: 15%;
+                    transform: rotate(-3deg) scale(1.1);
+                    image-rendering: optimizeQuality;
+                    backface-visibility: hidden;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
+                    font-family: @font-anton;
+                    font-size: 3vw;
+                    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+                }
+
+                .pokemon-selected {
+                    position: absolute;
+                    //background-color: red;
+                    left: 5%;
+                    top: 4%;
+                    width: 35%;
+                    height: 35%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .teamUser {
+                    //background-color: aqua;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                    bottom: 10%;
+                    left: 2%;
+                    width: 89%;
+                    height: 18%;
+                    gap: 1.5%;
+
+                    .pokemon {
+                        //background-color: red;
+                        width: 15%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: @table-border-radius;
+                        color: @blue-user-secondary;
+                        border: 2px solid rgba(22, 22, 22, 0);
+
+
+                    }
+
+                    .selected {
+                        scale: 1.05;
+                        border: 2px solid rgba(22, 22, 22, 0.5);
+                        background-color: @blue-user-secondary;
+                        color: aliceblue;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
 }

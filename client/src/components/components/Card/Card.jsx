@@ -45,8 +45,12 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const onClick = (e) => { }
 
 
-  //console.log(infoPokemon);
+  console.log("INFO__F", infoPokemon);
   let imagePokemon = dataBaseImages.sprites.front_default(infoPokemon?.noPokedex)
+  let imageDetailPokemon = dataBaseImages.official.default(infoPokemon?.noPokedex)
+  if (infoPokemon.shiny) {
+    imageDetailPokemon = dataBaseImages.official.shiny(infoPokemon?.noPokedex)
+  }
 
   if (structure === "card") {
     imagePokemon = dataBaseImages.official.default(infoPokemon?.noPokedex)
@@ -68,8 +72,6 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   })
 
   const onClickTeam = async () => {
-
-
     try {
       fetch(`http://localhost:9000/api/pokemons/${user.email}/team`)
         .then(response => response.json())
@@ -82,8 +84,6 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
           }
 
         })
-
-
     } catch (error) {
       console.error(error);
     }
@@ -142,14 +142,14 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
 
   const onClickRelease = async (e) => {
 
-
+    console.log("release?")
     if (!infoPokemon.team && !infoPokemon.favorite) {
       const atributes = {
-        scale: e.target.getAttribute("scale"),
-        level: e.target.getAttribute("level"),
-        shiny: e.target.getAttribute("shiny"),
-        noPokedex: e.target.getAttribute("noPokedex"),
-        id: e.target.id,
+        scale: e.target.getAttribute("scale") || infoPokemon.scale,
+        level: e.target.getAttribute("level") || infoPokemon.level,
+        shiny: e.target.getAttribute("shiny") || infoPokemon.shiny,
+        noPokedex: e.target.getAttribute("noPokedex") || infoPokemon.noPokedex,
+        id: e.target.id || infoPokemon._id,
       }
       const releaseReward = functions.release(atributes);
       console.log("__--__--", releaseReward)
@@ -253,10 +253,10 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
   const type2 = variables.types[types[1] || types[0]]
   console.log(type1)
 
-  const bgColor = variables.colorTypes[type1].primaryColorBg || `rgba(222,222,222,0.1)`;
-  const bgSecondColor = variables.colorTypes[type1].secondaryColorBg || `rgba(222,222,222,0.1)`;
-  const auraColor = variables.colorTypes[type1].colorHalo || `rgba(222,222,222,0.1)`;
-  let noPokedex = infoPokemon.noPokedex;
+  const bgColor = variables.colorTypes[type1]?.primaryColorBg || `rgba(222,222,222,0.1)`;
+  const bgSecondColor = variables.colorTypes[type1]?.secondaryColorBg || `rgba(222,222,222,0.1)`;
+  const auraColor = variables.colorTypes[type1]?.colorHalo || `rgba(222,222,222,0.1)`;
+  let noPokedex = infoPokemon?.noPokedex || "1";
 
   return (
     <div className='content-card'>
@@ -279,6 +279,7 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
             <div className="name" style={{ color: `${bgColor}` }} >{infoPokemon.name}</div>
             <SelectorIconTypeMini type={type1} color={bgColor} />
             {(state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />)}
+            
 
             <img
               src={IconTurn}
@@ -292,27 +293,34 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
             /> 
             */}
 
-            <img
-              src={IconTurn}
-              alt="icon-turn"
-              className="icon-turn"
-              id={infoPokemon._id}
-              scale={infoPokemon.scale}
-              level={infoPokemon.level}
-              shiny={(infoPokemon.shiny) ? 1 : 0}
-              onClick={turn}
-            />
+            {(state.release[0] === 0 || state.release[1] === 0) && (
 
-            <FaceB color={bgColor} info={infoPokemon}/>
+              <img
+                src={IconTurn}
+                alt="icon-turn"
+                className="icon-turn"
+                id={infoPokemon._id}
+                scale={infoPokemon.scale}
+                level={infoPokemon.level}
+                shiny={(infoPokemon.shiny) ? 1 : 0}
+                onClick={turn}
+              />
+
+            )}
+            <FaceB color={bgColor} info={infoPokemon} release={clickRelease} cancel={clickCancel} trade={state.release} changeRelease={onClickRelease} />
+
           </div>
 
           <div className="card-a" id='card-a'
-            style={{
-              backgroundColor: `${bgColor}`,
-              backgroundColor: `rgba(22,22,22,0.5)`,
-              transform: `perspective(500px) rotateY(${state.rotation[0]}deg)`,
-              opacity: `${state.opacity[0]}%`
-            }}>
+            style={
+              {
+                backgroundColor: `${bgColor}`,
+                backgroundColor: `rgba(22,22,22,0.5)`,
+                transform: `perspective(500px) rotateY(${state.rotation[0]}deg)`,
+                opacity: `${state.opacity[0]}%`
+              }
+            }
+          >
             <div className="bg-card" style={{ backgroundColor: `${bgColor}` }} >
               .
             </div>
@@ -336,41 +344,59 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
             </div>
 
             <ShowIconTypes infoPokemon={infoPokemon} />
-            <div className="stats-simple">
-              <ShowStack infoPokemon={infoPokemon} stack="HP" />
-              <ShowStack infoPokemon={infoPokemon} stack="ATK" />
-              <ShowStack infoPokemon={infoPokemon} stack="DFS" />
-            </div>
 
-            <div className="status">
+            {(state.release[0] === 0 || state.release[1] === 0) && (
+              <div className="stats-simple">
+                <ShowStack infoPokemon={infoPokemon} stack="HP" />
+                <ShowStack infoPokemon={infoPokemon} stack="ATK" />
+                <ShowStack infoPokemon={infoPokemon} stack="DFS" />
+              </div>
+            )}
+
+            {(state.release[0] === 0 || state.release[1] === 0) && (
+              <div className="status">
+                <img
+                  src={iconTeam}
+                  alt="icon-team"
+                  className={`team ${infoPokemon.team ? 'active' : 'no-active'}`}
+                  onClick={onClickTeam}
+                />
+                <img
+                  src={iconLike}
+                  alt="icon-like"
+                  className={`team ${infoPokemon.favorite ? 'active' : 'no-active'}`}
+                  onClick={onClickFavorite}
+                />
+
+
+              </div>
+            )}
+
+
+            {(state.release[0] === 0 || state.release[1] === 0) && (
               <img
-                src={iconTeam}
-                alt="icon-team"
-                className={`team ${infoPokemon.team ? 'active' : 'no-active'}`}
-                onClick={onClickTeam}
+                src={IconTurn}
+                alt="icon-turn"
+                className="icon-turn"
+                id={infoPokemon._id}
+                scale={infoPokemon.scale}
+                level={infoPokemon.level}
+                shiny={(infoPokemon.shiny) ? 1 : 0}
+                onClick={turn}
               />
-              <img
-                src={iconLike}
-                alt="icon-like"
-                className={`team ${infoPokemon.favorite ? 'active' : 'no-active'}`}
-                onClick={onClickFavorite}
-              />
+            )}
 
+            {(state.release[0] === 0 || state.release[1] === 0) && (
+              <div className="release"
+                onClick={onClickRelease}
+              >
+                release
+              </div>
+            )}
 
-            </div>
-
-            <img
-              src={IconTurn}
-              alt="icon-turn"
-              className="icon-turn"
-              id={infoPokemon._id}
-              scale={infoPokemon.scale}
-              level={infoPokemon.level}
-              shiny={(infoPokemon.shiny) ? 1 : 0}
-              onClick={turn}
-            />
-
-
+            {(
+              state.release[0] !== 0 || state.release[1] !== 0) && (<ReleasePokemon release={clickRelease} cancel={clickCancel} pokemon={infoPokemon} trade={state.release} />
+              )}
           </div>
 
         </div>
@@ -393,22 +419,37 @@ function Card({ infoPokemon, changeUpdate, structure = "card" }) {
       )}
 
       {(structure === "selectorCard") && (
-        <div className="structure-card">
-          <div className="s">------------------------------------------</div>
+        <div className="pokemon-selection">
 
-          <div className="sprites">
-            {infoPokemon.name}
-            <img src={`${imagePokemon}`} style={{ height: "70px" }} alt="" />
-            <div className="stadistics">
+          {/* {infoPokemon.name} */}
+          <img className='icon-selection-pokemon' src={`${imagePokemon}`} alt="" />
+          <div className="level">
+            <div>{`lvl .`}</div>
+            <div className="value"> 
+              {infoPokemon.level}</div>
+          </div>
+          {/* <div className="stadistics">
               {`HP:${functions.showStat(infoPokemon, variables.stadistic[1][0])}  ||`}
               {`ATT:${functions.showStat(infoPokemon, variables.stadistic[3][0])}  ||`}
               {`DFS:${functions.showStat(infoPokemon, variables.stadistic[5][0])}  ||`}
               {`SCL:${functions.showStat(infoPokemon, variables.stadistic[13][0])}  ||`}
-
+              
               {infoPokemon.shiny && (<div className="shiny">** Shiny **</div>)}
+              
+            </div> */}
 
+        </div>
+      )}
+      {(structure === "selectedCard") && (
+        <div className="structure-card">
+          <div className="selected-card" style={{ backgroundColor: " rgba(175,221,233,1)" }}>
+            <div className="name-pokemon-selected">
+              {infoPokemon.name}
             </div>
-
+            <div className="level-pokemon-selected">
+              {infoPokemon.level}
+            </div>
+            <img className='img-pokemon-selected' src={`${imageDetailPokemon}`} alt="" />
           </div>
 
         </div>

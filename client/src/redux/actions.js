@@ -7,6 +7,7 @@ export const FILTER_LIST = "FILTER_LIST";
 export const RELEASE = "RELEASE";
 export const DISPATCH_USER = "DISPATCH_USER";
 export const NEXT_MATCH = "NEXT_MATCH";
+export const TOTAL_RELEASE = "TOTAL_RELEASE";
 
 
 export const dispatchState=(state) => {
@@ -60,6 +61,14 @@ export const release = (id) => {
     return (dispatch) => {
         dispatch({
             type: RELEASE,
+            payload: id
+        })
+    }
+}
+export const totalRelease = (id) => {
+    return (dispatch) => {
+        dispatch({
+            type: TOTAL_RELEASE,
             payload: id
         })
     }

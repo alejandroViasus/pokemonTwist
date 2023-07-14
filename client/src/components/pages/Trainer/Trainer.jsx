@@ -11,6 +11,11 @@ import NavMenu from '../../components/NavMenu/NavMenu';
 import BattleField from '../../components/BatlleField/BattleField';
 import DisplayEndBattle from '../../components/DisplayEndBattle/DisplayEndBattle';
 
+//!images
+import whiteLightning from "../../../assets/svg/componentsBattle/whiteLightning.svg"
+import middlePokeball from "../../../assets/svg/componentsBattle/middlePokeball.svg"
+import posterName from "../../../assets/svg/componentsBattle/posterName.svg"
+
 
 function Trainer() {
 
@@ -27,9 +32,9 @@ function Trainer() {
       console.log("usuario indeterminado");
       navigate(`/`, { replace: true });
     }
-    //console.log(`userState.gametag`, userState.gametag)
   }, [params]);
-
+  
+  console.log(`userState.gametag`, state)
   
 
   useEffect(() => {
@@ -154,48 +159,31 @@ function Trainer() {
 //! Falta hacer un chace Pokemon en medio de la partida y tambien llevar un contador de salud Actual de cda pokemon
 
  return (
-       <div className='container-trainer'>
-         <NavMenu switchMenu={state.switch} missOperation={missOperation} />
-         {(state.battle.finalBattle)&&(<div>
-          <DisplayEndBattle again={again}/>
-          </div>)}
-         {(state.battle.phaseSelections&&!state.battle.finalBattle) && (
-           <div className="selections-team">
-             <button onClick={goToBack}>BACK HOME</button>
 
+  <div className="container-trainer">
+    <div className="box-selection">
+      <img className='absolute ligthning'  src={`${whiteLightning}`} alt="" style={{height:"100%"}}/>
+      <img className='absolute pokeball'  src={`${middlePokeball}`} alt="" style={{height:"20%"}}/>
+      <div className="rivals-place">
 
-             <div className="s">...........Selected.........userTeam</div>
-             {(state.rival.team.selected?.noPokedex) && (
-               <Card infoPokemon={state.rival.team.selected} structure='selectorCard' />
+        {/* //!user */}
+        <div className="user">
+          <img className='trainder-details' src={`${variables.imagesTrainers[state.you.user?.pictureTrainer][1]}`} alt={`image-detail-trainer-user-${state.you.user.gametag}`} />
+          <div className='posterName'  
+            style={
+              {
+                backgroundImage:`url(${posterName})`,
+              }
+          }>
+            {state.you.user.gametag}
+          </div>
+            {(state.you.team.selected?.noPokedex) && (
+              <div className="pokemon-selected">
+                <Card infoPokemon={state.you.team.selected} structure='selectedCard' />
+              </div>
              )}
-             <div className="s">..........Selected..........userTeam</div>
-             <div className="s">....................RivalTeam</div>
-             <div className="teamUser" style={{display:"flex"}}>
-               {state.rival.team.pokemons?.map((infoCard, index) => {
-                 let opacity = "1";
-                 if (infoCard.heald === 0) {
-                   opacity = "0.5";
-                 }
-                 return (
-  
-                   <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}
-                     style={{ opacity }}
-                   >
-                     <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
-                   </div>
-                 )
-                 //)
-               })}
-             </div>
-  
-             <button onClick={reMatch}>re-Match</button>
-             <div className="s">........................................................</div>
-             <div className="s">...........Selected.........userTeam</div>
-             {(state.you.team.selected?.noPokedex) && (
-               <Card infoPokemon={state.you.team.selected} structure='selectorCard' />
-             )}
-             <div className="s">..........Selected..........userTeam</div>
-             <div className="teamUser" style={{display:"flex"}}>
+
+            <div className="teamUser" style={{display:"flex"}}>
                {state.you.team.pokemons?.map((infoCard, index) => {
                  let opacity = "1";
                  if (infoCard.heald === 0) {
@@ -210,17 +198,93 @@ function Trainer() {
   
                })}
              </div>
-             <button onClick={ready}> Ready !!</button>
-           </div>
+             </div>
+
+             
+             {/* //!rival */}
+        <div className="rival">
+        <img className='trainder-details' src={`${variables.imagesTrainers[state.you.user?.pictureTrainer][1]}`} alt={`image-detail-trainer-user-${state.rival.user.gametag}`} />
+        <img className='trainder-details' src={`${variables.imagesTrainers[state.you.user?.pictureTrainer][1]}`} alt={`image-detail-trainer-user-${state.you.user.gametag}`} />
+          <div className='posterName'  
+            style={
+              {
+                backgroundImage:`url(${posterName})`,
+              }
+          }>
+            {state.rival.user.gametag}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      //  <div className='container-trainer'>
+      //    {/* <NavMenu switchMenu={state.switch} missOperation={missOperation} /> */}
+      //    {(state.battle.finalBattle)&&(<div>
+      //     <DisplayEndBattle again={again}/>
+      //     </div>)}
+      //    {(state.battle.phaseSelections&&!state.battle.finalBattle) && (
+      //      <div className="selections-team">
+      //        <button onClick={goToBack}>BACK HOME</button>
+
+      //       <div className="riva selector-pokemons">
+      //        {/* <div className="s">...........Selected.........userTeam</div> */}
+      //        {(state.rival.team.selected?.noPokedex) && (
+      //          <Card infoPokemon={state.rival.team.selected} structure='selectorCard' />
+      //        )}
+      //        {/* <div className="s">..........Selected..........userTeam</div> */}
+      //        {/* <div className="s">....................RivalTeam</div> */}
+      //        <div className="teamUser" style={{display:"flex"}}>
+      //          {state.rival.team.pokemons?.map((infoCard, index) => {
+      //            let opacity = "1";
+      //            if (infoCard.heald === 0) {
+      //              opacity = "0.5";
+      //             }
+      //             return (
+                    
+      //               <div key={`selector-rival${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.rival.team.selected?.noPokedex === infoCard.noPokedex && state.rival.team.selected?.level === infoCard.level ? "selected" : ""}`}
+      //               style={{ opacity }}
+      //              >
+      //                <Card key={`selector-rival-card${infoCard.noPokedex}`} infoPokemon={infoCard} structure='selectorCard' />
+      //              </div>
+      //            )
+      //            //)
+      //          })}
+      //        </div>
+      //      </div>
   
-           // ! EMPEZAR EL COMBATE POKEMON 
-         )}
-           {(!state.battle.phaseSelections&&!state.battle.finalBattle) && (
-           <div className="place-stadium">
-             <BattleField lstate={state} ready={ready}/>
-           </div>
-         )}
-       </div>
+      //        <button onClick={reMatch}>re-Match</button>
+      //        <div className="s">........................................................</div>
+      //        <div className="s">...........Selected.........userTeam</div>
+      //        {(state.you.team.selected?.noPokedex) && (
+      //          <Card infoPokemon={state.you.team.selected} structure='selectorCard' />
+      //        )}
+      //        <div className="s">..........Selected..........userTeam</div>
+      //        <div className="teamUser" style={{display:"flex"}}>
+      //          {state.you.team.pokemons?.map((infoCard, index) => {
+      //            let opacity = "1";
+      //            if (infoCard.heald === 0) {
+      //              opacity = "0.5";
+      //            }
+      //            return (
+      //              <div key={`selector${infoCard.noPokedex}${infoCard.scale}`} className={`pokemon ${state.you.team.selected?._id === infoCard._id ? "selected" : ""}`} onClick={selection} index={index}
+      //                style={{ opacity }}
+      //              >
+      //                <Card key={`selector-card${infoCard._id}`} infoPokemon={infoCard} structure='selectorCard' />
+      //              </div>)
+  
+      //          })}
+      //        </div>
+      //        <button onClick={ready}> Ready !!</button>
+      //      </div>
+  
+      //      // ! EMPEZAR EL COMBATE POKEMON 
+      //    )}
+      //      {(!state.battle.phaseSelections&&!state.battle.finalBattle) && (
+      //      <div className="place-stadium">
+      //        <BattleField lstate={state} ready={ready}/>
+      //      </div>
+      //    )}
+      //  </div>
      )
    }
 

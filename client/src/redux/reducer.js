@@ -6,7 +6,8 @@ import {
     FILTER_LIST,
     RELEASE,
     DISPATCH_USER,
-    NEXT_MATCH
+    NEXT_MATCH,
+    TOTAL_RELEASE
 } from "./actions";
 
 import { variables } from "../assets/variables";

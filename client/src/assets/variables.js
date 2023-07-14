@@ -299,7 +299,7 @@ export const functions = {
                         totalStat = totalStat + parseInt(scale);
                     }
                 })
-                console.log(totalStat,Pokemon.name)
+                console.log(totalStat, Pokemon.name)
                 return totalStat;
             } else if (indexStat == 7) {
                 let totalStat = Pokemon.level;
@@ -483,7 +483,7 @@ export const functions = {
     },
     release: (data) => {
         let score = 0;
-        //console.log(data);
+        console.log("dataRelease", data);
 
         let scale = data.scale.split(",");
         //console.log(scale);
@@ -528,16 +528,16 @@ export const functions = {
             functions.getNoPokedex(),
             functions.getNoPokedex(),
             functions.getNoPokedex(),
-          ];
-    
+        ];
+
         const fetchPokemonData = async () => {
             try {
                 const responses = await Promise.all(posiblesPokemons.map(pokemon => fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)));
                 const pokemonData = await Promise.all(responses.map(response => response.json()));
 
-                const otherState={...globalState}
-                otherState.rival.user=rival;
-                otherState.rival.team.dataPokemon=pokemonData;
+                const otherState = { ...globalState }
+                otherState.rival.user = rival;
+                otherState.rival.team.dataPokemon = pokemonData;
                 return otherState;
                 // setState(prevState => ({
                 //     ...prevState,
@@ -566,27 +566,27 @@ export const functions = {
             }
             basePokemon.push(base);
         })
-        newState.rival.team.basePokemon=basePokemon;
+        newState.rival.team.basePokemon = basePokemon;
         const pokemons = [];
         for (let i = 0; i <= newState.rival.team.basePokemon.length - 1; i++) {
-          const basePokemon = newState.rival.team.basePokemon[i];
-          const pokemon = await functions.getPokemon(
-            newState.rival.user,
-            newState.rival.team.dataPokemon[i],
-            basePokemon.levelPokemon,
-            newState.rival.rarity,
-            basePokemon.shiny,
-            basePokemon.genre,
-            i
-          );
-          pokemons.push(pokemon);
+            const basePokemon = newState.rival.team.basePokemon[i];
+            const pokemon = await functions.getPokemon(
+                newState.rival.user,
+                newState.rival.team.dataPokemon[i],
+                basePokemon.levelPokemon,
+                newState.rival.rarity,
+                basePokemon.shiny,
+                basePokemon.genre,
+                i
+            );
+            pokemons.push(pokemon);
         }
 
         const indexSelectorPokemon = Math.round(Math.random() * (pokemons.length - 1))
         const pokemonSelected = pokemons[indexSelectorPokemon]
 
-        newState.rival.team.pokemons=pokemons
-        newState.rival.team.selected=pokemonSelected;
+        newState.rival.team.pokemons = pokemons
+        newState.rival.team.selected = pokemonSelected;
         return newState
     }
 
@@ -684,7 +684,7 @@ export const variables = {
                 phaseSelections: true,
                 finalBattle: false,
                 loseBattle: "",
-                battleSpeed:3,
+                battleSpeed: 3,
             },
             app: {
                 loging: false,
@@ -724,23 +724,23 @@ export const variables = {
         },
     },
     imagesTrainers: [
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        [pPokecolector,bPokecolector],
-        
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+        [pPokecolector, bPokecolector],
+
     ],
 
 
@@ -827,7 +827,7 @@ export const variables = {
     percentageShiny: 0.99,
     sizePokedex: [1, 1010],
     sizeTeam: 6,
-    totalScore4battlePokemon:200,
+    totalScore4battlePokemon: 200,
     cautionPokemons: [
         144, // Articuno
         145, // Zapdos
@@ -881,6 +881,8 @@ export const variables = {
         719, // Diancie
         720, // Hoopa
         721, // Volcanion
+        749,
+
         772,
         773,
         785, // Tapu Koko
@@ -891,14 +893,15 @@ export const variables = {
         790, // Cosmoem
         791, // Solgaleo
         792, // Lunala
-
-        800, // Necrozma
+        793, 794, 795, 796, 797, 798, 799, 800,
         801, // Magearna
         802, // Marshadow
         804,
         807, // Zeraora
         808, // Meltan
         809, // Melmetal
+        879,
+        881,
         888,
         889,
         890,
@@ -914,6 +917,7 @@ export const variables = {
         903,
         904,
         905,
+        990,
         993,
         995,
         1001,
@@ -1026,117 +1030,117 @@ export const variables = {
         },
     },
 
-    colorTypes : {
+    colorTypes: {
         normal: {
-          primaryColorBg: 'rgba(168, 167, 122, 1)',
-          secondaryColorBg: 'rgba(204, 201, 153, 0.78)',
-          colorBaseIcon: 'rgba(255, 255, 204, 0.78)',
-          colorHalo: 'rgba(255, 255, 204, 0.63)'
+            primaryColorBg: 'rgba(168, 167, 122, 1)',
+            secondaryColorBg: 'rgba(204, 201, 153, 0.78)',
+            colorBaseIcon: 'rgba(255, 255, 204, 0.78)',
+            colorHalo: 'rgba(255, 255, 204, 0.63)'
         },
         fire: {
-          primaryColorBg: 'rgba(252, 98, 63, 1)',
-          secondaryColorBg: 'rgba(255, 162, 118, 0.78)',
-          colorBaseIcon: 'rgba(255, 230, 204, 0.78)',
-          colorHalo: 'rgba(255, 209, 179, 0.63)'
+            primaryColorBg: 'rgba(252, 98, 63, 1)',
+            secondaryColorBg: 'rgba(255, 162, 118, 0.78)',
+            colorBaseIcon: 'rgba(255, 230, 204, 0.78)',
+            colorHalo: 'rgba(255, 209, 179, 0.63)'
         },
         water: {
-          primaryColorBg: 'rgba(59, 142, 209, 1)',
-          secondaryColorBg: 'rgba(128, 191, 225, 0.78)',
-          colorBaseIcon: 'rgba(191, 231, 255, 0.78)',
-          colorHalo: 'rgba(163, 214, 240, 0.63)'
+            primaryColorBg: 'rgba(59, 142, 209, 1)',
+            secondaryColorBg: 'rgba(128, 191, 225, 0.78)',
+            colorBaseIcon: 'rgba(191, 231, 255, 0.78)',
+            colorHalo: 'rgba(163, 214, 240, 0.63)'
         },
         electric: {
-          primaryColorBg: 'rgba(242, 200, 78, 1)',
-          secondaryColorBg: 'rgba(248, 224, 127, 0.78)',
-          colorBaseIcon: 'rgba(255, 250, 204, 0.78)',
-          colorHalo: 'rgba(255, 242, 179, 0.63)'
+            primaryColorBg: 'rgba(242, 200, 78, 1)',
+            secondaryColorBg: 'rgba(248, 224, 127, 0.78)',
+            colorBaseIcon: 'rgba(255, 250, 204, 0.78)',
+            colorHalo: 'rgba(255, 242, 179, 0.63)'
         },
         grass: {
-          primaryColorBg: 'rgba(103, 184, 98, 1)',
-          secondaryColorBg: 'rgba(153, 210, 136, 0.78)',
-          colorBaseIcon: 'rgba(212, 235, 188, 0.78)',
-          colorHalo: 'rgba(181, 223, 151, 0.63)'
+            primaryColorBg: 'rgba(103, 184, 98, 1)',
+            secondaryColorBg: 'rgba(153, 210, 136, 0.78)',
+            colorBaseIcon: 'rgba(212, 235, 188, 0.78)',
+            colorHalo: 'rgba(181, 223, 151, 0.63)'
         },
         ice: {
-          primaryColorBg: 'rgba(126, 206, 253, 1)',
-          secondaryColorBg: 'rgba(180, 230, 253, 0.78)',
-          colorBaseIcon: 'rgba(204, 242, 255, 0.78)',
-          colorHalo: 'rgba(179, 231, 255, 0.63)'
+            primaryColorBg: 'rgba(126, 206, 253, 1)',
+            secondaryColorBg: 'rgba(180, 230, 253, 0.78)',
+            colorBaseIcon: 'rgba(204, 242, 255, 0.78)',
+            colorHalo: 'rgba(179, 231, 255, 0.63)'
         },
         fighting: {
-          primaryColorBg: 'rgba(207, 84, 61, 1)',
-          secondaryColorBg: 'rgba(235, 132, 111, 0.78)',
-          colorBaseIcon: 'rgba(255, 204, 179, 0.78)',
-          colorHalo: 'rgba(255, 179, 153, 0.63)'
+            primaryColorBg: 'rgba(207, 84, 61, 1)',
+            secondaryColorBg: 'rgba(235, 132, 111, 0.78)',
+            colorBaseIcon: 'rgba(255, 204, 179, 0.78)',
+            colorHalo: 'rgba(255, 179, 153, 0.63)'
         },
         poison: {
-          primaryColorBg: 'rgba(160, 64, 160, 1)',
-          secondaryColorBg: 'rgba(198, 113, 198, 0.78)',
-          colorBaseIcon: 'rgba(230, 179, 230, 0.78)',
-          colorHalo: 'rgba(204, 153, 204, 0.63)'
+            primaryColorBg: 'rgba(160, 64, 160, 1)',
+            secondaryColorBg: 'rgba(198, 113, 198, 0.78)',
+            colorBaseIcon: 'rgba(230, 179, 230, 0.78)',
+            colorHalo: 'rgba(204, 153, 204, 0.63)'
         },
         ground: {
-          primaryColorBg: 'rgba(188, 155, 75, 1)',
-          secondaryColorBg: 'rgba(211, 191, 147, 0.78)',
-          colorBaseIcon: 'rgba(242, 230, 204, 0.78)',
-          colorHalo: 'rgba(217, 204, 179, 0.63)'
+            primaryColorBg: 'rgba(188, 155, 75, 1)',
+            secondaryColorBg: 'rgba(211, 191, 147, 0.78)',
+            colorBaseIcon: 'rgba(242, 230, 204, 0.78)',
+            colorHalo: 'rgba(217, 204, 179, 0.63)'
         },
         flying: {
-          primaryColorBg: 'rgba(62, 124, 246, 1)',
-          secondaryColorBg: 'rgba(71, 196, 253, 0.78)',
-          colorBaseIcon: 'rgba(170, 238, 255, 0.78)',
-          colorHalo: 'rgba(146, 220, 252, 0.63)'
+            primaryColorBg: 'rgba(62, 124, 246, 1)',
+            secondaryColorBg: 'rgba(71, 196, 253, 0.78)',
+            colorBaseIcon: 'rgba(170, 238, 255, 0.78)',
+            colorHalo: 'rgba(146, 220, 252, 0.63)'
         },
         psychic: {
-          primaryColorBg: 'rgba(249, 85, 135, 1)',
-          secondaryColorBg: 'rgba(251, 148, 183, 0.78)',
-          colorBaseIcon: 'rgba(255, 204, 230, 0.78)',
-          colorHalo: 'rgba(255, 179, 204, 0.63)'
+            primaryColorBg: 'rgba(249, 85, 135, 1)',
+            secondaryColorBg: 'rgba(251, 148, 183, 0.78)',
+            colorBaseIcon: 'rgba(255, 204, 230, 0.78)',
+            colorHalo: 'rgba(255, 179, 204, 0.63)'
         },
         bug: {
-          primaryColorBg: 'rgba(146, 189, 47, 1)',
-          secondaryColorBg: 'rgba(185, 211, 103, 0.78)',
-          colorBaseIcon: 'rgba(220, 235, 179, 0.78)',
-          colorHalo: 'rgba(194, 223, 151, 0.63)'
+            primaryColorBg: 'rgba(146, 189, 47, 1)',
+            secondaryColorBg: 'rgba(185, 211, 103, 0.78)',
+            colorBaseIcon: 'rgba(220, 235, 179, 0.78)',
+            colorHalo: 'rgba(194, 223, 151, 0.63)'
         },
         rock: {
-          primaryColorBg: 'rgba(184, 160, 56, 1)',
-          secondaryColorBg: 'rgba(207, 187, 104, 0.78)',
-          colorBaseIcon: 'rgba(230, 217, 179, 0.78)',
-          colorHalo: 'rgba(204, 194, 151, 0.63)'
+            primaryColorBg: 'rgba(184, 160, 56, 1)',
+            secondaryColorBg: 'rgba(207, 187, 104, 0.78)',
+            colorBaseIcon: 'rgba(230, 217, 179, 0.78)',
+            colorHalo: 'rgba(204, 194, 151, 0.63)'
         },
         ghost: {
-          primaryColorBg: 'rgba(104, 88, 160, 1)',
-          secondaryColorBg: 'rgba(154, 131, 225, 0.78)',
-          colorBaseIcon: 'rgba(204, 179, 255, 0.78)',
-          colorHalo: 'rgba(179, 153, 255, 0.63)'
+            primaryColorBg: 'rgba(104, 88, 160, 1)',
+            secondaryColorBg: 'rgba(154, 131, 225, 0.78)',
+            colorBaseIcon: 'rgba(204, 179, 255, 0.78)',
+            colorHalo: 'rgba(179, 153, 255, 0.63)'
         },
         dragon: {
-          primaryColorBg: 'rgba(21, 128, 128, 1)',
-          secondaryColorBg: 'rgba(84, 192, 192, 0.78)',
-          colorBaseIcon: 'rgba(153, 238, 238, 0.78)',
-          colorHalo: 'rgba(102, 204, 204, 0.63)'
+            primaryColorBg: 'rgba(21, 128, 128, 1)',
+            secondaryColorBg: 'rgba(84, 192, 192, 0.78)',
+            colorBaseIcon: 'rgba(153, 238, 238, 0.78)',
+            colorHalo: 'rgba(102, 204, 204, 0.63)'
         },
         dark: {
-          primaryColorBg: 'rgba(84, 76, 72, 1)',
-          secondaryColorBg: 'rgba(125, 113, 108, 0.78)',
-          colorBaseIcon: 'rgba(204, 204, 179, 0.78)',
-          colorHalo: 'rgba(179, 179, 153, 0.63)'
+            primaryColorBg: 'rgba(84, 76, 72, 1)',
+            secondaryColorBg: 'rgba(125, 113, 108, 0.78)',
+            colorBaseIcon: 'rgba(204, 204, 179, 0.78)',
+            colorHalo: 'rgba(179, 179, 153, 0.63)'
         },
         steel: {
-          primaryColorBg: 'rgba(153, 153, 153, 1)',
-          secondaryColorBg: 'rgba(179, 179, 179, 0.78)',
-          colorBaseIcon: 'rgba(204, 204, 204, 0.78)',
-          colorHalo: 'rgba(179, 179, 179, 0.63)'
+            primaryColorBg: 'rgba(153, 153, 153, 1)',
+            secondaryColorBg: 'rgba(179, 179, 179, 0.78)',
+            colorBaseIcon: 'rgba(204, 204, 204, 0.78)',
+            colorHalo: 'rgba(179, 179, 179, 0.63)'
         },
         fairy: {
-          primaryColorBg: 'rgba(214, 133, 173, 1)',
-          secondaryColorBg: 'rgba(232, 183, 201, 0.78)',
-          colorBaseIcon: 'rgba(255, 230, 242, 0.78)',
-          colorHalo: 'rgba(255, 204, 217, 0.63)'
+            primaryColorBg: 'rgba(214, 133, 173, 1)',
+            secondaryColorBg: 'rgba(232, 183, 201, 0.78)',
+            colorBaseIcon: 'rgba(255, 230, 242, 0.78)',
+            colorHalo: 'rgba(255, 204, 217, 0.63)'
         }
-      },
-      
+    },
+
 
 
     stadistic: [
